@@ -3,3 +3,5 @@ numpy>=1.19.5
 matplotlib>=3.3.4
 plotly>=4.14.3
 pandas>=1.2.4
+marimo>=0.6.8  
+scipy>=1.5.4
