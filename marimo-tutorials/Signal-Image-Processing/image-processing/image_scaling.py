@@ -1,7 +1,33 @@
 import marimo
 
-__generated_with = "0.6.8"
+__generated_with = "0.6.10"
 app = marimo.App(width="medium", app_title="non-adaptive image scaling")
+
+
+@app.cell
+def __(mo):
+    mo.md(
+        r"""
+        # TODOs
+
+        1. Add Fourier Spectrum Analysis.
+        """
+    )
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(
+        rf"""
+        **Suggestions for other derived notebooks.**
+
+        1. Image-Processing on RGB (and other forms of) images.
+        2. Cubic Interpolation and Splines.
+        3. Fourier Transform.
+        """
+    )
+    return
 
 
 @app.cell(hide_code=True)
@@ -27,20 +53,6 @@ def __(mo):
     )
     form
     return form,
-
-
-@app.cell
-def __(mo):
-    mo.md(
-        rf"""
-        **Suggestions for other derived notebooks.**
-
-        1. Image-Processing on RGB (and other forms of) images.
-        2. Cubic Interpolation and Splines.
-        3. Fourier Transform.
-        """
-    )
-    return
 
 
 @app.cell(hide_code=True)
@@ -723,9 +735,9 @@ def __(mo):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def __(mo):
-    mo.md(rf"\"<h1 id=\"code\">Source Code</h1>")
+    mo.md(rf"""<h1 id="code">Source Code</h1>""")
     return
 
 
@@ -1476,18 +1488,6 @@ def __():
     BILINEAR_SRC = "../assets/image-processing/bilinear.png"
     BICUBIC_SRC = "../assets/image-processing/bicubic.png"
     return BICUBIC_SRC, BILINEAR_SRC, NN_SRC
-
-
-@app.cell
-def __(mo):
-    mo.md(
-        r"""
-        # TODOs
-
-        1. Add Fourier Spectrum Analysis.
-        """
-    )
-    return
 
 
 @app.cell(hide_code=True)
