@@ -18,7 +18,7 @@ def __():
 
 @app.cell
 def __(cv2):
-    img = cv2.imread("./marimo-tutorials/Signal_Image_Processing/assets/house.tif", 0)
+    img = cv2.imread("./marimo-tutorials/Signal-Image-Processing/assets/house.tif", 0)
     return img,
 
 
@@ -50,14 +50,32 @@ def __(np):
 
 
 @app.cell
+def __(mo):
+    mo.md(rf"# Defining vertical mask ")
+    return
+
+
+@app.cell
 def __(Fx):
     Fx
     return
 
 
 @app.cell
+def __(mo):
+    mo.md(rf"# Defining horizontal mask ")
+    return
+
+
+@app.cell
 def __(Fy):
     Fy
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(rf"# Adding both to make a diagonal mask ")
     return
 
 
@@ -149,17 +167,39 @@ def __(mo):
 
 
 @app.cell
-def __(img_diagonal, img_horizontal, img_vertical, plt):
+def __(Image, mo, plt):
+    def show_images(images: list[Image.Image], titles: list[str]) -> mo.ui:
+        """
+        Displays a list of images using Matplotlib with optional titles.
+
+        Args:
+          images (list[PIL.Image.Image]): A list of PIL Image objects to be displayed.
+          titles (list[str], optional): A list of titles for each image (same length as images).
+        """
+        if titles and len(images) != len(titles):
+            raise ValueError("Number of images and titles must match.")
+        plt.axis("off")
+        return mo.hstack(
+            [
+                mo.vstack([plt.imshow(image, cmap="gray", vmin = 0, vmax = 255), title], align="center")
+                for image, title in zip(images, titles)
+            ]
+        )
+    return show_images,
+
+
+@app.cell
+def __(img_diagonal, img_horizontal, img_vertical, show_images):
     radii = ["Horizonal", "Vertical", "Diagonal"]
     images = [img_horizontal, img_vertical, img_diagonal]
-    plt.figure(figsize = (20, 10))
-    for i in range(len(radii)):    
-        plt.subplot(1, 5, i + 1)
-        plt.imshow(images[i], cmap = "gray", vmin = 0, vmax = 255)
-        plt.title("Edge Detection using {}".format(radii[i]))
-        plt.xticks([])
-        plt.yticks([])
-    return i, images, radii
+    # plt.figure(figsize = (5, 5))
+    # for i in range(len(radii)):    
+    #     plt.subplot(1, 5, i + 1)
+    show_images(images, radii)
+        # plt.title("Edge Detection using {}".format(radii[i]))
+        # plt.xticks([])
+        # plt.yticks([])
+    return images, radii
 
 
 @app.cell
@@ -200,7 +240,6 @@ def __(mo):
 @app.cell
 def __(plt, signal_x):
     plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
-
     return
 
 
@@ -224,7 +263,6 @@ def __(mo):
 
 @app.cell
 def __(plt, signal_diagonal):
-
     plt.imshow(signal_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return
 
