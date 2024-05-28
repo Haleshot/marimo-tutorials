@@ -1,1 +1,1 @@
-# Design Patterns notebooks go here
+# Design-Patterns notebooks go here

@@ -1,1 +1,1 @@
-# OS notebooks go here
+# Operating system notebooks go here

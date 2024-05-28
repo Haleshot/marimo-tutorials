@@ -1,1 +1,1 @@
-# Algorithms notebooks go here
+# algorithms notebooks go here

@@ -1,1 +1,1 @@
-# Intermediate notebooks go here
+# Intermediate-notebooks go here
