@@ -51,7 +51,7 @@ def __(np):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Defining vertical mask ")
+    mo.md(rf"# Defining vertical mask")
     return
 
 
@@ -63,7 +63,7 @@ def __(Fx):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Defining horizontal mask ")
+    mo.md(rf"# Defining horizontal mask")
     return
 
 
@@ -75,7 +75,7 @@ def __(Fy):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Adding both to make a diagonal mask ")
+    mo.md(rf"# Adding both to make a diagonal mask")
     return
 
 
