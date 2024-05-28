@@ -18,7 +18,7 @@ def __():
 
 @app.cell
 def __(cv2):
-    img = cv2.imread("../assets/house.tif", 0)
+    img = cv2.imread("./marimo-tutorials/Signal_Image_Processing/assets/house.tif", 0)
     return img,
 
 
@@ -95,7 +95,7 @@ def __(Fx, img, img_horizontal, m, n, np, plt):
       for _j in range(_a, n - _a):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_horizontal[_i, _j] = np.sum(np.multiply(_temp, Fx))
-        
+
     plt.imshow(img_horizontal, cmap = "gray", vmin = 0, vmax = 255)
     return
 
@@ -116,7 +116,7 @@ def __(Fy, img, m, n, np, plt):
       for _j in range(_a, n - _a):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_vertical[_i, _j] = np.sum(np.multiply(_temp, Fy))
-        
+
     plt.imshow(img_vertical, cmap = "gray", vmin = 0, vmax = 255)
     return img_vertical,
 
@@ -137,9 +137,15 @@ def __(diagonal, img, m, n, np, plt):
       for _j in range(_a, n - _a):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_diagonal[_i, _j] = np.sum(np.multiply(_temp, diagonal))
-        
+
     plt.imshow(img_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return img_diagonal,
+
+
+@app.cell
+def __(mo):
+    mo.md(rf"# Showing the differences of Edge detection using various masks defined above (horizonal, vertical and diagonal).")
+    return
 
 
 @app.cell
@@ -177,20 +183,49 @@ def __(
     img_diagonal,
     img_horizontal,
     img_vertical,
-    plt,
 ):
     # Built in Function:
     signal_x = convolve(img_horizontal, Fx, mode = "same")
     signal_y = convolve(img_vertical, Fy, mode = "same")
     signal_diagonal = convolve(img_diagonal, diagonal, mode = "same")
-    plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
-    plt.imshow(signal_y, cmap = "gray", vmin = 0, vmax = 255)
-    plt.imshow(signal_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return signal_diagonal, signal_x, signal_y
 
 
 @app.cell
-def __():
+def __(mo):
+    mo.md(rf"# Showing output using built in function for horizontal detection")
+    return
+
+
+@app.cell
+def __(plt, signal_x):
+    plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
+
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(rf"# Showing output using built in function for vertical detection")
+    return
+
+
+@app.cell
+def __(plt, signal_y):
+    plt.imshow(signal_y, cmap = "gray", vmin = 0, vmax = 255)
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(rf"# Showing output using built in function for diagonal detection")
+    return
+
+
+@app.cell
+def __(plt, signal_diagonal):
+
+    plt.imshow(signal_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
