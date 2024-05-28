@@ -267,5 +267,45 @@ def __(plt, signal_diagonal):
     return
 
 
+@app.cell
+def __(mo):
+    mo.md(rf"# For different sizes of masks provided from user:")
+    return
+
+
+@app.cell
+def __(Fx, convolve, img, m, n, np, plt):
+    size_of_mask = int(input("Enter the size of the Mask : "))
+    img_new = img.copy()
+    print("You have requested for Mask of Size :  ", size_of_mask ,"x", size_of_mask)
+    a = size_of_mask//2
+
+    for i in range(a, m - a):
+        for j in range(a, n - a):
+            temp = np.sum(img[i - a:i + a + 1, j - a:j + a + 1])
+            img_new[i, j] = temp//size_of_mask**2
+    _signal_x = convolve(img_new, Fx, mode = "same")
+    plt.imshow(_signal_x, cmap = "gray", vmin = 0, vmax = 255)
+    return a, i, img_new, j, size_of_mask, temp
+
+
+@app.cell
+def __(mo):
+    callout = mo.callout("Conclusion: \
+    As we see from the image shown above and in the cell where the difference between three types of images are shown (horizontal, vertical and diagonal, we see that the above image where we applied Averaging filter to the original image and then applied convolution seemed to detect the horizontal images better than the one in which Averaging filter wasn't applied.", kind='success')
+    return callout,
+
+
+@app.cell
+def __(callout, mo):
+    mo.vstack([callout], align="stretch", gap=0)
+    return
+
+
+@app.cell
+def __():
+    return
+
+
 if __name__ == "__main__":
     app.run()
