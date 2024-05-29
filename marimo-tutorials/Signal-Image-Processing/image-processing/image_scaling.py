@@ -1,7 +1,7 @@
 import marimo
 
 __generated_with = "0.6.10"
-app = marimo.App(width="medium", app_title="non-adaptive image scaling")
+app = marimo.App(width="medium", app_title="Non-Adaptive Image Scaling")
 
 
 @app.cell
@@ -737,7 +737,7 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    mo.md(rf"""<h1 id="code">Source Code</h1>""")
+    mo.md(rf"<h1 id=\"code\">Source Code</h1>")
     return
 
 
