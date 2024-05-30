@@ -93,7 +93,7 @@ def __(diagonal):
 
 @app.cell
 def __(img, np):
-    m, n = img.shape()
+    m, n = img.shape
     img_horizontal = np.zeros([m, n])
     return img_horizontal, m, n
 
