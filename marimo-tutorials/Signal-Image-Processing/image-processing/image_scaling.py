@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.6.10"
+__generated_with = "0.6.13"
 app = marimo.App(width="medium", app_title="Non-Adaptive Image Scaling")
 
 
@@ -64,13 +64,15 @@ def __(mo):
 
         **Abstract**
 
-        This notebook provides an introductory exploration into non-adaptive image scaling algorithms, focusing on NN Interpolation, Bilinear Interpolation, and Bicubic Interpolation. Each algorithm is elucidated through mathematical formulations and accompanied by visualizations for clarity. Transitioning to their convolutional forms, the notebook delves into advanced concepts including Lanczos resampling, shedding light on their significance in image processing. Through this systematic analysis, readers gain foundational insights into the theoretical underpinnings and practical applications of these algorithms in image scaling tasks.
+        This notebook provides an introductory exploration into non-adaptive image scaling algorithms, focusing on [NN Interpolation](#nn), [Bilinear Interpolation](#bilinear), and [Bicubic Interpolation](#bicubic). Each algorithm is elucidated through mathematical formulations and accompanied by visualizations for clarity. Transitioning to their [convolutional forms](#convolutions), the notebook delves into advanced concepts including [Lanczos resampling](#lanczos), shedding light on their significance in image processing. Through this systematic analysis, readers gain foundational insights into the theoretical underpinnings and practical applications of these algorithms in image scaling tasks.
 
-        <h2 align="center">Introduction</h2>
+        <h1 id="intro">Introduction</h1>
 
         Image scaling, an essential task in digital image processing, plays a pivotal role in various applications ranging from multimedia content delivery to medical imaging. The process of image scaling involves altering the size of an image while preserving its visual quality and integrity. Non-adaptive image scaling algorithms represent a fundamental category within this domain, offering methods to resize images without adapting to the content characteristics.
 
-        This notebook serves as an introductory guide to non-adaptive image scaling algorithms, presenting a structured exploration of their theoretical foundations, mathematical formulations, and practical applications. The notebook is organized as follows:
+        This notebook serves as an introductory guide to non-adaptive image scaling algorithms, presenting a structured exploration of their theoretical foundations, mathematical formulations, and practical applications. 
+
+        The notebook is organized as follows:
 
         1. **Fundamentals of Image Scaling Algorithms:**
             - A comprehensive overview of NN Interpolation, Bilinear Interpolation, and Bicubic Interpolation, elucidating their mathematical formulations and principles.
@@ -737,7 +739,13 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    mo.md(rf"<h1 id=\"code\">Source Code</h1>")
+    mo.md(
+        rf"""
+        <h1 id="code">Source Code</h1>
+
+        > check source code below
+        """
+    )
     return
 
 
@@ -1455,6 +1463,7 @@ def __(mo):
             mo.nav_menu(
                 {
                     "#home": f"{mo.icon('lucide:home')} Home",
+                    "#intro": "Introduction",
                     "Fundamentals": {
                         "#fundamentals": "Overview",
                         "#nn": "NN Interpolation",
