@@ -18,7 +18,7 @@ def __():
 
 @app.cell
 def __(cv2):
-    img = cv2.imread("./marimo-tutorials/Signal-Image-Processing/assets/house.tif", 0)
+    img = cv2.imread("./marimo-tutorials/signal-image-processing/assets/house.tif", 0)
     return img,
 
 
