@@ -50,7 +50,7 @@ def __(mo):
         )
         .form(bordered=True, label="Custom Constants")
     )
-    return init_form,
+    return (init_form,)
 
 
 @app.cell(hide_code=True)
@@ -70,6 +70,7 @@ def __(init_form, mo):
                 ├── Notebook Title
                 ├── Abstract
                 ├── Introduction
+                ├── Related Notebooks
                 ├── Main Body
                 ├── Summary
                 ├── Experiments (optional)
@@ -187,7 +188,7 @@ def __(mo):
         .form(bordered=True, label="Custom Constants")
     )
     custom_form
-    return custom_form,
+    return (custom_form,)
 
 
 @app.cell
@@ -299,7 +300,7 @@ def __():
         > write source code below
         """
     )
-    return mo,
+    return (mo,)
 
 
 @app.cell
@@ -364,7 +365,7 @@ def __(NOTEBOOK_TITLE, mo):
             mo.nav_menu(sidebar_content, orientation="vertical"),
         ]
     )
-    return sidebar_content,
+    return (sidebar_content,)
 
 
 @app.cell
