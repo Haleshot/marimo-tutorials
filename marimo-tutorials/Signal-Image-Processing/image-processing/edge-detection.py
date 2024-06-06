@@ -146,7 +146,7 @@ def __(mo):
 def __(mo):
     mo.md(
         rf"""
-        ## Defining masks as discussed in theory above
+        ## Defining masks as discussed in [theory](#theory) above
          - Horizontal
          - Vertical masks and
          - adding the result of the two to form a diagonal mask.
