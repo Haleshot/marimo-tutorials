@@ -40,29 +40,31 @@ def __():
 def __(mo):
     mo.sidebar(
         [
-            mo.md("# Non-Adaptive Image Scaling"),
+            mo.md("# Image Edge Detection"),
             mo.nav_menu(
                 {
-                    "#home": f"{mo.icon('lucide:home')} Home",
-                    "#intro": "Introduction",
-                    "Fundamentals": {
-                        "#fundamentals": "Overview",
-                        "#nn": "NN Interpolation",
-                        "#bilinear": "Bilinear Interpolation",
-                        "#bicubic": "Bicubic Interpolation",
+                    "#aim": f"{mo.icon('lucide:home')} Home",
+                    "Page Overview": {
+                        "#aim": "Aim",
+                        "#table-of-contents": "Table of Contents",
+                        "#software": "Software",
+                        "#prerequisite": "Prerequisites",
+                        "#outcome": "Outcomes",
+                        "#theory": "Theory",
                     },
-                    "Convolutions": {
-                        "#convolutions": "Overview",
-                        "#interpolation": "Into Convolution",
-                        "#problems": "Problems",
+                    "Implementation": {
+                        "#defining-masks-as-discussed-in-theory-above": "Defining Masks",
+                        "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
+                        "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
+                        "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user" : "DIY!"
                     },
-                    "Lánczos": {"#lanczos": "From Sinc"},
-                    "#summary": "Summary",
-                    "#exp": "Experiment",
-                    "#refs": "References",
-                    "#code": "Source Code",
+                    "#observations": "Observations",
+                    "#references": "References",
                     "Links": {
-                        "https://github.com/Haleshot/marimo-tutorials": f"{mo.icon('lucide:github')} GitHub",
+                        "https://github.com/Haleshot/marimo-tutorials/blob/main/marimo-tutorials/Signal-Image-Processing/image-processing/edge-detection.py": f"{mo.icon('lucide:github')} GitHub",
                     },
                 },
                 orientation="vertical",
@@ -125,22 +127,16 @@ def __(mo):
         ```
 
         To apply the Sobel operator:
+
         1. Convolve the F_x mask with the original image to obtain the x gradient of the image.
+
         2. Convolve the F_y mask with the original image to obtain the y gradient of the image.
+
         3. Add the results of the above two steps to obtain the combined gradient image, |g_x+g_y|.
 
         ### Averaging Filter
 
         An averaging filter is a simple low-pass filter that helps in reducing noise and blurring the image. It involves convolving the image with a suitable filter mask.
-
-        ### Observations
-
-        After applying the Sobel operator with the averaging filter and comparing the results obtained in step a and b, the following observations can be made:
-
-        - The Sobel operator enhances the edges in the image by highlighting the changes in intensity.
-        - The averaging filter blurs the image and reduces the noise.
-        - When the Sobel operator is applied after the averaging filter, the edges appear smoother and less pronounced compared to applying the Sobel operator directly on the original image.
-        - The combined gradient image, |g_x+g_y|, obtained from the Sobel operator shows the overall intensity changes in the image.
         """
     )
     return
@@ -148,7 +144,14 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Defining Horizontal and vertical masks and adding the result of the two to form a diagonal mask.")
+    mo.md(
+        rf"""
+        ## Defining masks as discussed in theory above
+         - Horizontal
+         - Vertical masks and
+         - adding the result of the two to form a diagonal mask.
+        """
+    )
     return
 
 
@@ -160,44 +163,24 @@ def __(np):
 
 
 @app.cell
-def __(mo):
-    mo.md(rf"# Defining vertical mask")
-    return
-
-
-@app.cell
-def __(Fx):
-    Fx
-    return
-
-
-@app.cell
-def __(mo):
-    mo.md(rf"# Defining horizontal mask")
-    return
-
-
-@app.cell
-def __(Fy):
-    Fy
-    return
-
-
-@app.cell
-def __(mo):
-    mo.md(rf"# Adding both to make a diagonal mask")
-    return
-
-
-@app.cell
 def __(Fx, Fy):
     diagonal = Fx + Fy
     return diagonal,
 
 
 @app.cell
-def __(diagonal):
-    diagonal
+def __(mo):
+    mo.md(
+        rf"""
+        ### Horizonal, vertical and diagonal masks used on images here:
+
+        ```
+        F_x = |-1 -2 -1|      F_y = |-1  0  1|      diagonal = |-2 -2 0|
+              | 0  0  0|            | -2 0  2|                 |-2 0 2 |
+              | 1  2  1|            | -1 0  1|                 | 0 2 2 |
+        ```
+        """
+    )
     return
 
 
@@ -210,7 +193,7 @@ def __(img, np):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Horizontal Edge Detection using list slicing:")
+    mo.md(rf"## Horizontal Edge Detection using list slicing")
     return
 
 
@@ -230,7 +213,7 @@ def __(Fx, img, img_horizontal, m, n, np, plt):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Vertical Edge Detection using list slicing:")
+    mo.md(rf"## Vertical Edge Detection using list slicing")
     return
 
 
@@ -272,7 +255,7 @@ def __(diagonal, img, m, n, np, plt):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Showing the differences of Edge detection using various masks defined above (horizonal, vertical and diagonal).")
+    mo.md(rf"## Showing the differences of Edge detection using various masks defined above")
     return
 
 
@@ -319,8 +302,8 @@ def __(img_diagonal, img_horizontal, img_vertical):
 
 
 @app.cell
-def __(all_images, plt):
-    plt.imshow(all_images, cmap = "gray", vmin = 0, vmax = 255)
+def __():
+    # plt.imshow(all_images, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
@@ -343,7 +326,7 @@ def __(
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Showing output using built in function for horizontal detection")
+    mo.md(rf"## Showing output using built in function for horizontal detection")
     return
 
 
@@ -355,7 +338,7 @@ def __(plt, signal_x):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Showing output using built in function for vertical detection")
+    mo.md(rf"## Showing output using built in function for vertical detection")
     return
 
 
@@ -367,7 +350,7 @@ def __(plt, signal_y):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Showing output using built in function for diagonal detection")
+    mo.md(rf"## Showing output using built in function for diagonal detection")
     return
 
 
@@ -379,13 +362,43 @@ def __(plt, signal_diagonal):
 
 @app.cell
 def __(mo):
-    mo.md(rf"# For different sizes of masks provided from user:")
+    mo.md(rf"## Showing the differences of Edge detection using in-built masks from above")
     return
 
 
 @app.cell
-def __(Fx, convolve, img, m, n, np, plt):
-    _size_of_mask = int(input("Enter the size of the Mask : "))
+def __(show_images, signal_diagonal, signal_x, signal_y):
+    _radii = ["Horizonal", "Vertical", "Diagonal"]
+    _images = [signal_x, signal_y, signal_diagonal]
+    # plt.figure(figsize = (5, 5))
+    # for i in range(len(radii)):    
+    #     plt.subplot(1, 5, i + 1)
+    show_images(_images, _radii)
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(rf"## For different sizes of masks provided from user")
+    return
+
+
+@app.cell
+def __(mo):
+    # _size_of_mask = int(input("Enter the size of the Mask : "))
+    slider = mo.ui.slider(start=1, stop=10, step=2, value=5, label="Enter size of mask")
+    return slider,
+
+
+@app.cell
+def __(mo, slider):
+    mo.hstack([slider, mo.md(f"You have requested for Mask of Size : {slider.value} x {slider.value}")])
+    return
+
+
+@app.cell
+def __(Fx, convolve, img, m, n, np, plt, slider):
+    _size_of_mask = slider.value
     img_new = img.copy()
     print("You have requested for Mask of Size :  ", _size_of_mask ,"x", _size_of_mask)
     a = _size_of_mask//2
@@ -409,6 +422,42 @@ def __(mo):
 @app.cell
 def __(callout, mo):
     mo.vstack([callout], align="stretch", gap=0)
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(
+        rf"""
+        ## Observations
+
+        After applying the Sobel operator with the averaging filter and comparing the results obtained in step a and b, the following observations can be made:
+
+        - The Sobel operator enhances the edges in the image by highlighting the changes in intensity.
+        - The averaging filter blurs the image and reduces the noise.
+        - When the Sobel operator is applied after the averaging filter, the edges appear smoother and less pronounced compared to applying the Sobel operator directly on the original image.
+        - The combined gradient image, |g_x+g_y|, obtained from the Sobel operator shows the overall intensity changes in the image.
+        """
+    )
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(
+        rf"""
+        ## References
+
+        - The [Signal and Image Processing repository](https://github.com/Haleshot/Signal_Image_Processing/tree/main/Edge_Detection) and [website blog post](https://haleshot.github.io/post/edge_detection/).
+        - [Sobel operator Wikipedia](https://en.wikipedia.org/wiki/Sobel_operator#:~:text=The%20Sobel%20operator%2C%20sometimes%20called,creates%20an%20image%20emphasising%20edges.)
+        - Assets and images for testing [here](https://www.imageprocessingplace.com/DIP-3E/dip3e_book_images_downloads.htm)
+        """
+    )
     return
 
 
