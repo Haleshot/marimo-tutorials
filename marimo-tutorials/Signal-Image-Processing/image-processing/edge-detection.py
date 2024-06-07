@@ -59,7 +59,7 @@ def __(mo):
                         "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
                         "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
                         "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
-                        "#for-different-sizes-of-masks-provided-from-user" : "DIY!"
+                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
                     },
                     "#observations": "Observations",
                     "#references": "References",
