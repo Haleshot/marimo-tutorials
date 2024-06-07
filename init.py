@@ -62,26 +62,26 @@ def __(init_form, mo):
                     "Design Patterns of Marimo Tutorials": "Marimo + Interactivity + Visualization + Flexibility + Minimalism",
                     "Notebook Structure": mo.md(
                         """
-                ```tree
-                .
-                ├── TODOs
-                ├── Suggested Reading & Suggestions for other Tutorials
-                ├── Custom Input (optional but suggested)
-                ├── Notebook Title
-                ├── Abstract
-                ├── Introduction
-                ├── Related Notebooks
-                ├── Main Body
-                ├── Summary
-                ├── Experiments (optional)
-                ├── Exercises (optional)
-                ├── References (optional)
-                ├── Appendix (optional)
-                ├── Source Code
-                ├── Authors
-                └── Acknowledgments (optional)
-                ```
-                """
+                        ```tree
+                        .
+                        ├── TODOs
+                        ├── Suggested Reading & Suggestions for other Tutorials
+                        ├── Custom Input (optional but suggested)
+                        ├── Notebook Title
+                        ├── Abstract
+                        ├── Introduction
+                        ├── Related Notebooks
+                        ├── Main Body
+                        ├── Summary
+                        ├── Experiments (optional)
+                        ├── Exercises (optional)
+                        ├── References (optional)
+                        ├── Appendix (optional)
+                        ├── Source Code
+                        ├── Authors
+                        └── Acknowledgments (optional)
+                        ```
+                        """
                     ),
                     "Incide Notebook": mo.md(
                         """
@@ -311,7 +311,7 @@ def __(mo):
 
         1. imports
         2. define variables
-        3. implement what main() does
+        3. implement what `main()` does
         4. define functions
         5. define classes
         6. define marimo user interface

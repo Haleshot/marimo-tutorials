@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.6.13"
+__generated_with = "0.6.16"
 app = marimo.App(width="medium", app_title="Non-Adaptive Image Scaling")
 
 
@@ -410,6 +410,24 @@ def __(np):
     return custom_func, kernel_func
 
 
+@app.cell
+def __(mo):
+    code = mo.ui.code_editor()
+    return code,
+
+
+@app.cell
+def __(code):
+    code
+    return
+
+
+@app.cell
+def __(code):
+    code.value
+    return
+
+
 @app.cell(hide_code=True)
 def __(cubic, custom_func, sinc, triangle, visualize_kernels):
     visualize_kernels(
@@ -453,11 +471,11 @@ def __(
 def __(mo):
     mo.md(
         rf"""
-        <h2 id="problems" align="center">The Problem With Sinc</h2>
+        <h2 id="problems" align="center">The Problem With Sinc</h2>
 
-        The first problem is evident: to convolve with sinc, we need to consider all the samples we have every time. This is clearly impractical: we’d need to look at every pixel in the input image to generate each pixel in the output.
+        The first problem is evident: to convolve with sinc, we need to consider all the samples we have every time. This is clearly impractical: we’d need to look at every pixel in the input image to generate each pixel in the output.
 
-        The second problem is what happens when fourier spectrum is not of limited width. Let’s consider a simple stepping function, and corresponding interpolation results:
+        The second problem is what happens when fourier spectrum is not of limited width. Let’s consider a simple stepping function, and corresponding interpolation results:
         """
     )
     return
@@ -498,7 +516,7 @@ def __(
 def __(mo):
     mo.md(
         rf"""
-        The reconstructed signal repeatedly overshoots and undershoot our original function. These undesirable oscillations, known as Gibbs phenomenon, show up all the time in Fourier analysis when dealing with jump discontinuities and finite approximations. They are intimately related to sinc in a sense the Gibbs oscillations are all ghosts of sinc in one form or another.
+        The reconstructed signal repeatedly overshoots and undershoot our original function. These undesirable oscillations, known as Gibbs phenomenon, show up all the time in Fourier analysis when dealing with jump discontinuities and finite approximations. They are intimately related to sinc in a sense the Gibbs oscillations are all ghosts of sinc in one form or another.
 
         Lánczos interpolation will address both problems presented in this section.
         """
@@ -514,7 +532,7 @@ def __(mo):
 
         > Sinc, Chopped and Screwed
 
-        Let’s first consider the problem of sinc extending into infinity, and therefore requiring to examine all samples. Our first attempt to solve this issue might be just to just set sinc to zero outside a certain window
+        Let’s first consider the problem of sinc extending into infinity, and therefore requiring to examine all samples. Our first attempt to solve this issue might be just to just set sinc to zero outside a certain window
 
         We can define a function that sets another function to zero outside a specific interval. Let's denote this function as $\langle f(t) \rangle_a$. Here's the mathematical definition:
 
@@ -1303,7 +1321,8 @@ def __(Image, mo, np, show_images):
 
 
 @app.cell
-def __(Image, form):
+def __(Image, form, mo):
+    mo.stop(form.value is None)
     lena = Image.open(form.value["image"]).convert("L")
     lena_downscaled = lena.resize((64, 64))
     return lena, lena_downscaled
