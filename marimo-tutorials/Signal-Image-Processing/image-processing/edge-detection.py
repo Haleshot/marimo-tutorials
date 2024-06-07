@@ -1,77 +1,7 @@
 import marimo
 
-__generated_with = "0.6.10"
+__generated_with = "0.6.16"
 app = marimo.App()
-
-
-@app.cell
-def __():
-    # import libraries
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import cv2
-    from scipy.signal import convolve
-    import marimo as mo
-    return convolve, cv2, mo, np, pd, plt
-
-
-@app.cell
-def __(cv2):
-    img = cv2.imread("./marimo-tutorials/Signal-Image-Processing/assets/house.tif", 0)
-    return img,
-
-
-@app.cell
-def __(img):
-    print(type(img))
-    return
-
-
-@app.cell
-def __():
-    # cv2.imshow("Image", img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    return
-
-
-@app.cell
-def __(mo):
-    mo.sidebar(
-        [
-            mo.md("# Image Edge Detection"),
-            mo.nav_menu(
-                {
-                    "#aim": f"{mo.icon('lucide:home')} Home",
-                    "Page Overview": {
-                        "#aim": "Aim",
-                        "#table-of-contents": "Table of Contents",
-                        "#software": "Software",
-                        "#prerequisite": "Prerequisites",
-                        "#outcome": "Outcomes",
-                        "#theory": "Theory",
-                    },
-                    "Implementation": {
-                        "#defining-masks-as-discussed-in-theory-above": "Defining Masks",
-                        "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
-                        "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
-                        "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
-                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
-                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
-                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
-                    },
-                    "#observations": "Observations",
-                    "#references": "References",
-                    "Links": {
-                        "https://github.com/Haleshot/marimo-tutorials/blob/main/marimo-tutorials/Signal-Image-Processing/image-processing/edge-detection.py": f"{mo.icon('lucide:github')} GitHub",
-                    },
-                },
-                orientation="vertical",
-            ),
-        ]
-    )
-    return
 
 
 @app.cell
@@ -82,7 +12,7 @@ def __(mo):
 
         ## Aim
 
-        The aim of this project is to apply Sobel's mask on the given test image to obtain the components of the gradient, |g_x|, |g_y|, and |g_x+g_y|. Additionally, a 5x5 averaging filter is applied on the test image followed by implementing the sequence from step a. The project concludes with summarizing the observations after comparing the results obtained in step a and b.
+        The aim of this tutorial is to apply Sobel's mask on the given test image to obtain the components of the gradient, |g_x|, |g_y|, and |g_x+g_y|. Additionally, a 5x5 averaging filter is applied on the test image followed by implementing the sequence from step a. The tutorial concludes with summarizing the observations after comparing the results obtained in step a and b.
 
         ## Table of Contents
 
@@ -94,11 +24,11 @@ def __(mo):
 
         ## Software
 
-        This project is implemented using Python.
+        This tutorial is implemented using Python.
 
         ## Prerequisite
 
-        To understand and work with this project, you should be familiar with the following concepts:
+        To understand and work with this tutorial, you should be familiar with the following concepts:
 
         | Sr. No | Concepts        |
         | ------ | --------------- |
@@ -146,7 +76,7 @@ def __(mo):
 def __(mo):
     mo.md(
         rf"""
-        ## Defining masks as discussed in [theory](#theory) above
+        ### Defining masks as discussed in [theory](#theory) above
          - Horizontal
          - Vertical masks and
          - adding the result of the two to form a diagonal mask.
@@ -193,7 +123,7 @@ def __(img, np):
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Horizontal Edge Detection using list slicing")
+    mo.md(rf"### Horizontal Edge Detection using list slicing")
     return
 
 
@@ -207,13 +137,14 @@ def __(Fx, img, img_horizontal, m, n, np, plt):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_horizontal[_i, _j] = np.sum(np.multiply(_temp, Fx))
 
+    plt.axis("off")
     plt.imshow(img_horizontal, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Vertical Edge Detection using list slicing")
+    mo.md(rf"### Vertical Edge Detection using list slicing")
     return
 
 
@@ -228,13 +159,14 @@ def __(Fy, img, m, n, np, plt):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_vertical[_i, _j] = np.sum(np.multiply(_temp, Fy))
 
+    plt.axis("off")
     plt.imshow(img_vertical, cmap = "gray", vmin = 0, vmax = 255)
     return img_vertical,
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"# Diagonal Edge Detection using list slicing:")
+    mo.md(rf"### Diagonal Edge Detection using list slicing:")
     return
 
 
@@ -249,13 +181,14 @@ def __(diagonal, img, m, n, np, plt):
         _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
         img_diagonal[_i, _j] = np.sum(np.multiply(_temp, diagonal))
 
+    plt.axis("off")
     plt.imshow(img_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return img_diagonal,
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Showing the differences of Edge detection using various masks defined above")
+    mo.md(rf"### Showing the differences of Edge detection using various masks defined above")
     return
 
 
@@ -326,43 +259,46 @@ def __(
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Showing output using built in function for horizontal detection")
+    mo.md(rf"### Showing output using built in function for horizontal detection")
     return
 
 
 @app.cell
 def __(plt, signal_x):
+    plt.axis("off")
     plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Showing output using built in function for vertical detection")
+    mo.md(rf"### Showing output using built in function for vertical detection")
     return
 
 
 @app.cell
 def __(plt, signal_y):
+    plt.axis("off")
     plt.imshow(signal_y, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Showing output using built in function for diagonal detection")
+    mo.md(rf"### Showing output using built in function for diagonal detection")
     return
 
 
 @app.cell
 def __(plt, signal_diagonal):
+    plt.axis("off")
     plt.imshow(signal_diagonal, cmap = "gray", vmin = 0, vmax = 255)
     return
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"## Showing the differences of Edge detection using in-built masks from above")
+    mo.md(rf"### Showing the differences of Edge detection using in-built masks from above")
     return
 
 
@@ -379,7 +315,7 @@ def __(show_images, signal_diagonal, signal_x, signal_y):
 
 @app.cell
 def __(mo):
-    mo.md(rf"## For different sizes of masks provided from user")
+    mo.md(rf"### For different sizes of masks provided from user")
     return
 
 
@@ -397,7 +333,7 @@ def __(mo, slider):
 
 
 @app.cell
-def __(Fx, convolve, img, m, n, np, plt, slider):
+def __(img, m, n, np, plt, signal_x, slider):
     _size_of_mask = slider.value
     img_new = img.copy()
     print("You have requested for Mask of Size :  ", _size_of_mask ,"x", _size_of_mask)
@@ -407,8 +343,9 @@ def __(Fx, convolve, img, m, n, np, plt, slider):
         for j in range(a, n - a):
             temp = np.sum(img[i - a:i + a + 1, j - a:j + a + 1])
             img_new[i, j] = temp//_size_of_mask**2
-    _signal_x = convolve(img_new, Fx, mode = "same")
-    plt.imshow(_signal_x, cmap = "gray", vmin = 0, vmax = 255)
+
+    plt.axis("off")
+    plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
     return a, i, img_new, j, temp
 
 
@@ -463,6 +400,71 @@ def __(mo):
 
 @app.cell
 def __():
+    # import libraries
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import cv2
+    from scipy.signal import convolve
+    import marimo as mo
+    return convolve, cv2, mo, np, pd, plt
+
+
+@app.cell
+def __(cv2):
+    img = cv2.imread("../assets/house.tif", 0)
+    return img,
+
+
+@app.cell
+def __(img):
+    print(type(img))
+    return
+
+
+@app.cell(hide_code=True)
+def __():
+    # cv2.imshow("Image", img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    return
+
+
+@app.cell(hide_code=True)
+def __(mo):
+    mo.sidebar(
+        [
+            mo.md("# Image Edge Detection"),
+            mo.nav_menu(
+                {
+                    "#aim": f"{mo.icon('lucide:home')} Home",
+                    "Page Overview": {
+                        "#aim": "Aim",
+                        "#table-of-contents": "Table of Contents",
+                        "#software": "Software",
+                        "#prerequisite": "Prerequisites",
+                        "#outcome": "Outcomes",
+                        "#theory": "Theory",
+                    },
+                    "Implementation": {
+                        "#defining-masks-as-discussed-in-theory-above": "Defining Masks",
+                        "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
+                        "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
+                        "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
+                    },
+                    "#observations": "Observations",
+                    "#references": "References",
+                    "Links": {
+                        "https://github.com/Haleshot/marimo-tutorials/blob/main/marimo-tutorials/Signal-Image-Processing/image-processing/edge-detection.py": f"{mo.icon('lucide:github')} GitHub",
+                    },
+                },
+                orientation="vertical",
+            ),
+        ]
+    )
     return
 
 
