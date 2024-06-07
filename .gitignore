@@ -2,6 +2,12 @@
 *.csv
 *.pdf
 
+# Ignore Python files that start with a '+'
+# This means that you can experiment with new code 
+# and then easily exclude it from the repository
+\+*.py
+\+*.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

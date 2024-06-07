@@ -5,6 +5,76 @@ app = marimo.App()
 
 
 @app.cell
+def __():
+    # import libraries
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import cv2
+    from scipy.signal import convolve
+    import marimo as mo
+    return convolve, cv2, mo, np, pd, plt
+
+
+@app.cell
+def __(cv2):
+    img = cv2.imread("./marimo-tutorials/signal-image-processing/assets/house.tif", 0)
+    return img,
+
+
+@app.cell
+def __(img):
+    print(type(img))
+    return
+
+
+@app.cell
+def __():
+    # cv2.imshow("Image", img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    return
+
+
+@app.cell
+def __(mo):
+    mo.sidebar(
+        [
+            mo.md("# Image Edge Detection"),
+            mo.nav_menu(
+                {
+                    "#aim": f"{mo.icon('lucide:home')} Home",
+                    "Page Overview": {
+                        "#aim": "Aim",
+                        "#table-of-contents": "Table of Contents",
+                        "#software": "Software",
+                        "#prerequisite": "Prerequisites",
+                        "#outcome": "Outcomes",
+                        "#theory": "Theory",
+                    },
+                    "Implementation": {
+                        "#defining-masks-as-discussed-in-theory-above": "Defining Masks",
+                        "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
+                        "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
+                        "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
+                    },
+                    "#observations": "Observations",
+                    "#references": "References",
+                    "Links": {
+                        "https://github.com/Haleshot/marimo-tutorials/blob/main/marimo-tutorials/Signal-Image-Processing/image-processing/edge-detection.py": f"{mo.icon('lucide:github')} GitHub",
+                    },
+                },
+                orientation="vertical",
+            ),
+        ]
+    )
+    return
+
+
+@app.cell
 def __(mo):
     mo.md(
         rf"""
