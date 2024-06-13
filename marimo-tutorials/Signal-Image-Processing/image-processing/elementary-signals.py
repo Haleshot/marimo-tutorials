@@ -134,12 +134,7 @@ def __(np, plt, t):
 
 @app.cell
 def __(mo):
-    mo.md(
-        rf"""
-        ## Discrete Time Signal for x(n) = a^n
-
-        """
-    )
+    mo.md(rf"## Discrete Time Signal for x(n) = a^n")
     return
 
 
