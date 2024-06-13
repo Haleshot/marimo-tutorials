@@ -95,12 +95,114 @@ def __(mo):
 
 
 @app.cell
+def __(mo):
+    mo.md(
+        rf"""
+        ### 1. Sine wave: Generate and plot a sine wave signal with a specific frequency and amplitude.
+        #### We use an example of amplitude (A or λ) = 5 and frequency (or Time period as chosen by user) as 5.
+        """
+    )
+    return
+
+
+@app.cell
+def __(mo):
+    _note = mo.md(
+        r'''
+
+        ### Relation between Time period (s) and Frequency (Hz):
+        
+        
+        The sinusoidal function can be represented as:
+
+        \[
+            T ∝  \frac{1} {f}\
+        \]
+        
+        '''
+    )
+    mo.callout(_note, kind="info")
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md(
+        r"""
+        The sinusoidal function can be represented as:
+
+        \[
+            s(t) = A sin(2πft).
+        \]
+        """
+    )
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
 def __(np):
     t = np.arange(0, 1, 0.001)
     f = int(input("Enter the Frequency : ")) # Enter it as 5
     x = 5 * np.sin(2 * np.pi * f * t)
     y = np.cos(2 * np.pi * f * t)
+
+    # Sine wave of frequency= 5 Hz and amplitude= 5V
     return f, t, x, y
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __(np, plt):
+    def plot_sine_wave(frequency, amplitude):
+        x = np.linspace(0, 2*np.pi, num=100)
+        plt.figure(figsize=(6.7, 2.5))
+        plt.plot(x, amplitude*np.sin(x*2*np.pi * frequency))
+        plt.xlabel('$x$')
+        plt.xlim(0, 2*np.pi)
+        plt.ylim(-2, 2)
+        plt.tight_layout()
+        plt.title("Sinusoidal Wave")
+        return plt.gca()
+    return plot_sine_wave,
+
+
+@app.cell
+def __(np, plt):
+    def plot_cosine_wave(frequency, amplitude):
+        x = np.linspace(0, 2*np.pi, num=100)
+        plt.figure(figsize=(6.7, 2.5))
+        plt.plot(x, amplitude*np.cos(x*2*np.pi * frequency))
+        plt.xlabel('$x$')
+        plt.xlim(0, 2*np.pi)
+        plt.ylim(-2, 2)
+        plt.tight_layout()
+        plt.title("Cosine Wave")
+        return plt.gca()
+    return plot_cosine_wave,
 
 
 @app.cell
