@@ -351,14 +351,31 @@ def __(img, m, n, np, plt, signal_x, slider):
 
 @app.cell
 def __(mo):
-    callout = mo.callout("Conclusion: \
-    As we see from the image shown above and in the cell where the difference between three types of images are shown (horizontal, vertical and diagonal, we see that the above image where we applied Averaging filter to the original image and then applied convolution seemed to detect the horizontal images better than the one in which Averaging filter wasn't applied.", kind='success')
-    return callout,
+    # callout = mo.callout("Conclusion: \
+    # As we see from the image shown above and in the cell where the difference between three types of images are shown (horizontal, vertical and diagonal, we see that the above image where we applied Averaging filter to the original image and then applied convolution seemed to detect the horizontal images better than the one in which Averaging filter wasn't applied.", kind='success')
+
+    text_input = mo.md(
+        r'''
+        ## Conclusion:
+        
+        After applying the Sobel operator with the averaging filter and comparing the results obtained in step a and b, the following observations can be made:
+
+        - The Sobel operator enhances the edges in the image by highlighting the changes in intensity.
+        
+        - The averaging filter blurs the image and reduces the noise.
+        
+        - When the Sobel operator is applied after the averaging filter, the edges appear smoother and less pronounced compared to applying the Sobel operator directly on the original image.
+        
+        - The combined gradient image, |g_x+g_y|, obtained from the Sobel operator shows the overall intensity changes in the image.
+        '''
+    )
+    mo.callout(text_input, kind="success")
+    return text_input,
 
 
 @app.cell
-def __(callout, mo):
-    mo.vstack([callout], align="stretch", gap=0)
+def __():
+    # mo.vstack([callout], align="stretch", gap=0)
     return
 
 
@@ -488,7 +505,7 @@ def __():
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def __(mo):
     mo.sidebar(
         [
