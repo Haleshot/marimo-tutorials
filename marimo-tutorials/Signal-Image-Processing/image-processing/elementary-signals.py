@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.6.16"
+__generated_with = "0.7.20"
 app = marimo.App()
 
 
@@ -272,20 +272,6 @@ def __(another_slider_options, mo, slider_options):
         }
     )
     return get_state, set_state
-
-
-app._unparsable_cell(
-    r"""
-    # Build a column of items
-    mo.vstack(
-        [
-            \"Slider\":mo.ui.slider(),
-            \"Text-Area\":mo.ui.text_area()
-        ]
-    )
-    """,
-    name="__"
-)
 
 
 @app.cell
