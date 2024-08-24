@@ -1,6 +1,6 @@
 # Data files, images
-*.csv
-*.pdf
+# *.csv
+# *.pdf
 
 # Ignore Python files that start with a '+'
 # This means that you can experiment with new code 

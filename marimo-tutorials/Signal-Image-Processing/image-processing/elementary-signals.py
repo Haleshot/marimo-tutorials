@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.6.16"
+__generated_with = "0.7.20"
 app = marimo.App()
 
 
@@ -156,9 +156,9 @@ def __(mo):
 
 
 @app.cell
-def __(mo):
-    frequency = mo.ui.slider(start=1, stop=10, value=5, label="Frequency")
-    amplitude = mo.ui.slider(start=1, stop=10, value=5, label="Amplitude")
+def __(mo, np):
+    frequency = mo.ui.slider(start=np.pi, stop=2 * np.pi, value=5, label="Frequency")
+    amplitude = mo.ui.slider(start=1, stop=2, step=0.1, value=1, label="Amplitude")
     time_period = mo.ui.slider(start=1, stop=10, step=1, value=5, label="Time period")
     return amplitude, frequency, time_period
 
@@ -191,22 +191,37 @@ def __(np):
     return t,
 
 
-@app.cell(hide_code=True)
+@app.cell
 def __(np, plt):
     def plot_sine_wave(frequency, amplitude):
-        t = np.arange(0, 1, 0.001)
-        # plt.figure(figsize=(6.7, 2.5))
-        plt.plot(t, amplitude * np.sin(t * 2 * np.pi * frequency))
+        x = np.linspace(0, 2 * np.pi, num=100)
+        plt.figure(figsize=(6.7, 2.5))
+        plt.plot(x, amplitude * np.sin(x * 2 * np.pi/frequency))
         plt.xlabel('$x$')
-        plt.xlim(0, 2*np.pi)
+        plt.xlim(0, 2 * np.pi)
         plt.ylim(-2, 2)
-        # plt.tight_layout()
+        plt.tight_layout()
         plt.title("Sinusoidal Wave")
         return plt.gca()
     return plot_sine_wave,
 
 
-@app.cell(hide_code=True)
+@app.cell
+def __(np, plt):
+    def plot_sine_wave_time_period(time_period, amplitude):
+        x = np.linspace(0, 2 * np.pi, num=100)
+        plt.figure(figsize=(6.7, 2.5))
+        plt.plot(x, amplitude * np.sin(x * 2 * np.pi/time_period * time_period))
+        plt.xlabel('$x$')
+        plt.xlim(0, 2 * np.pi)
+        plt.ylim(-2, 2)
+        plt.tight_layout()
+        plt.title("Sinusoidal Wave")
+        return plt.gca()
+    return plot_sine_wave_time_period,
+
+
+@app.cell
 def __(np, plt):
     def plot_cosine_wave(frequency, amplitude):
         x = np.linspace(0, 2*np.pi, num=100)
@@ -221,27 +236,78 @@ def __(np, plt):
     return plot_cosine_wave,
 
 
-@app.cell
-def __(choice):
-    [choice, choice.value]
+@app.cell(hide_code=True)
+def __():
+    # [choice, choice.value]
+    return
+
+
+@app.cell(hide_code=True)
+def __():
+    # mo.hstack(
+    #     [
+    #         # Show radios
+    #         (
+    #             mo.hstack(
+    #                 slider_options, 
+    #                 justify="space-around", 
+    #                 align="center"
+    #             )
+    #             if not choice.value == True
+    #             else mo.hstack(another_slider_options, justify="space-around")
+    #         )
+    #     ]
+    # )
     return
 
 
 @app.cell
-def __(another_slider_options, choice, mo, slider_options):
-    mo.hstack(
+def __(another_slider_options, mo, slider_options):
+    get_state, set_state = mo.state(0)
+
+    mo.ui.tabs(
+        {
+            "📈 Frequency": slider_options,
+            "📊 Time Period": another_slider_options
+        }
+    )
+    return get_state, set_state
+
+
+@app.cell
+def __(mo):
+    tab1 = mo.hstack(
         [
-            # Show radios
-            (
-                mo.hstack(
-                    slider_options, 
-                    justify="space-around", 
-                    align="center"
-                )
-                if not choice.value == True
-                else mo.hstack(another_slider_options, justify="space-around")
-            )
+        mo.ui.slider(start=1, stop=10),
+        mo.ui.text(),
+        mo.ui.date()
         ]
+    )
+
+    tab2 = mo.md("You can show arbitrary content in a tab.")
+
+    tabs = mo.ui.tabs({
+        "Heading 1": tab1,
+        "Heading 2": tab2
+    })
+    return tab1, tab2, tabs
+
+
+@app.cell
+def __(mo, tab1, tab2):
+    mo.ui.tabs(
+        {"Heading 1": tab1, "Heading 2": tab2}, lazy=False
+    )
+    return
+
+
+@app.cell
+def __(amplitude, frequency, mo):
+    mo.md(
+        f"""
+        Here's a plot of
+        $f(x) = {amplitude.value:.02f}\sin((2\pi/{frequency.value:.02f}) x)$:
+        """
     )
     return
 
@@ -249,11 +315,20 @@ def __(another_slider_options, choice, mo, slider_options):
 @app.cell
 def __(amplitude, frequency, plot_sine_wave):
     # # Plotting the Sine Curve
+    if frequency.value:
+        plot_sine_wave(frequency.value, amplitude.value)
+    # else:
+    #     plot_sine_wave_time_period(time_period.value, amplitude.value)
+    return
 
-    # plt.title("Sine Curve")
-    # plt.plot(t, x)
 
-    plot_sine_wave(frequency.value, amplitude.value)
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __():
     return
 
 
