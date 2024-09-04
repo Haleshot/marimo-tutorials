@@ -50,7 +50,7 @@ def __(mo):
         )
         .form(bordered=True, label="Custom Constants")
     )
-    return init_form,
+    return (init_form,)
 
 
 @app.cell(hide_code=True)
@@ -109,9 +109,7 @@ def __(init_form, mo):
         """
             ),
             init_form,
-            mo.md(
-                rf"> View your starting notebook below and make changes if needed:"
-            ),
+            mo.md(rf"> View your starting notebook below and make changes if needed:"),
         ]
     )
     return
@@ -187,7 +185,7 @@ def __(mo):
         .form(bordered=True, label="Custom Constants")
     )
     custom_form
-    return custom_form,
+    return (custom_form,)
 
 
 @app.cell
@@ -299,7 +297,7 @@ def __():
         > write source code below
         """
     )
-    return mo,
+    return (mo,)
 
 
 @app.cell
@@ -323,14 +321,10 @@ def __(mo):
 
 @app.cell
 def __(init_form):
-    NOTEBOOK_TITLE = (
-        init_form.value["title"] if init_form.value else "Notebook Title"
-    )
+    NOTEBOOK_TITLE = init_form.value["title"] if init_form.value else "Notebook Title"
     NOTEBOOK_PATH = init_form.value["path"] if init_form.value else ".."
     AUTHOR_NAME = (
-        init_form.value["author_name"]
-        if init_form.value
-        else "marimo-tutorials-team"
+        init_form.value["author_name"] if init_form.value else "marimo-tutorials-team"
     )
     AUTHOR_CONTACT = (
         init_form.value["author_contact"]
@@ -364,7 +358,7 @@ def __(NOTEBOOK_TITLE, mo):
             mo.nav_menu(sidebar_content, orientation="vertical"),
         ]
     )
-    return sidebar_content,
+    return (sidebar_content,)
 
 
 @app.cell

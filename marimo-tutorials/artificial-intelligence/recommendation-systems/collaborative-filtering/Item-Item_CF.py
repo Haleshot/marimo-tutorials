@@ -73,13 +73,17 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""This experiment uses the movielens dataset. This dataset contains actual user ratings of movies.""")
+    mo.md(
+        r"""This experiment uses the movielens dataset. This dataset contains actual user ratings of movies."""
+    )
     return
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""There are multiple datasets in the 100k movielens folder. For this experiment, we will use two ratings and movies.""")
+    mo.md(
+        r"""There are multiple datasets in the 100k movielens folder. For this experiment, we will use two ratings and movies."""
+    )
     return
 
 
@@ -88,10 +92,10 @@ def __(pd):
     # Read in data
 
     # Read in the ratings data
-    ratings_df = pd.read_csv('ratings.csv')
+    ratings_df = pd.read_csv("ratings.csv")
 
     # Read in the movies data
-    movies_df = pd.read_csv('movies.csv')
+    movies_df = pd.read_csv("movies.csv")
 
     # Take a look at the data
     print("Ratings Data:")
@@ -147,18 +151,20 @@ def __(movies_df, ratings_df):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""The 100k ratings are from 610 users on 9724 movies. The rating has ten unique values from 0.5 to 5.""")
+    mo.md(
+        r"""The 100k ratings are from 610 users on 9724 movies. The rating has ten unique values from 0.5 to 5."""
+    )
     return
 
 
 @app.cell
 def __(ratings_df):
     # Print Number of users
-    num_users = ratings_df['userId'].nunique()
+    num_users = ratings_df["userId"].nunique()
     print(f"\nNumber of users: {num_users}")
 
     # Print Number of movies
-    num_movies = ratings_df['movieId'].nunique()
+    num_movies = ratings_df["movieId"].nunique()
     print(f"Number of movies: {num_movies}")
 
     # Print Number of ratings
@@ -166,7 +172,7 @@ def __(ratings_df):
     print(f"Number of ratings: {num_ratings}")
 
     # Print List of unique ratings
-    unique_ratings = ratings_df['rating'].unique()
+    unique_ratings = ratings_df["rating"].unique()
     print(f"Unique ratings: {sorted(unique_ratings)}")
     return num_movies, num_ratings, num_users, unique_ratings
 
@@ -189,19 +195,23 @@ def __(movies_df):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""Using `movieID` as the matching key, we appended movie information to the rating dataset and named it 'df'. So now we have the movie tile and movie rating in the same dataset!""")
+    mo.md(
+        r"""Using `movieID` as the matching key, we appended movie information to the rating dataset and named it 'df'. So now we have the movie tile and movie rating in the same dataset!"""
+    )
     return
 
 
 @app.cell
 def __(movies_df, pd, ratings_df):
     # Merge ratings and movies datasets
-    df = pd.merge(ratings_df, movies_df, how='left', left_on='movieId', right_on='movieId')
+    df = pd.merge(
+        ratings_df, movies_df, how="left", left_on="movieId", right_on="movieId"
+    )
 
     # Take a look at the merged data
     print("\nMerged Data:")
     print(df.head())
-    return df,
+    return (df,)
 
 
 @app.cell(hide_code=True)
@@ -229,11 +239,14 @@ def __(mo):
 @app.cell
 def __(df):
     # Aggregate by movie
-    agg_ratings = df.groupby('title').agg(mean_rating = ('rating', 'mean'),number_of_ratings = ('rating', 'count')).reset_index()
-
+    agg_ratings = (
+        df.groupby("title")
+        .agg(mean_rating=("rating", "mean"), number_of_ratings=("rating", "count"))
+        .reset_index()
+    )
 
     # Keep the movies with over 100 ratings
-    agg_ratings_GT100 = agg_ratings[agg_ratings['number_of_ratings'] > 100]
+    agg_ratings_GT100 = agg_ratings[agg_ratings["number_of_ratings"] > 100]
     agg_ratings_GT100.info()
     return agg_ratings, agg_ratings_GT100
 
@@ -268,21 +281,23 @@ def __():
 def __(agg_ratings_GT100):
     # Check the most popular movies
     print("\nMost popular movies:")
-    print(agg_ratings_GT100.sort_values(by='number_of_ratings', ascending=False).head())
+    print(agg_ratings_GT100.sort_values(by="number_of_ratings", ascending=False).head())
     return
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""Use a `jointplot` to check the correlation between the average rating and the number of ratings.""")
+    mo.md(
+        r"""Use a `jointplot` to check the correlation between the average rating and the number of ratings."""
+    )
     return
 
 
 @app.cell
 def __(agg_ratings_GT100, plt, sns):
     # Visualization: Check the correlation between average rating and number of ratings
-    sns.jointplot(x='mean_rating', y='number_of_ratings', data=agg_ratings_GT100)
-    plt.suptitle('Correlation between Average Rating and Number of Ratings', y=1.02)
+    sns.jointplot(x="mean_rating", y="number_of_ratings", data=agg_ratings_GT100)
+    plt.suptitle("Correlation between Average Rating and Number of Ratings", y=1.02)
     plt.gca()
     return
 
@@ -303,8 +318,8 @@ def __(mo):
 def __(agg_ratings_GT100, df):
     # Merge data
     # Filter the original dataframe to keep only the movies with more than 100 ratings
-    df_filtered = df[df['title'].isin(agg_ratings_GT100['title'])]
-    return df_filtered,
+    df_filtered = df[df["title"].isin(agg_ratings_GT100["title"])]
+    return (df_filtered,)
 
 
 @app.cell
@@ -315,23 +330,25 @@ def __(df_filtered):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""After filtering the movies with over 100 ratings, we have 597 users that rated 134 movies.""")
+    mo.md(
+        r"""After filtering the movies with over 100 ratings, we have 597 users that rated 134 movies."""
+    )
     return
 
 
 @app.cell
 def __(df_filtered):
     # Number of users
-    num_users_filtered = df_filtered['userId'].nunique()
+    num_users_filtered = df_filtered["userId"].nunique()
 
     # Number of movies
-    num_movies_filtered = df_filtered['movieId'].nunique()
+    num_movies_filtered = df_filtered["movieId"].nunique()
 
     # Number of ratings
     num_ratings_filtered = len(df_filtered)
 
     # List of unique ratings
-    unique_ratings_filtered = df_filtered['rating'].unique()
+    unique_ratings_filtered = df_filtered["rating"].unique()
     return (
         num_movies_filtered,
         num_ratings_filtered,
@@ -351,7 +368,9 @@ def __(
     print(f"\nNumber of users in the filtered dataset: {num_users_filtered}")
     print(f"Number of movies in the filtered dataset: {num_movies_filtered}")
     print(f"Number of ratings in the filtered dataset: {num_ratings_filtered}")
-    print(f"List of unique ratings in the filtered dataset: {sorted(unique_ratings_filtered)}")
+    print(
+        f"List of unique ratings in the filtered dataset: {sorted(unique_ratings_filtered)}"
+    )
     return
 
 
@@ -363,7 +382,9 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""In step 4, we will transform the dataset into a matrix format. The rows of the matrix are users, and the columns of the matrix are movies. The value of the matrix is the user rating of the movie if there is a rating. Otherwise, it shows 'NaN'.""")
+    mo.md(
+        r"""In step 4, we will transform the dataset into a matrix format. The rows of the matrix are users, and the columns of the matrix are movies. The value of the matrix is the user rating of the movie if there is a rating. Otherwise, it shows 'NaN'."""
+    )
     return
 
 
@@ -371,12 +392,12 @@ def __(mo):
 def __(df_filtered):
     # Step 4: Create Item-Item Matrix
     # Create item-item matrix using the filtered dataset
-    matrix = df_filtered.pivot_table(index='title', columns='userId', values='rating')
+    matrix = df_filtered.pivot_table(index="title", columns="userId", values="rating")
 
     # Display the first few rows of the matrix
     print("User-Movie Matrix:")
     print(matrix.head())
-    return matrix,
+    return (matrix,)
 
 
 @app.cell(hide_code=True)
@@ -405,7 +426,7 @@ def __(matrix):
     item_avg_ratings = matrix.mean(axis=1)
 
     # Normalize item-item matrix
-    matrix_norm = matrix.subtract(item_avg_ratings, axis='rows')
+    matrix_norm = matrix.subtract(item_avg_ratings, axis="rows")
 
     # Display the first few rows of the normalized matrix
     print("Normalized Item-Item Matrix:")
@@ -475,7 +496,9 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""Those who are interested in using cosine similarity can refer to this code. Since `cosine_similarity` does not take missing values, we need to impute the missing values with 0s before the calculation.""")
+    mo.md(
+        r"""Those who are interested in using cosine similarity can refer to this code. Since `cosine_similarity` does not take missing values, we need to impute the missing values with 0s before the calculation."""
+    )
     return
 
 
@@ -491,7 +514,11 @@ def __(cosine_similarity, matrix, pd):
     matrix_filled = matrix.fillna(0)
 
     # Calculate cosine similarity
-    item_similarity_cosine = pd.DataFrame(cosine_similarity(matrix_filled), index=matrix_filled.index, columns=matrix_filled.index)
+    item_similarity_cosine = pd.DataFrame(
+        cosine_similarity(matrix_filled),
+        index=matrix_filled.index,
+        columns=matrix_filled.index,
+    )
 
     # Display the first few rows of the cosine similarity matrix
     print("User Similarity Matrix (Cosine Similarity):")
@@ -505,14 +532,18 @@ def __(matrix_norm, pd):
     picked_userid = 66
 
     # Pick a movie
-    picked_movie = 'American Pie (1999)'
+    picked_movie = "American Pie (1999)"
 
     # Movies that the target user has watched
-    picked_userid_watched = pd.DataFrame(matrix_norm[picked_userid].dropna(axis=0, how='all')\
-                              .sort_values(ascending=False))\
-                              .reset_index()\
-                              .rename(columns={1:'rating'})
-
+    picked_userid_watched = (
+        pd.DataFrame(
+            matrix_norm[picked_userid]
+            .dropna(axis=0, how="all")
+            .sort_values(ascending=False)
+        )
+        .reset_index()
+        .rename(columns={1: "rating"})
+    )
 
     picked_userid_watched.head()
     return picked_movie, picked_userid, picked_userid_watched
@@ -520,7 +551,9 @@ def __(matrix_norm, pd):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""We can see that user 66's favorite movie is Four weedings and a Funeral (1994), followed by Austin Powers : The Spy Who Shagged Me (1999)""")
+    mo.md(
+        r"""We can see that user 66's favorite movie is Four weedings and a Funeral (1994), followed by Austin Powers : The Spy Who Shagged Me (1999)"""
+    )
     return
 
 
@@ -556,17 +589,21 @@ def __(item_similarity_cosine, pd, picked_movie, picked_userid_watched):
     # print(f'Top {n} similar users for user {picked_userid} using Cosine similarity:')
     # print(similar_users_cosine)
 
-
     # Similarity score of the movie American Pie with all the other movies
-    picked_movie_similarity_score = item_similarity_cosine[[picked_movie]].reset_index().rename(columns={'American Pie (1999)':'similarity_score'})
+    picked_movie_similarity_score = (
+        item_similarity_cosine[[picked_movie]]
+        .reset_index()
+        .rename(columns={"American Pie (1999)": "similarity_score"})
+    )
 
     # Rank the similarities between the movies user 1 rated and American Pie.
     n = 5
-    picked_userid_watched_similarity = pd.merge(left=picked_userid_watched,
-                                                right=picked_movie_similarity_score,
-                                                on='title',
-                                                how='inner')\
-                                         .sort_values('similarity_score', ascending=False)[:5]
+    picked_userid_watched_similarity = pd.merge(
+        left=picked_userid_watched,
+        right=picked_movie_similarity_score,
+        on="title",
+        how="inner",
+    ).sort_values("similarity_score", ascending=False)[:5]
 
     # Take a look at the User 1 watched movies with highest similarity
     picked_userid_watched_similarity
@@ -594,11 +631,18 @@ def __():
 @app.cell
 def __(np, picked_movie, picked_userid, picked_userid_watched_similarity):
     # Calculate the predicted rating using weighted average of similarity scores and the ratings from user 66
-    predicted_rating = round(np.average(picked_userid_watched_similarity[66],
-                                        weights=picked_userid_watched_similarity['similarity_score']), 6)
+    predicted_rating = round(
+        np.average(
+            picked_userid_watched_similarity[66],
+            weights=picked_userid_watched_similarity["similarity_score"],
+        ),
+        6,
+    )
 
-    print(f'The predicted rating for {picked_movie} by user {picked_userid} is {predicted_rating}' )
-    return predicted_rating,
+    print(
+        f"The predicted rating for {picked_movie} by user {picked_userid} is {predicted_rating}"
+    )
+    return (predicted_rating,)
 
 
 @app.cell(hide_code=True)
@@ -668,43 +712,68 @@ def __(item_similarity_cosine, matrix_norm, np, pd):
     # recommended_movie = item_based_rec(picked_userid=1, number_of_similar_items=5, number_of_recommendations=3)
     # recommended_movie
 
-
     # Item-based recommendation function
-    def item_based_rec(picked_userid=66, number_of_similar_items=5, number_of_recommendations =3):
-      import operator
-      # Movies that the target user has not watched
-      picked_userid_unwatched = pd.DataFrame(matrix_norm[picked_userid].isna()).reset_index()
-      picked_userid_unwatched = picked_userid_unwatched[picked_userid_unwatched[66]==True]['title'].values.tolist()
+    def item_based_rec(
+        picked_userid=66, number_of_similar_items=5, number_of_recommendations=3
+    ):
+        import operator
 
-      # Movies that the target user has watched
-      picked_userid_watched = pd.DataFrame(matrix_norm[picked_userid].dropna(axis=0, how='all')\
-                                .sort_values(ascending=False))\
-                                .reset_index()\
-                                .rename(columns={66:'rating'})
+        # Movies that the target user has not watched
+        picked_userid_unwatched = pd.DataFrame(
+            matrix_norm[picked_userid].isna()
+        ).reset_index()
+        picked_userid_unwatched = picked_userid_unwatched[
+            picked_userid_unwatched[66] == True
+        ]["title"].values.tolist()
 
-      # Dictionary to save the unwatched movie and predicted rating pair
-      rating_prediction ={}
+        # Movies that the target user has watched
+        picked_userid_watched = (
+            pd.DataFrame(
+                matrix_norm[picked_userid]
+                .dropna(axis=0, how="all")
+                .sort_values(ascending=False)
+            )
+            .reset_index()
+            .rename(columns={66: "rating"})
+        )
 
-      # Loop through unwatched movies
-      for picked_movie in picked_userid_unwatched:
-        # Calculate the similarity score of the picked movie iwth other movies
-        picked_movie_similarity_score = item_similarity_cosine[[picked_movie]].reset_index().rename(columns={picked_movie:'similarity_score'})
-        # Rank the similarities between the picked user watched movie and the picked unwatched movie.
-        picked_userid_watched_similarity = pd.merge(left=picked_userid_watched,
-                                                    right=picked_movie_similarity_score,
-                                                    on='title',
-                                                    how='inner')\
-                                            .sort_values('similarity_score', ascending=False)[:number_of_similar_items]
-        # Calculate the predicted rating using weighted average of similarity scores and the ratings from user 1
-        predicted_rating = round(np.average(picked_userid_watched_similarity['rating'],
-                                            weights=picked_userid_watched_similarity['similarity_score']), 6)
-        # Save the predicted rating in the dictionary
-        rating_prediction[picked_movie] = predicted_rating
-        # Return the top recommended movies
-      return sorted(rating_prediction.items(), key=operator.itemgetter(1), reverse=True)[:number_of_recommendations]
+        # Dictionary to save the unwatched movie and predicted rating pair
+        rating_prediction = {}
+
+        # Loop through unwatched movies
+        for picked_movie in picked_userid_unwatched:
+            # Calculate the similarity score of the picked movie iwth other movies
+            picked_movie_similarity_score = (
+                item_similarity_cosine[[picked_movie]]
+                .reset_index()
+                .rename(columns={picked_movie: "similarity_score"})
+            )
+            # Rank the similarities between the picked user watched movie and the picked unwatched movie.
+            picked_userid_watched_similarity = pd.merge(
+                left=picked_userid_watched,
+                right=picked_movie_similarity_score,
+                on="title",
+                how="inner",
+            ).sort_values("similarity_score", ascending=False)[:number_of_similar_items]
+            # Calculate the predicted rating using weighted average of similarity scores and the ratings from user 1
+            predicted_rating = round(
+                np.average(
+                    picked_userid_watched_similarity["rating"],
+                    weights=picked_userid_watched_similarity["similarity_score"],
+                ),
+                6,
+            )
+            # Save the predicted rating in the dictionary
+            rating_prediction[picked_movie] = predicted_rating
+            # Return the top recommended movies
+        return sorted(
+            rating_prediction.items(), key=operator.itemgetter(1), reverse=True
+        )[:number_of_recommendations]
 
     # Get recommendations
-    recommended_movie = item_based_rec(picked_userid=66, number_of_similar_items=5, number_of_recommendations =3)
+    recommended_movie = item_based_rec(
+        picked_userid=66, number_of_similar_items=5, number_of_recommendations=3
+    )
     recommended_movie
     return item_based_rec, recommended_movie
 
@@ -810,23 +879,68 @@ def __(mo):
 def __():
     # List of 20 movies
     movies = [
-        "Titanic", "Gladiator", "Avatar", "Jurassic Park", "Star Wars", "The Lion King", "Harry Potter", "Toy Story", "Finding Nemo", "Inception", "The Matrix", "Interstellar", "The Dark Knight", "Pulp Fiction", "Fight Club", "Forrest Gump", "The Shawshank Redemption", "The Godfather", "The Lord of the Rings", "The Avengers", "Tintin and the Secret of the Unicorn", "Big Hero 6", "Mr. Bean's Holiday"
+        "Titanic",
+        "Gladiator",
+        "Avatar",
+        "Jurassic Park",
+        "Star Wars",
+        "The Lion King",
+        "Harry Potter",
+        "Toy Story",
+        "Finding Nemo",
+        "Inception",
+        "The Matrix",
+        "Interstellar",
+        "The Dark Knight",
+        "Pulp Fiction",
+        "Fight Club",
+        "Forrest Gump",
+        "The Shawshank Redemption",
+        "The Godfather",
+        "The Lord of the Rings",
+        "The Avengers",
+        "Tintin and the Secret of the Unicorn",
+        "Big Hero 6",
+        "Mr. Bean's Holiday",
     ]
-    return movies,
+    return (movies,)
 
 
 @app.cell
 def __():
     # List of 22 users
     users = [
-        "User1", "User2", "User3", "User4", "User5", "User6", "User7", "User8", "User9", "User10", "User11", "User12", "User13", "User14", "User15", "User16", "User17", "User18", "User19", "User20", "User21", "User22"
+        "User1",
+        "User2",
+        "User3",
+        "User4",
+        "User5",
+        "User6",
+        "User7",
+        "User8",
+        "User9",
+        "User10",
+        "User11",
+        "User12",
+        "User13",
+        "User14",
+        "User15",
+        "User16",
+        "User17",
+        "User18",
+        "User19",
+        "User20",
+        "User21",
+        "User22",
     ]
-    return users,
+    return (users,)
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""(a) Create a sample dictionary of users with web series and their ratings (minimum 15 users).""")
+    mo.md(
+        r"""(a) Create a sample dictionary of users with web series and their ratings (minimum 15 users)."""
+    )
     return
 
 
@@ -860,7 +974,7 @@ def __(user_ratings):
         print("Unique Web Series:", unique_series)
 
     print_unique_web_series(user_ratings)
-    return print_unique_web_series,
+    return (print_unique_web_series,)
 
 
 @app.cell
@@ -877,7 +991,9 @@ def __(sqrt, user_ratings):
 
         # Calculate cosine similarity
         numerator = sum([a * b for a, b in zip(ratings_item1, ratings_item2)])
-        denominator = sqrt(sum([a**2 for a in ratings_item1])) * sqrt(sum([b**2 for b in ratings_item2]))
+        denominator = sqrt(sum([a**2 for a in ratings_item1])) * sqrt(
+            sum([b**2 for b in ratings_item2])
+        )
 
         if denominator == 0:
             return 0
@@ -885,9 +1001,11 @@ def __(sqrt, user_ratings):
             return numerator / denominator
 
     # Example of calculating cosine similarity between two web series
-    print("Cosine Similarity between 'Stranger Things' and 'Breaking Bad':",
-          cosine_similarity_custom("Stranger Things", "Breaking Bad", user_ratings))
-    return cosine_similarity_custom,
+    print(
+        "Cosine Similarity between 'Stranger Things' and 'Breaking Bad':",
+        cosine_similarity_custom("Stranger Things", "Breaking Bad", user_ratings),
+    )
+    return (cosine_similarity_custom,)
 
 
 @app.cell(hide_code=True)
@@ -908,17 +1026,22 @@ def __():
         for ratings in user_ratings.values():
             unique_series.update(ratings.keys())
         return unique_series
-    return get_unique_web_series,
+
+    return (get_unique_web_series,)
 
 
 @app.cell
 def __(cosine_similarity_custom, get_unique_web_series, user_ratings):
     def find_item_similarities(target_item, user_ratings):
         similarities = {}
-        unique_series = get_unique_web_series(user_ratings)  # Use the updated function to get the unique series
+        unique_series = get_unique_web_series(
+            user_ratings
+        )  # Use the updated function to get the unique series
         for series in unique_series:
             if series != target_item:
-                similarities[series] = cosine_similarity_custom(target_item, series, user_ratings)
+                similarities[series] = cosine_similarity_custom(
+                    target_item, series, user_ratings
+                )
         return similarities
 
     # Example of finding similarities for "Stranger Things"
@@ -970,7 +1093,7 @@ def __(recommend_web_series, user_ratings):
     # Example of recommendations for user 12
     recommendations_for_user12 = recommend_web_series("User12", user_ratings)
     print("Recommendations for user12:", recommendations_for_user12)
-    return recommendations_for_user12,
+    return (recommendations_for_user12,)
 
 
 @app.cell
@@ -1002,7 +1125,9 @@ def __(recommend_web_series, seen_and_unseen_series, user_ratings):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""The task utilizes item-based CF to recommend web series to a user from similarities between items they've watched and other web series. For user_12 & 7, the recommended web series include "Finding Nemo" and "Interstellar" with high predicted ratings. The recommendations are derived from comparing the user’s preferences for similar items, providing personalized content based on their viewing history.""")
+    mo.md(
+        r"""The task utilizes item-based CF to recommend web series to a user from similarities between items they've watched and other web series. For user_12 & 7, the recommended web series include "Finding Nemo" and "Interstellar" with high predicted ratings. The recommendations are derived from comparing the user’s preferences for similar items, providing personalized content based on their viewing history."""
+    )
     return
 
 
@@ -1018,6 +1143,7 @@ def __():
     from math import sqrt
 
     import marimo as mo
+
     return cosine_similarity, mo, np, pd, pearsonr, plt, random, sns, sqrt
 
 

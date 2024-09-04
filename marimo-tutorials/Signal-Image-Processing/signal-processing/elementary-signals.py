@@ -37,9 +37,9 @@ def __():
 
 @app.cell
 def __(array2, mo, np):
-    choice = mo.ui.checkbox(label='Time period instead of frequency', onchange=array2)
-    frequency = mo.ui.slider(start=np.pi, stop=2*np.pi, label="Frequency")
-    time_period = mo.ui.slider(start=np.pi, stop=2*np.pi, label="Time period")
+    choice = mo.ui.checkbox(label="Time period instead of frequency", onchange=array2)
+    frequency = mo.ui.slider(start=np.pi, stop=2 * np.pi, label="Frequency")
+    time_period = mo.ui.slider(start=np.pi, stop=2 * np.pi, label="Time period")
     amplitude = mo.ui.slider(start=1, stop=2, step=0.1, label="Amplitude")
     array = mo.ui.array([choice, frequency, amplitude])
     array2 = mo.ui.array([choice, time_period, amplitude])
@@ -56,16 +56,17 @@ def __():
 
     # mo.hstack([_array], justify="space-between")
 
-
-
-
     # mo.hstack([_array], justify="space-between")
     return
 
 
 @app.cell
 def __(array, array2, choice, mo):
-    mo.hstack([array2, array2.value], justify="space-between") if choice.value else mo.hstack([array, array.value], justify="space-between")
+    (
+        mo.hstack([array2, array2.value], justify="space-between")
+        if choice.value
+        else mo.hstack([array, array.value], justify="space-between")
+    )
     return
 
 
@@ -81,6 +82,7 @@ def __():
     import marimo as mo
     import numpy as np
     import matplotlib.pyplot as plt
+
     return mo, np, plt
 
 

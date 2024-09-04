@@ -141,7 +141,7 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     _note = mo.md(
-        r'''
+        r"""
 
         Relation between Time period (s) and Frequency (Hz):
 
@@ -149,7 +149,7 @@ def __(mo):
             T ∝  \frac{1} {f}\
         \]
 
-        '''
+        """
     )
     mo.callout(_note, kind="info")
     return
@@ -165,18 +165,9 @@ def __(mo, np):
 
 @app.cell
 def __(amplitude, frequency, mo, time_period):
-    choice = mo.ui.switch(
-        value=False,
-        label="Use Time Period instead"
-    )
-    slider_options = [
-        frequency,
-        amplitude
-    ]
-    another_slider_options = [
-        time_period,
-        amplitude
-    ]
+    choice = mo.ui.switch(value=False, label="Use Time Period instead")
+    slider_options = [frequency, amplitude]
+    another_slider_options = [time_period, amplitude]
     return another_slider_options, choice, slider_options
 
 
@@ -188,7 +179,7 @@ def __(np):
     # y = np.cos(2 * np.pi * f * t)
 
     # Sine wave of frequency= 5 Hz and amplitude= 5V (default placeholder values)
-    return t,
+    return (t,)
 
 
 @app.cell
@@ -196,14 +187,15 @@ def __(np, plt):
     def plot_sine_wave(frequency, amplitude):
         x = np.linspace(0, 2 * np.pi, num=100)
         plt.figure(figsize=(6.7, 2.5))
-        plt.plot(x, amplitude * np.sin(x * 2 * np.pi/frequency))
-        plt.xlabel('$x$')
+        plt.plot(x, amplitude * np.sin(x * 2 * np.pi / frequency))
+        plt.xlabel("$x$")
         plt.xlim(0, 2 * np.pi)
         plt.ylim(-2, 2)
         plt.tight_layout()
         plt.title("Sinusoidal Wave")
         return plt.gca()
-    return plot_sine_wave,
+
+    return (plot_sine_wave,)
 
 
 @app.cell
@@ -211,29 +203,31 @@ def __(np, plt):
     def plot_sine_wave_time_period(time_period, amplitude):
         x = np.linspace(0, 2 * np.pi, num=100)
         plt.figure(figsize=(6.7, 2.5))
-        plt.plot(x, amplitude * np.sin(x * 2 * np.pi/time_period * time_period))
-        plt.xlabel('$x$')
+        plt.plot(x, amplitude * np.sin(x * 2 * np.pi / time_period * time_period))
+        plt.xlabel("$x$")
         plt.xlim(0, 2 * np.pi)
         plt.ylim(-2, 2)
         plt.tight_layout()
         plt.title("Sinusoidal Wave")
         return plt.gca()
-    return plot_sine_wave_time_period,
+
+    return (plot_sine_wave_time_period,)
 
 
 @app.cell
 def __(np, plt):
     def plot_cosine_wave(frequency, amplitude):
-        x = np.linspace(0, 2*np.pi, num=100)
+        x = np.linspace(0, 2 * np.pi, num=100)
         # plt.figure(figsize=(6.7, 2.5))
-        plt.plot(x, amplitude*np.cos(x*2*np.pi * frequency))
-        plt.xlabel('$x$')
-        plt.xlim(0, 2*np.pi)
+        plt.plot(x, amplitude * np.cos(x * 2 * np.pi * frequency))
+        plt.xlabel("$x$")
+        plt.xlim(0, 2 * np.pi)
         plt.ylim(-2, 2)
         # plt.tight_layout()
         plt.title("Cosine Wave")
         return plt.gca()
-    return plot_cosine_wave,
+
+    return (plot_cosine_wave,)
 
 
 @app.cell(hide_code=True)
@@ -249,8 +243,8 @@ def __():
     #         # Show radios
     #         (
     #             mo.hstack(
-    #                 slider_options, 
-    #                 justify="space-around", 
+    #                 slider_options,
+    #                 justify="space-around",
     #                 align="center"
     #             )
     #             if not choice.value == True
@@ -266,38 +260,24 @@ def __(another_slider_options, mo, slider_options):
     get_state, set_state = mo.state(0)
 
     mo.ui.tabs(
-        {
-            "📈 Frequency": slider_options,
-            "📊 Time Period": another_slider_options
-        }
+        {"📈 Frequency": slider_options, "📊 Time Period": another_slider_options}
     )
     return get_state, set_state
 
 
 @app.cell
 def __(mo):
-    tab1 = mo.hstack(
-        [
-        mo.ui.slider(start=1, stop=10),
-        mo.ui.text(),
-        mo.ui.date()
-        ]
-    )
+    tab1 = mo.hstack([mo.ui.slider(start=1, stop=10), mo.ui.text(), mo.ui.date()])
 
     tab2 = mo.md("You can show arbitrary content in a tab.")
 
-    tabs = mo.ui.tabs({
-        "Heading 1": tab1,
-        "Heading 2": tab2
-    })
+    tabs = mo.ui.tabs({"Heading 1": tab1, "Heading 2": tab2})
     return tab1, tab2, tabs
 
 
 @app.cell
 def __(mo, tab1, tab2):
-    mo.ui.tabs(
-        {"Heading 1": tab1, "Heading 2": tab2}, lazy=False
-    )
+    mo.ui.tabs({"Heading 1": tab1, "Heading 2": tab2}, lazy=False)
     return
 
 
@@ -369,10 +349,10 @@ def __(np, plt):
     _t = np.arange(0, 11)
     u = []
     for i in _t:
-      if i <= 5:
-        u.append(1)
-      elif i > 5:
-        u.append(0)
+        if i <= 5:
+            u.append(1)
+        elif i > 5:
+            u.append(0)
     print(_t)
     print(u)
 
@@ -393,9 +373,9 @@ def __(np, plt):
     _t = np.arange(0, 11)
     _u = []
     for _i in _t:
-      if _i >= 0:
-        r = _t
-        _u.append(_i)
+        if _i >= 0:
+            r = _t
+            _u.append(_i)
     print(_t)
     print(_u)
 
@@ -404,7 +384,7 @@ def __(np, plt):
 
     plt.subplot(2, 2, 2)
     plt.stem(r, _t)
-    return r,
+    return (r,)
 
 
 @app.cell
@@ -458,10 +438,10 @@ def __(np, plt):
     case4 = 0.5
 
     # Discrete Time Sginal for x(n) = a^n
-    x1 = case1 ** n
-    x2 = case2 ** n
-    x3 = case3 ** n
-    x4 = case4 ** n
+    x1 = case1**n
+    x2 = case2**n
+    x3 = case3**n
+    x4 = case4**n
 
     plt.subplot(2, 2, 1)
     plt.stem(n, x1)
@@ -493,10 +473,10 @@ def __(np, plt):
     _case4 = 0.5
 
     # Discrete Time Sginal for x(n) = a^n
-    _x1 = _case1 ** _n
-    _x2 = _case2 ** _n
-    _x3 = _case3 ** _n
-    _x4 = _case4 ** _n
+    _x1 = _case1**_n
+    _x2 = _case2**_n
+    _x3 = _case3**_n
+    _x4 = _case4**_n
 
     plt.subplot(2, 2, 1)
     plt.plot(_n, _x1)
@@ -529,9 +509,8 @@ def __(n, np, plt):
     _n = np.arange(0, 5)
 
     for _i in n:
-      _x = _n + 1
-      _y = - _n + 2
-
+        _x = _n + 1
+        _y = -_n + 2
 
     plt.subplot(1, 2, 1)
     plt.stem(_x, _n)
@@ -561,8 +540,8 @@ def __(np, plt):
     _y = []
 
     for _i in range(len(_x)):
-      if _i % 2 == 0:
-        _y.append(_i)
+        if _i % 2 == 0:
+            _y.append(_i)
 
     plt.stem(_y, _n)
     return
@@ -588,8 +567,8 @@ def __(np, plt):
     _y = []
 
     for _i in _x:
-      _a = 2 * _i
-      _y.append(_a)
+        _a = 2 * _i
+        _y.append(_a)
 
     plt.stem(_y, _n)
     return
@@ -615,8 +594,8 @@ def __(np, plt):
     _z = []
 
     for _i in range(4):
-      _a = _x[_i] - _y[_i]
-      _z.append(_a)
+        _a = _x[_i] - _y[_i]
+        _z.append(_a)
     plt.stem(_n, _z)
     return
 
@@ -640,8 +619,8 @@ def __(np, plt):
     _z = []
 
     for _i in range(4):
-      _a = _x[_i] * _y[_i]
-      _z.append(_a)
+        _a = _x[_i] * _y[_i]
+        _z.append(_a)
     plt.stem(_n, _z)
     return
 
@@ -649,7 +628,7 @@ def __(np, plt):
 @app.cell(hide_code=True)
 def __(mo):
     text_input = mo.md(
-        r'''
+        r"""
 
         ## Conclusion:
 
@@ -660,10 +639,10 @@ def __(mo):
         - Perform simple operations on the signals.
 
         - Understanding Continuos and Discrete depiction of signals.
-        '''
+        """
     )
     mo.callout(text_input, kind="success")
-    return text_input,
+    return (text_input,)
 
 
 @app.cell(hide_code=True)
@@ -672,6 +651,7 @@ def __():
     import marimo as mo
     import numpy as np
     import matplotlib.pyplot as plt
+
     return mo, np, plt
 
 
@@ -696,15 +676,14 @@ def __(mo):
                     },
                     "#instructions": "Instructions",
                     "#examples": "Examples",
-
                     "Implementation": {
                         "#defining-masks-as-discussed-in-theory-above": "Defining Masks",
                         "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
                         "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
                         "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
-                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
-                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
-                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above": "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above": "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user": "Try it out!",
                     },
                     "#observations": "Observations",
                     "#references": "References",

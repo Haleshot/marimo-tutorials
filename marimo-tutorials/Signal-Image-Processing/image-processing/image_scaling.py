@@ -52,7 +52,7 @@ def __(mo):
         .form(bordered=True, label="Custom Constants")
     )
     form
-    return form,
+    return (form,)
 
 
 @app.cell(hide_code=True)
@@ -270,7 +270,7 @@ def __(mo):
 def __(np):
     signal_func = lambda x: np.sin(1 / (abs(x) + 0.0001))
     signal_func = None  # replace `None` with a function, e.g. the func above
-    return signal_func,
+    return (signal_func,)
 
 
 @app.cell
@@ -405,7 +405,6 @@ def __(np):
 
         return _func
 
-
     custom_func = kernel_func(1)
     return custom_func, kernel_func
 
@@ -533,9 +532,7 @@ def __(mo):
 def __(mo, plot_interpolations, sample_freq, sgn, sinc_a, sinc_a_slider):
     mo.vstack(
         [
-            mo.hstack(
-                [sample_freq, sinc_a_slider], align="center", justify="center"
-            ),
+            mo.hstack([sample_freq, sinc_a_slider], align="center", justify="center"),
             plot_interpolations(
                 sgn,
                 [-2, 2],
@@ -708,7 +705,7 @@ def __(downscaled_dim, exp_result, lena, mo, resizing_dim, show_images):
         {exp_result}
         """
     )
-    return custom_downscaled,
+    return (custom_downscaled,)
 
 
 @app.cell(hide_code=True)
@@ -761,7 +758,7 @@ def __(np, signal_func):
         if signal_func is None
         else signal_func  ## if custom signal func is given
     )
-    return f,
+    return (f,)
 
 
 @app.cell
@@ -789,7 +786,8 @@ def __(NDArray, np):
                 lambda x: 0,
             ],
         )  # Add default case for x outside range
-    return triangle,
+
+    return (triangle,)
 
 
 @app.cell
@@ -829,7 +827,8 @@ def __(NDArray, np):
             )
 
         return _cubic
-    return cubic,
+
+    return (cubic,)
 
 
 @app.cell
@@ -854,7 +853,8 @@ def __(NDArray, np):
                 lambda x: 1,
             ],
         )
-    return sinc,
+
+    return (sinc,)
 
 
 @app.cell
@@ -890,7 +890,8 @@ def __(NDArray, np):
             )
 
         return _sinc
-    return sinc_a,
+
+    return (sinc_a,)
 
 
 @app.cell
@@ -929,7 +930,8 @@ def __(NDArray, np):
             )
 
         return _sinc
-    return lanczos,
+
+    return (lanczos,)
 
 
 @app.cell
@@ -952,14 +954,13 @@ def __(NDArray, np):
         x = np.linspace(*x_range, int(frequency * (x_range[1] - x_range[0])) + 1)
         y = f(x)
         return np.stack([x, y], axis=1)
-    return generate_samples,
+
+    return (generate_samples,)
 
 
 @app.cell
 def __(NDArray, np):
-    def interpolate_with_convolution(
-        data: NDArray, g: callable, xi: int, ts: NDArray
-    ):
+    def interpolate_with_convolution(data: NDArray, g: callable, xi: int, ts: NDArray):
         """
         Performs interpolation of a discrete signal using convolution with an interpolation function.
 
@@ -985,7 +986,8 @@ def __(NDArray, np):
 
         # Extract interpolated values for the desired time points
         return [np.sum(g_callable(xi * (-k + t)) * f_k) for t in ts]
-    return interpolate_with_convolution,
+
+    return (interpolate_with_convolution,)
 
 
 @app.cell
@@ -1036,10 +1038,9 @@ def __(
             for i, func in enumerate(interpolation_funcs)
         ]
         # Create the visualization using the provided function
-        return visualize_function_with_samples(
-            f, samples, interpolated_values, names
-        )
-    return plot_interpolations,
+        return visualize_function_with_samples(f, samples, interpolated_values, names)
+
+    return (plot_interpolations,)
 
 
 @app.cell
@@ -1068,7 +1069,8 @@ def __(Figure, generate_linspace_with_swing, go):
             )  # Ensure name conversion
 
         return fig
-    return visualize_kernels,
+
+    return (visualize_kernels,)
 
 
 @app.cell
@@ -1096,7 +1098,8 @@ def __(NDArray, np):
         num_elements = int((adjusted_high - adjusted_low) * 100)
 
         return np.linspace(adjusted_low, adjusted_high, num_elements)
-    return generate_linspace_with_swing,
+
+    return (generate_linspace_with_swing,)
 
 
 @app.cell
@@ -1155,13 +1158,12 @@ def __(Figure, NDArray, generate_linspace_with_swing, go, np):
         if additional_traces and names:
             for trace, name in zip(additional_traces, names):
                 fig.add_trace(
-                    go.Scatter(
-                        x=trace[:, 0], y=trace[:, 1], mode="lines", name=name
-                    )
+                    go.Scatter(x=trace[:, 0], y=trace[:, 1], mode="lines", name=name)
                 )
 
         return fig
-    return visualize_function_with_samples,
+
+    return (visualize_function_with_samples,)
 
 
 @app.cell
@@ -1206,7 +1208,8 @@ def __(Image, np):
 
         # Convert the output back to a PIL Image for consistency
         return Image.fromarray(output_image.astype(np.uint8))
-    return nearest_neighbor_interpolation,
+
+    return (nearest_neighbor_interpolation,)
 
 
 @app.cell
@@ -1256,7 +1259,8 @@ def __(Image, np):
 
         # Convert the output back to a PIL Image for consistency
         return Image.fromarray(output_image.astype(np.uint8))
-    return bilinear_interpolation,
+
+    return (bilinear_interpolation,)
 
 
 @app.cell
@@ -1278,7 +1282,8 @@ def __(Image, mo, plt):
                 for image, title in zip(images, titles)
             ]
         )
-    return show_images,
+
+    return (show_images,)
 
 
 @app.cell
@@ -1293,13 +1298,12 @@ def __(Image, mo, np, show_images):
         """
         return mo.vstack(
             [
-                show_images(
-                    images[2 * i : 2 * (i + 1)], titles[2 * i : 2 * (i + 1)]
-                )
+                show_images(images[2 * i : 2 * (i + 1)], titles[2 * i : 2 * (i + 1)])
                 for i in range(int(np.ceil(len(images) // 2)))
             ]
         )
-    return show_rows_of_images,
+
+    return (show_rows_of_images,)
 
 
 @app.cell
@@ -1316,7 +1320,7 @@ def __(mo):
         show_value=True,
         label="Custom downscaled dimension of the original image: ",
     )
-    return downscaled_dim,
+    return (downscaled_dim,)
 
 
 @app.cell
@@ -1326,7 +1330,7 @@ def __(mo):
         show_value=True,
         label="Custom resized dimension of the original image: ",
     )
-    return resizing_dim,
+    return (resizing_dim,)
 
 
 @app.cell
@@ -1345,7 +1349,7 @@ def __(Image, lena_downscaled, resizing_dim, show_rows_of_images):
             f"Lena Lánczos-Interpolated {resizing_dim.value[0]}*{resizing_dim.value[1]}",
         ],
     )
-    return exp_result,
+    return (exp_result,)
 
 
 @app.cell
@@ -1369,7 +1373,7 @@ def __(Image, lena_downscaled, show_images):
         ],
         ["Lena 64*64", "Lena Lanczos-Interpolated 512*512"],
     )
-    return lanczos_result,
+    return (lanczos_result,)
 
 
 @app.cell
@@ -1381,7 +1385,7 @@ def __(Image, lena_downscaled, show_images):
         ],
         ["Lena 64*64", "Lena Bicubic-Interpolated 512*512"],
     )
-    return bicubic_result,
+    return (bicubic_result,)
 
 
 @app.cell
@@ -1393,7 +1397,7 @@ def __(bilinear_interpolation, lena_downscaled, show_images):
         ],
         ["Lena 64*64", "Lena Bilinear-Interpolated 512*512"],
     )
-    return bilinear_result,
+    return (bilinear_result,)
 
 
 @app.cell
@@ -1405,13 +1409,13 @@ def __(lena_downscaled, nearest_neighbor_interpolation, show_images):
         ],
         ["Lena 64*64", "Lena NN-Interpolated 512*512"],
     )
-    return nn_result,
+    return (nn_result,)
 
 
 @app.cell
 def __(np):
     sgn = lambda x: np.sign(x)
-    return sgn,
+    return (sgn,)
 
 
 @app.cell
@@ -1452,6 +1456,7 @@ def __():
     import numpy as np
     from numpy.typing import NDArray
     import plotly.graph_objects as go
+
     return Image, NDArray, go, mo, np, plt
 
 
