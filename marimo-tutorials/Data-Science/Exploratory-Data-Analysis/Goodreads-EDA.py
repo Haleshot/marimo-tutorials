@@ -6,7 +6,9 @@ app = marimo.App(width="full")
 
 @app.cell
 def __(mo):
-    mo.md(r"""# Exploratory Data Analysis for the [Goodreads dataset](https://github.com/malcolmosh/goodbooks-10k-extended).""")
+    mo.md(
+        r"""# Exploratory Data Analysis for the [Goodreads dataset](https://github.com/malcolmosh/goodbooks-10k-extended)."""
+    )
     return
 
 
@@ -112,7 +114,9 @@ def __(mo):
 @app.cell
 def __(df1, mo):
     with mo.redirect_stdout():
-        print("Dataset contains {} rows and {} columns".format(df1.shape[0], df1.shape[1]))
+        print(
+            "Dataset contains {} rows and {} columns".format(df1.shape[0], df1.shape[1])
+        )
     return
 
 
@@ -191,7 +195,9 @@ def __(mo):
 @app.cell
 def __(df2, mo):
     with mo.redirect_stdout():
-        print("Dataset contains {} rows and {} columns".format(df2.shape[0], df2.shape[1]))
+        print(
+            "Dataset contains {} rows and {} columns".format(df2.shape[0], df2.shape[1])
+        )
     return
 
 
@@ -238,16 +244,16 @@ def __(df2, mo):
     with mo.redirect_stdout():
         # Statistical summary for numeric columns
         numeric_summary = df2.describe()
-        
+
         # Statistical summary for categorical columns
-        categorical_summary = df2.describe(include=['object'])
-        
+        categorical_summary = df2.describe(include=["object"])
+
         print("Statistical Summary for Numeric Columns:")
         print(numeric_summary)
-        
+
         print("\nStatistical Summary for Categorical Columns:")
         print(categorical_summary)
-        
+
         # Inferences
         numeric_inferences = """
         Numeric Columns Summary:
@@ -256,7 +262,7 @@ def __(df2, mo):
         3. original_publication_year: The mean year is around 1982, indicating the dataset has a mix of both old and recent books.
         4. pages: Mean pages per book is around 336, but this varies greatly with some very short and very long books.
         """
-        
+
         categorical_inferences = """
         Categorical Columns Summary:
         1. authors: Multiple authors are common; the dataset has unique author names for many books.
@@ -264,7 +270,7 @@ def __(df2, mo):
         3. language_code: 'eng' is the most common language code, suggesting the majority of books are in English.
         4. title: Each book has a unique title, though some titles may be shared by different works.
         """
-        
+
         print(numeric_inferences)
         print(categorical_inferences)
     return (
@@ -277,7 +283,9 @@ def __(df2, mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""Making changes infered from above before doing univariate/bivariate analysis""")
+    mo.md(
+        r"""Making changes infered from above before doing univariate/bivariate analysis"""
+    )
     return
 
 
@@ -290,96 +298,141 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(MinMaxScaler, df2, mo, pd):
     with mo.redirect_stdout():
+
         def print_diagnostic(step, df):
             print(f"After {step}:")
             print(f"Shape: {df.shape}")
             print(f"Columns: {df.columns.tolist()}")
             print(f"Non-null counts:\n{df.notnull().sum()}")
             print("-" * 50)
-        
+
         cleaning_df = df2.copy()
         print_diagnostic("Initial copy", cleaning_df)
-        
+
         # 1. Handle missing values
-        numeric_cols = ['pages', 'original_publication_year']
+        numeric_cols = ["pages", "original_publication_year"]
         for col in numeric_cols:
             cleaning_df[col].fillna(cleaning_df[col].median(), inplace=True)
-        
-        categorical_cols = ['isbn', 'isbn13', 'original_title', 'description', 'publishDate']
-        categorical_cols_desc = ['Unknown', 'Unknown', 'Unknown Title', 'No description available', 'Unknown Date']
+
+        categorical_cols = [
+            "isbn",
+            "isbn13",
+            "original_title",
+            "description",
+            "publishDate",
+        ]
+        categorical_cols_desc = [
+            "Unknown",
+            "Unknown",
+            "Unknown Title",
+            "No description available",
+            "Unknown Date",
+        ]
         for col, fill_value in zip(categorical_cols, categorical_cols_desc):
             cleaning_df[col].fillna(fill_value, inplace=True)
-        
+
         print_diagnostic("Handling missing values", cleaning_df)
-        
+
         # 2. Remove duplicate columns
-        if 'authors' in cleaning_df.columns and 'authors_2' in cleaning_df.columns:
-            if cleaning_df['authors'].equals(cleaning_df['authors_2']):
-                cleaning_df = cleaning_df.drop('authors_2', axis=1)
+        if "authors" in cleaning_df.columns and "authors_2" in cleaning_df.columns:
+            if cleaning_df["authors"].equals(cleaning_df["authors_2"]):
+                cleaning_df = cleaning_df.drop("authors_2", axis=1)
             else:
-                print("Warning: 'authors' and 'authors_2' are not identical. Please investigate.")
-        
+                print(
+                    "Warning: 'authors' and 'authors_2' are not identical. Please investigate."
+                )
+
         print_diagnostic("Removing duplicate columns", cleaning_df)
-        
+
         # 3. Remove unnecessary columns
-        cleaning_df = cleaning_df.drop(['Unnamed: 0', 'index'], axis=1, errors='ignore')
+        cleaning_df = cleaning_df.drop(["Unnamed: 0", "index"], axis=1, errors="ignore")
         print_diagnostic("Removing unnecessary columns", cleaning_df)
-        
+
         # 4. Convert data types
-        if cleaning_df['original_publication_year'].notna().any():
-            median_year = cleaning_df['original_publication_year'].median()
-            cleaning_df['original_publication_year'] = cleaning_df['original_publication_year'].fillna(median_year).round()
-            cleaning_df['original_publication_year'] = cleaning_df['original_publication_year'].astype('Int64')
+        if cleaning_df["original_publication_year"].notna().any():
+            median_year = cleaning_df["original_publication_year"].median()
+            cleaning_df["original_publication_year"] = (
+                cleaning_df["original_publication_year"].fillna(median_year).round()
+            )
+            cleaning_df["original_publication_year"] = cleaning_df[
+                "original_publication_year"
+            ].astype("Int64")
         else:
-            print("Warning: 'original_publication_year' column is entirely empty. Keeping as is.")
-        
-        
-        cleaning_df['isbn13'] = cleaning_df['isbn13'].fillna('0').astype(str).str.replace('.0', '')
-        
+            print(
+                "Warning: 'original_publication_year' column is entirely empty. Keeping as is."
+            )
+
+        cleaning_df["isbn13"] = (
+            cleaning_df["isbn13"].fillna("0").astype(str).str.replace(".0", "")
+        )
+
         print_diagnostic("Converting data types", cleaning_df)
-        
+
         # 5. Handle potential data errors
         print("Before handling data errors:")
-        print(cleaning_df['pages'].describe())
+        print(cleaning_df["pages"].describe())
         print(f"Number of books with 0 pages: {(cleaning_df['pages'] == 0).sum()}")
-        print(f"Number of books with negative pages: {(cleaning_df['pages'] < 0).sum()}")
-        
+        print(
+            f"Number of books with negative pages: {(cleaning_df['pages'] < 0).sum()}"
+        )
+
         # Instead of removing, let's set a minimum page count
         min_pages = 1
-        cleaning_df.loc[cleaning_df['pages'] < min_pages, 'pages'] = min_pages
-        
+        cleaning_df.loc[cleaning_df["pages"] < min_pages, "pages"] = min_pages
+
         print("\nAfter handling data errors:")
-        print(cleaning_df['pages'].describe())
-        
+        print(cleaning_df["pages"].describe())
+
         print_diagnostic("Handling data errors", cleaning_df)
-        
+
         # 6. Preprocess genres
-        if 'genres' in cleaning_df.columns:
-            cleaning_df['genres'] = cleaning_df['genres'].apply(lambda x: eval(x) if isinstance(x, str) else x)
+        if "genres" in cleaning_df.columns:
+            cleaning_df["genres"] = cleaning_df["genres"].apply(
+                lambda x: eval(x) if isinstance(x, str) else x
+            )
         print_diagnostic("Preprocessing genres", cleaning_df)
-        
+
         # 7. Create dummy variables for language_code
-        if 'language_code' in cleaning_df.columns:
-            cleaning_df = pd.get_dummies(cleaning_df, columns=['language_code'], prefix='lang')
+        if "language_code" in cleaning_df.columns:
+            cleaning_df = pd.get_dummies(
+                cleaning_df, columns=["language_code"], prefix="lang"
+            )
         print_diagnostic("Creating dummy variables", cleaning_df)
-        
+
         # 8. Normalize numerical columns
-        numerical_columns = ['average_rating', 'books_count', 'pages', 'ratings_count', 'work_ratings_count', 'work_text_reviews_count']
-        if not cleaning_df.empty and all(col in cleaning_df.columns for col in numerical_columns):
+        numerical_columns = [
+            "average_rating",
+            "books_count",
+            "pages",
+            "ratings_count",
+            "work_ratings_count",
+            "work_text_reviews_count",
+        ]
+        if not cleaning_df.empty and all(
+            col in cleaning_df.columns for col in numerical_columns
+        ):
             if cleaning_df[numerical_columns].notna().any().all():
                 scaler = MinMaxScaler()
-                cleaning_df[numerical_columns] = scaler.fit_transform(cleaning_df[numerical_columns])
+                cleaning_df[numerical_columns] = scaler.fit_transform(
+                    cleaning_df[numerical_columns]
+                )
             else:
-                print("Warning: Some numerical columns contain all null values. Skipping normalization.")
+                print(
+                    "Warning: Some numerical columns contain all null values. Skipping normalization."
+                )
         else:
-            print("Warning: DataFrame is empty or missing expected columns. Skipping normalization.")
-        
+            print(
+                "Warning: DataFrame is empty or missing expected columns. Skipping normalization."
+            )
+
         print_diagnostic("Normalizing numerical columns", cleaning_df)
-        
+
         # Save the preprocessed dataset
         if not cleaning_df.empty:
             cleaning_df.to_csv("preprocessed_books.csv", index=False)
-            print("Preprocessing complete. Preprocessed data saved to 'preprocessed_books.csv'.")
+            print(
+                "Preprocessing complete. Preprocessed data saved to 'preprocessed_books.csv'."
+            )
         else:
             print("Error: The cleaned DataFrame is empty. No file was saved.")
     return (
@@ -421,9 +474,9 @@ def __(mo):
 def __(df1, mo):
     with mo.redirect_stdout():
         print("\nNumber of Ratings per User:")
-        user_ratings_count = df1['user_id'].value_counts()
+        user_ratings_count = df1["user_id"].value_counts()
         print(user_ratings_count)
-    return user_ratings_count,
+    return (user_ratings_count,)
 
 
 @app.cell(hide_code=True)
@@ -470,9 +523,9 @@ def __(mo):
 def __(df2, mo):
     with mo.redirect_stdout():
         print("\nPublication Year Distribution:")
-        pub_year_counts = df2['original_publication_year'].value_counts().sort_index()
+        pub_year_counts = df2["original_publication_year"].value_counts().sort_index()
         print(pub_year_counts)
-    return pub_year_counts,
+    return (pub_year_counts,)
 
 
 @app.cell(hide_code=True)
@@ -493,7 +546,7 @@ def __(mo):
 
 @app.cell
 def __(df2, plt, sns):
-    sns.displot(df2['original_publication_year'])
+    sns.displot(df2["original_publication_year"])
     plt.xlabel("Publication Year")
     plt.ylabel("Number of Books")
     plt.title("Distribution of Publication Year in Goodreads Dataset")
@@ -509,22 +562,22 @@ def __(df1, mo):
 
         # 1. Distribution of Ratings
         print("Distribution of Ratings:")
-        rating_counts = df1['rating'].value_counts().sort_index()
+        rating_counts = df1["rating"].value_counts().sort_index()
         print(rating_counts)
-            
+
         # Matplotlib histogram (optional)
         # plt.hist(df1['rating'])
         # plt.xlabel("Rating")
         # plt.ylabel("Number of Ratings")
         # plt.title("Distribution of Ratings in Goodreads Dataset")
         # plt.gca()
-    return rating_counts,
+    return (rating_counts,)
 
 
 @app.cell(hide_code=True)
 def __(df1, plt, sns):
     # Seaborn histogram
-    sns.displot(df1['rating'])
+    sns.displot(df1["rating"])
     plt.xlabel("Rating")
     plt.ylabel("Number of Ratings")
     plt.title("Distribution of Ratings in Goodreads Dataset")
@@ -555,7 +608,7 @@ def __(plt, sns, user_ratings_count):
 
 @app.cell(hide_code=True)
 def __(mo, pub_year_counts):
-    with mo.redirect_stdout():       
+    with mo.redirect_stdout():
         # 3. Publication Year Distribution (Assuming 'original_publication_year' exists)
         print("\nPublication Year Distribution:")
         # pub_year_counts = df2['original_publication_year'].value_counts().sort_index()
@@ -566,7 +619,7 @@ def __(mo, pub_year_counts):
 @app.cell(hide_code=True)
 def __(df2, plt, sns):
     # Seaborn distribution of publication years
-    sns.displot(df2['original_publication_year'])
+    sns.displot(df2["original_publication_year"])
     plt.xlabel("Publication Year")
     plt.ylabel("Number of Books")
     plt.title("Distribution of Publication Year in Goodreads Dataset")
@@ -609,13 +662,13 @@ def __(df1, df2, plt, sns):
     # 1. Rating vs. Publication Year
     # Merging dataframes assuming 'book_id' is the common column
 
-    merged_data = df2.merge(df1[['rating', 'book_id']], how='left', on='book_id')
-    sns.jointplot(x='original_publication_year', y='rating', data=merged_data)
+    merged_data = df2.merge(df1[["rating", "book_id"]], how="left", on="book_id")
+    sns.jointplot(x="original_publication_year", y="rating", data=merged_data)
     plt.xlabel("Publication Year")
     plt.ylabel("Rating")
     plt.title("Rating vs. Publication Year in Goodreads Dataset")
     plt.gca()
-    return merged_data,
+    return (merged_data,)
 
 
 @app.cell(hide_code=True)
@@ -644,16 +697,18 @@ def __(mo):
 def __(df1, df2, plt, sns):
     # 2. Rating vs. Number of Ratings per Book
     # Calculate average rating per book
-    average_ratings = df1.groupby('book_id')['rating'].mean()
-    _merged_data = df2.merge(average_ratings.reset_index(), how='left', on='book_id')
-    _merged_data.rename(columns={'rating_x': 'rating'}, inplace=True)  # Avoid name conflicts
+    average_ratings = df1.groupby("book_id")["rating"].mean()
+    _merged_data = df2.merge(average_ratings.reset_index(), how="left", on="book_id")
+    _merged_data.rename(
+        columns={"rating_x": "rating"}, inplace=True
+    )  # Avoid name conflicts
 
-    sns.jointplot(x='average_rating', y='rating', data=_merged_data)
+    sns.jointplot(x="average_rating", y="rating", data=_merged_data)
     plt.xlabel("Average Rating per Book")
     plt.ylabel("Individual User Rating")
     plt.title("Rating vs. Average Rating per Book in Goodreads Dataset")
     plt.gca()
-    return average_ratings,
+    return (average_ratings,)
 
 
 @app.cell
@@ -691,10 +746,10 @@ def __(mo):
 def __(df1, plt, sns):
     # 11. How is the rating for all books distributed?
     plt.figure(figsize=(10, 6))
-    sns.histplot(df1['rating'], bins=10, kde=True)
-    plt.title('Distribution of Ratings')
-    plt.xlabel('Rating')
-    plt.ylabel('Count')
+    sns.histplot(df1["rating"], bins=10, kde=True)
+    plt.title("Distribution of Ratings")
+    plt.xlabel("Rating")
+    plt.ylabel("Count")
     plt.gca()
     return
 
@@ -727,14 +782,14 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(df1, plt, sns):
     # 12. How is the average rating per user distributed?
-    user_avg_ratings = df1.groupby('user_id')['rating'].mean()
+    user_avg_ratings = df1.groupby("user_id")["rating"].mean()
     plt.figure(figsize=(10, 6))
     sns.histplot(user_avg_ratings, bins=20, kde=True)
-    plt.title('Distribution of Average Ratings per User')
-    plt.xlabel('Average Rating')
-    plt.ylabel('Count')
+    plt.title("Distribution of Average Ratings per User")
+    plt.xlabel("Average Rating")
+    plt.ylabel("Count")
     plt.gca()
-    return user_avg_ratings,
+    return (user_avg_ratings,)
 
 
 @app.cell(hide_code=True)
@@ -766,15 +821,15 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(df1, plt, sns):
     # 13. How many ratings does a book usually get?
-    book_rating_counts = df1['book_id'].value_counts()
+    book_rating_counts = df1["book_id"].value_counts()
     plt.figure(figsize=(10, 6))
     sns.histplot(book_rating_counts, bins=50, kde=True)
-    plt.title('Distribution of Ratings Count per Book')
-    plt.xlabel('Number of Ratings')
-    plt.ylabel('Count')
-    plt.xscale('log')
+    plt.title("Distribution of Ratings Count per Book")
+    plt.xlabel("Number of Ratings")
+    plt.ylabel("Count")
+    plt.xscale("log")
     plt.gca()
-    return book_rating_counts,
+    return (book_rating_counts,)
 
 
 @app.cell(hide_code=True)
@@ -806,15 +861,15 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(df1, plt, sns):
     # 14. How many ratings does a user usually give?
-    user_rating_counts = df1['user_id'].value_counts()
+    user_rating_counts = df1["user_id"].value_counts()
     plt.figure(figsize=(10, 6))
     sns.histplot(user_rating_counts, bins=50, kde=True)
-    plt.title('Distribution of Ratings Count per User')
-    plt.xlabel('Number of Ratings')
-    plt.ylabel('Count')
-    plt.xscale('log')
+    plt.title("Distribution of Ratings Count per User")
+    plt.xlabel("Number of Ratings")
+    plt.ylabel("Count")
+    plt.xscale("log")
     plt.gca()
-    return user_rating_counts,
+    return (user_rating_counts,)
 
 
 @app.cell(hide_code=True)
@@ -846,18 +901,20 @@ def __(mo):
 def __(cleaning_df, plt, sns):
     # 15. Does the ratings count affect average rating?
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='ratings_count', y='average_rating', data=cleaning_df)
-    plt.title('Ratings Count vs Average Rating')
-    plt.xlabel('Ratings Count')
-    plt.ylabel('Average Rating')
-    plt.xscale('log')
+    sns.scatterplot(x="ratings_count", y="average_rating", data=cleaning_df)
+    plt.title("Ratings Count vs Average Rating")
+    plt.xlabel("Ratings Count")
+    plt.ylabel("Average Rating")
+    plt.xscale("log")
     plt.gca()
     return
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""### 16. Which book has the highest rating and which book has the most ratings?""")
+    mo.md(
+        r"""### 16. Which book has the highest rating and which book has the most ratings?"""
+    )
     return
 
 
@@ -880,16 +937,22 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(cleaning_df):
     # 16. Which book has the highest rating and which book has the most ratings?
-    highest_rated = cleaning_df.loc[cleaning_df['average_rating'].idxmax()]
-    most_rated = cleaning_df.loc[cleaning_df['ratings_count'].idxmax()]
-    print(f"Highest rated book: {highest_rated['title']} (Rating: {highest_rated['average_rating']})")
-    print(f"Most rated book: {most_rated['title']} (Ratings: {most_rated['ratings_count']})")
+    highest_rated = cleaning_df.loc[cleaning_df["average_rating"].idxmax()]
+    most_rated = cleaning_df.loc[cleaning_df["ratings_count"].idxmax()]
+    print(
+        f"Highest rated book: {highest_rated['title']} (Rating: {highest_rated['average_rating']})"
+    )
+    print(
+        f"Most rated book: {most_rated['title']} (Ratings: {most_rated['ratings_count']})"
+    )
     return highest_rated, most_rated
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(r"""### 17. How is the relationship between the number of ratings and the average rating?""")
+    mo.md(
+        r"""### 17. How is the relationship between the number of ratings and the average rating?"""
+    )
     return
 
 
@@ -918,11 +981,16 @@ def __(cleaning_df, plt, sns):
     # 17. How is the relationship between the number of ratings and the average rating?
     # (This is similar to question 15, but we'll use a different visualization)
     plt.figure(figsize=(10, 6))
-    sns.regplot(x='ratings_count', y='average_rating', data=cleaning_df, scatter_kws={'alpha':0.5})
-    plt.title('Relationship between Ratings Count and Average Rating')
-    plt.xlabel('Ratings Count (log scale)')
-    plt.ylabel('Average Rating')
-    plt.xscale('log')
+    sns.regplot(
+        x="ratings_count",
+        y="average_rating",
+        data=cleaning_df,
+        scatter_kws={"alpha": 0.5},
+    )
+    plt.title("Relationship between Ratings Count and Average Rating")
+    plt.xlabel("Ratings Count (log scale)")
+    plt.ylabel("Average Rating")
+    plt.xscale("log")
     plt.gca()
     return
 
@@ -950,9 +1018,11 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(cleaning_df):
     # 18. Who is the author with most books?
-    author_book_counts = cleaning_df['authors'].value_counts()
-    print(f"Author with most books: {author_book_counts.index[0]} ({author_book_counts.iloc[0]} books)")
-    return author_book_counts,
+    author_book_counts = cleaning_df["authors"].value_counts()
+    print(
+        f"Author with most books: {author_book_counts.index[0]} ({author_book_counts.iloc[0]} books)"
+    )
+    return (author_book_counts,)
 
 
 @app.cell(hide_code=True)
@@ -979,10 +1049,22 @@ def __(mo):
 @app.cell
 def __(cleaning_df):
     # 19. Who is the most popular author?
-    cleaning_df['total_ratings'] = cleaning_df['ratings_1'] + cleaning_df['ratings_2'] + cleaning_df['ratings_3'] + cleaning_df['ratings_4'] + cleaning_df['ratings_5']
-    author_popularity = cleaning_df.groupby('authors')['total_ratings'].sum().sort_values(ascending=False)
-    print(f"Most popular author: {author_popularity.index[0]} ({author_popularity.iloc[0]} total ratings)")
-    return author_popularity,
+    cleaning_df["total_ratings"] = (
+        cleaning_df["ratings_1"]
+        + cleaning_df["ratings_2"]
+        + cleaning_df["ratings_3"]
+        + cleaning_df["ratings_4"]
+        + cleaning_df["ratings_5"]
+    )
+    author_popularity = (
+        cleaning_df.groupby("authors")["total_ratings"]
+        .sum()
+        .sort_values(ascending=False)
+    )
+    print(
+        f"Most popular author: {author_popularity.index[0]} ({author_popularity.iloc[0]} total ratings)"
+    )
+    return (author_popularity,)
 
 
 @app.cell(hide_code=True)
@@ -1008,14 +1090,22 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(cleaning_df):
     # 20. Who is the author that has good ratings book?
-    author_avg_ratings = cleaning_df.groupby('authors')['average_rating'].mean().sort_values(ascending=False)
-    print(f"Author with highest average rating: {author_avg_ratings.index[0]} (Average rating: {author_avg_ratings.iloc[0]:.2f})")
-    return author_avg_ratings,
+    author_avg_ratings = (
+        cleaning_df.groupby("authors")["average_rating"]
+        .mean()
+        .sort_values(ascending=False)
+    )
+    print(
+        f"Author with highest average rating: {author_avg_ratings.index[0]} (Average rating: {author_avg_ratings.iloc[0]:.2f})"
+    )
+    return (author_avg_ratings,)
 
 
 @app.cell
 def __(mo):
-    mo.md(r"""### 21. How is the relationship between the number of pages and the year the book was published?""")
+    mo.md(
+        r"""### 21. How is the relationship between the number of pages and the year the book was published?"""
+    )
     return
 
 
@@ -1041,10 +1131,10 @@ def __(mo):
 def __(cleaning_df, plt, sns):
     # 21. How is the relationship between the number of pages and the year the book was published?
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='original_publication_year', y='pages', data=cleaning_df)
-    plt.title('Relationship between Publication Year and Number of Pages')
-    plt.xlabel('Publication Year')
-    plt.ylabel('Number of Pages')
+    sns.scatterplot(x="original_publication_year", y="pages", data=cleaning_df)
+    plt.title("Relationship between Publication Year and Number of Pages")
+    plt.xlabel("Publication Year")
+    plt.ylabel("Number of Pages")
     plt.gca()
     return
 
@@ -1084,19 +1174,21 @@ def __(mo):
 def __(cleaning_df, mo, pd, plt):
     # 22. What genre dominates the dataset?
     # Assuming 'genres' is a list of genres for each book
-    all_genres = [genre for genres in cleaning_df['genres'] for genre in genres]
+    all_genres = [genre for genres in cleaning_df["genres"] for genre in genres]
     genre_counts = pd.Series(all_genres).value_counts()
     plt.figure(figsize=(12, 6))
-    genre_counts.head(20).plot(kind='bar')
-    plt.title('Top 20 Genres in the Dataset')
-    plt.xlabel('Genre')
-    plt.ylabel('Count')
-    plt.xticks(rotation=45, ha='right')
+    genre_counts.head(20).plot(kind="bar")
+    plt.title("Top 20 Genres in the Dataset")
+    plt.xlabel("Genre")
+    plt.ylabel("Count")
+    plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.gca()
 
     with mo.redirect_stdout():
-        print(f"The dominant genre is: {genre_counts.index[0]} with {genre_counts.iloc[0]} occurrences")
+        print(
+            f"The dominant genre is: {genre_counts.index[0]} with {genre_counts.iloc[0]} occurrences"
+        )
     return all_genres, genre_counts
 
 
@@ -1155,13 +1247,14 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __():
-    #import libraries
+    # import libraries
     import marimo as mo
     import numpy as np
     import pandas as pd
     import seaborn as sns
     import matplotlib.pyplot as plt
     from sklearn.preprocessing import MinMaxScaler
+
     return MinMaxScaler, mo, np, pd, plt, sns
 
 
