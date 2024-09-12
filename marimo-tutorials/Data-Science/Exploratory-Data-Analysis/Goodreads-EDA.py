@@ -1,14 +1,24 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "marimo",
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+#     "seaborn",
+#     "scikit-learn",
+# ]
+# ///
+
 import marimo
 
-__generated_with = "0.8.9"
+__generated_with = "0.8.14"
 app = marimo.App(width="full")
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
-    mo.md(
-        r"""# Exploratory Data Analysis for the [Goodreads dataset](https://github.com/malcolmosh/goodbooks-10k-extended)."""
-    )
+    mo.md(r"""# Exploratory Data Analysis for the [Goodreads dataset](https://github.com/malcolmosh/goodbooks-10k-extended).""")
     return
 
 
@@ -27,9 +37,21 @@ def __(mo):
 
 @app.cell
 def __(pd):
-    df1 = pd.read_csv("ratings.csv")
-    df2 = pd.read_csv("books_enriched.csv")
+    df1 = pd.read_csv("assets/ratings.csv")
+    df2 = pd.read_csv("assets/books_enriched.csv")
     return df1, df2
+
+
+@app.cell
+def __():
+    # mo.plain(df1)
+    return
+
+
+@app.cell
+def __():
+    # mo.plain(df2)
+    return
 
 
 @app.cell(hide_code=True)
@@ -283,9 +305,7 @@ def __(df2, mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(
-        r"""Making changes infered from above before doing univariate/bivariate analysis"""
-    )
+    mo.md(r"""Making changes infered from above before doing univariate/bivariate analysis""")
     return
 
 
@@ -476,7 +496,7 @@ def __(df1, mo):
         print("\nNumber of Ratings per User:")
         user_ratings_count = df1["user_id"].value_counts()
         print(user_ratings_count)
-    return (user_ratings_count,)
+    return user_ratings_count,
 
 
 @app.cell(hide_code=True)
@@ -525,7 +545,7 @@ def __(df2, mo):
         print("\nPublication Year Distribution:")
         pub_year_counts = df2["original_publication_year"].value_counts().sort_index()
         print(pub_year_counts)
-    return (pub_year_counts,)
+    return pub_year_counts,
 
 
 @app.cell(hide_code=True)
@@ -571,7 +591,7 @@ def __(df1, mo):
         # plt.ylabel("Number of Ratings")
         # plt.title("Distribution of Ratings in Goodreads Dataset")
         # plt.gca()
-    return (rating_counts,)
+    return rating_counts,
 
 
 @app.cell(hide_code=True)
@@ -668,7 +688,7 @@ def __(df1, df2, plt, sns):
     plt.ylabel("Rating")
     plt.title("Rating vs. Publication Year in Goodreads Dataset")
     plt.gca()
-    return (merged_data,)
+    return merged_data,
 
 
 @app.cell(hide_code=True)
@@ -708,7 +728,7 @@ def __(df1, df2, plt, sns):
     plt.ylabel("Individual User Rating")
     plt.title("Rating vs. Average Rating per Book in Goodreads Dataset")
     plt.gca()
-    return (average_ratings,)
+    return average_ratings,
 
 
 @app.cell
@@ -789,7 +809,7 @@ def __(df1, plt, sns):
     plt.xlabel("Average Rating")
     plt.ylabel("Count")
     plt.gca()
-    return (user_avg_ratings,)
+    return user_avg_ratings,
 
 
 @app.cell(hide_code=True)
@@ -829,7 +849,7 @@ def __(df1, plt, sns):
     plt.ylabel("Count")
     plt.xscale("log")
     plt.gca()
-    return (book_rating_counts,)
+    return book_rating_counts,
 
 
 @app.cell(hide_code=True)
@@ -869,7 +889,7 @@ def __(df1, plt, sns):
     plt.ylabel("Count")
     plt.xscale("log")
     plt.gca()
-    return (user_rating_counts,)
+    return user_rating_counts,
 
 
 @app.cell(hide_code=True)
@@ -912,9 +932,7 @@ def __(cleaning_df, plt, sns):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(
-        r"""### 16. Which book has the highest rating and which book has the most ratings?"""
-    )
+    mo.md(r"""### 16. Which book has the highest rating and which book has the most ratings?""")
     return
 
 
@@ -950,9 +968,7 @@ def __(cleaning_df):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(
-        r"""### 17. How is the relationship between the number of ratings and the average rating?"""
-    )
+    mo.md(r"""### 17. How is the relationship between the number of ratings and the average rating?""")
     return
 
 
@@ -1022,7 +1038,7 @@ def __(cleaning_df):
     print(
         f"Author with most books: {author_book_counts.index[0]} ({author_book_counts.iloc[0]} books)"
     )
-    return (author_book_counts,)
+    return author_book_counts,
 
 
 @app.cell(hide_code=True)
@@ -1064,7 +1080,7 @@ def __(cleaning_df):
     print(
         f"Most popular author: {author_popularity.index[0]} ({author_popularity.iloc[0]} total ratings)"
     )
-    return (author_popularity,)
+    return author_popularity,
 
 
 @app.cell(hide_code=True)
@@ -1098,14 +1114,12 @@ def __(cleaning_df):
     print(
         f"Author with highest average rating: {author_avg_ratings.index[0]} (Average rating: {author_avg_ratings.iloc[0]:.2f})"
     )
-    return (author_avg_ratings,)
+    return author_avg_ratings,
 
 
 @app.cell
 def __(mo):
-    mo.md(
-        r"""### 21. How is the relationship between the number of pages and the year the book was published?"""
-    )
+    mo.md(r"""### 21. How is the relationship between the number of pages and the year the book was published?""")
     return
 
 
@@ -1254,7 +1268,6 @@ def __():
     import seaborn as sns
     import matplotlib.pyplot as plt
     from sklearn.preprocessing import MinMaxScaler
-
     return MinMaxScaler, mo, np, pd, plt, sns
 
 
