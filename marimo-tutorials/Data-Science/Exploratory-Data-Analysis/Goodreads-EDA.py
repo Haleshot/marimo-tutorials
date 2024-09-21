@@ -22,9 +22,25 @@ def __(mo):
     return
 
 
+@app.cell
+def __(mo):
+    mo.image(src="marimo-tutorials\community-tutorials-banner.png", alt="Community Tutorials Banner", width=800, rounded=True).center()
+    return
+
+
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(r"""#### TODO: Insert author/s details (all right aligned preferably here); the banner image followed by the author details will provide a good start to the notebook.""")
+    return
+
+
+@app.cell(hide_code=True)
+def __(mo):
+    mo.md(
+        r'''
+        *Author of this notebook - [Srihari Thyagarajan](https://github.com/Haleshot)*
+        '''
+    ).right()
     return
 
 
@@ -395,7 +411,7 @@ def __(df2, mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     numerical_infereces = mo.md(" ## Inferences  \n\n ## Numeric Columns Summary:   \n ### 1. average_rating: Mean rating is around 4.0 indicating a generally positive user rating for books. \n ### 2. books_count: This varies widely, with some books having multiple editions (max is 4917).  \n ### 3. original_publication_year: The mean year is around 1982, indicating the dataset has a mix of both old and recent books. \n ### 4. pages: Mean pages per book is around 336, but this varies greatly with some very short and very long books. \n ## Categorical Columns Summary:  \n ### 1. authors: Multiple authors are common; the dataset has unique author names for many books. \n ### 2. genres: Books are classified into multiple genres, indicating diverse book content. \n ### 3. language_code: 'eng' is the most common language code, suggesting the majority of books are in English. \n ### 4. title: Each book has a unique title, though some titles may be shared by different works. ")
     return numerical_infereces,
