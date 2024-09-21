@@ -95,7 +95,7 @@ def __(np):
 @app.cell
 def __(Fx, Fy):
     diagonal = Fx + Fy
-    return diagonal,
+    return (diagonal,)
 
 
 @app.cell
@@ -133,12 +133,12 @@ def __(Fx, img, img_horizontal, m, n, np, plt):
     _a = 1
 
     for _i in range(_a, m - _a):
-      for _j in range(_a, n - _a):
-        _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
-        img_horizontal[_i, _j] = np.sum(np.multiply(_temp, Fx))
+        for _j in range(_a, n - _a):
+            _temp = img[_i - _a : _i + _a + 1, _j - _a : _j + _a + 1]
+            img_horizontal[_i, _j] = np.sum(np.multiply(_temp, Fx))
 
     plt.axis("off")
-    plt.imshow(img_horizontal, cmap = "gray", vmin = 0, vmax = 255)
+    plt.imshow(img_horizontal, cmap="gray", vmin=0, vmax=255)
     return
 
 
@@ -155,13 +155,13 @@ def __(Fy, img, m, n, np, plt):
     _a = 1
 
     for _i in range(_a, m - _a):
-      for _j in range(_a, n - _a):
-        _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
-        img_vertical[_i, _j] = np.sum(np.multiply(_temp, Fy))
+        for _j in range(_a, n - _a):
+            _temp = img[_i - _a : _i + _a + 1, _j - _a : _j + _a + 1]
+            img_vertical[_i, _j] = np.sum(np.multiply(_temp, Fy))
 
     plt.axis("off")
-    plt.imshow(img_vertical, cmap = "gray", vmin = 0, vmax = 255)
-    return img_vertical,
+    plt.imshow(img_vertical, cmap="gray", vmin=0, vmax=255)
+    return (img_vertical,)
 
 
 @app.cell
@@ -177,18 +177,20 @@ def __(diagonal, img, m, n, np, plt):
     _a = 1
 
     for _i in range(_a, m - _a):
-      for _j in range(_a, n - _a):
-        _temp = img[_i - _a:_i + _a + 1, _j - _a:_j + _a + 1]
-        img_diagonal[_i, _j] = np.sum(np.multiply(_temp, diagonal))
+        for _j in range(_a, n - _a):
+            _temp = img[_i - _a : _i + _a + 1, _j - _a : _j + _a + 1]
+            img_diagonal[_i, _j] = np.sum(np.multiply(_temp, diagonal))
 
     plt.axis("off")
-    plt.imshow(img_diagonal, cmap = "gray", vmin = 0, vmax = 255)
-    return img_diagonal,
+    plt.imshow(img_diagonal, cmap="gray", vmin=0, vmax=255)
+    return (img_diagonal,)
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"### Showing the differences of Edge detection using various masks defined above")
+    mo.md(
+        rf"### Showing the differences of Edge detection using various masks defined above"
+    )
     return
 
 
@@ -207,11 +209,15 @@ def __(Image, mo, plt):
         plt.axis("off")
         return mo.hstack(
             [
-                mo.vstack([plt.imshow(image, cmap="gray", vmin = 0, vmax = 255), title], align="center")
+                mo.vstack(
+                    [plt.imshow(image, cmap="gray", vmin=0, vmax=255), title],
+                    align="center",
+                )
                 for image, title in zip(images, titles)
             ]
         )
-    return show_images,
+
+    return (show_images,)
 
 
 @app.cell
@@ -219,19 +225,19 @@ def __(img_diagonal, img_horizontal, img_vertical, show_images):
     radii = ["Horizonal", "Vertical", "Diagonal"]
     images = [img_horizontal, img_vertical, img_diagonal]
     # plt.figure(figsize = (5, 5))
-    # for i in range(len(radii)):    
+    # for i in range(len(radii)):
     #     plt.subplot(1, 5, i + 1)
     show_images(images, radii)
-        # plt.title("Edge Detection using {}".format(radii[i]))
-        # plt.xticks([])
-        # plt.yticks([])
+    # plt.title("Edge Detection using {}".format(radii[i]))
+    # plt.xticks([])
+    # plt.yticks([])
     return images, radii
 
 
 @app.cell
 def __(img_diagonal, img_horizontal, img_vertical):
     all_images = img_horizontal + img_vertical + img_diagonal
-    return all_images,
+    return (all_images,)
 
 
 @app.cell
@@ -251,9 +257,9 @@ def __(
     img_vertical,
 ):
     # Built in Function:
-    signal_x = convolve(img_horizontal, Fx, mode = "same")
-    signal_y = convolve(img_vertical, Fy, mode = "same")
-    signal_diagonal = convolve(img_diagonal, diagonal, mode = "same")
+    signal_x = convolve(img_horizontal, Fx, mode="same")
+    signal_y = convolve(img_vertical, Fy, mode="same")
+    signal_diagonal = convolve(img_diagonal, diagonal, mode="same")
     return signal_diagonal, signal_x, signal_y
 
 
@@ -266,7 +272,7 @@ def __(mo):
 @app.cell
 def __(plt, signal_x):
     plt.axis("off")
-    plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
+    plt.imshow(signal_x, cmap="gray", vmin=0, vmax=255)
     return
 
 
@@ -279,7 +285,7 @@ def __(mo):
 @app.cell
 def __(plt, signal_y):
     plt.axis("off")
-    plt.imshow(signal_y, cmap = "gray", vmin = 0, vmax = 255)
+    plt.imshow(signal_y, cmap="gray", vmin=0, vmax=255)
     return
 
 
@@ -292,13 +298,15 @@ def __(mo):
 @app.cell
 def __(plt, signal_diagonal):
     plt.axis("off")
-    plt.imshow(signal_diagonal, cmap = "gray", vmin = 0, vmax = 255)
+    plt.imshow(signal_diagonal, cmap="gray", vmin=0, vmax=255)
     return
 
 
 @app.cell
 def __(mo):
-    mo.md(rf"### Showing the differences of Edge detection using in-built masks from above")
+    mo.md(
+        rf"### Showing the differences of Edge detection using in-built masks from above"
+    )
     return
 
 
@@ -307,7 +315,7 @@ def __(show_images, signal_diagonal, signal_x, signal_y):
     _radii = ["Horizonal", "Vertical", "Diagonal"]
     _images = [signal_x, signal_y, signal_diagonal]
     # plt.figure(figsize = (5, 5))
-    # for i in range(len(radii)):    
+    # for i in range(len(radii)):
     #     plt.subplot(1, 5, i + 1)
     show_images(_images, _radii)
     return
@@ -323,12 +331,19 @@ def __(mo):
 def __(mo):
     # _size_of_mask = int(input("Enter the size of the Mask : "))
     slider = mo.ui.slider(start=1, stop=10, step=2, value=5, label="Enter size of mask")
-    return slider,
+    return (slider,)
 
 
 @app.cell
 def __(mo, slider):
-    mo.hstack([slider, mo.md(f"You have requested for Mask of Size : {slider.value} x {slider.value}")])
+    mo.hstack(
+        [
+            slider,
+            mo.md(
+                f"You have requested for Mask of Size : {slider.value} x {slider.value}"
+            ),
+        ]
+    )
     return
 
 
@@ -336,16 +351,16 @@ def __(mo, slider):
 def __(img, m, n, np, plt, signal_x, slider):
     _size_of_mask = slider.value
     img_new = img.copy()
-    print("You have requested for Mask of Size :  ", _size_of_mask ,"x", _size_of_mask)
-    a = _size_of_mask//2
+    print("You have requested for Mask of Size :  ", _size_of_mask, "x", _size_of_mask)
+    a = _size_of_mask // 2
 
     for i in range(a, m - a):
         for j in range(a, n - a):
-            temp = np.sum(img[i - a:i + a + 1, j - a:j + a + 1])
-            img_new[i, j] = temp//_size_of_mask**2
+            temp = np.sum(img[i - a : i + a + 1, j - a : j + a + 1])
+            img_new[i, j] = temp // _size_of_mask**2
 
     plt.axis("off")
-    plt.imshow(signal_x, cmap = "gray", vmin = 0, vmax = 255)
+    plt.imshow(signal_x, cmap="gray", vmin=0, vmax=255)
     return a, i, img_new, j, temp
 
 
@@ -355,7 +370,7 @@ def __(mo):
     # As we see from the image shown above and in the cell where the difference between three types of images are shown (horizontal, vertical and diagonal, we see that the above image where we applied Averaging filter to the original image and then applied convolution seemed to detect the horizontal images better than the one in which Averaging filter wasn't applied.", kind='success')
 
     text_input = mo.md(
-        r'''
+        r"""
         ## Conclusion:
         
         After applying the Sobel operator with the averaging filter and comparing the results obtained in step a and b, the following observations can be made:
@@ -367,10 +382,10 @@ def __(mo):
         - When the Sobel operator is applied after the averaging filter, the edges appear smoother and less pronounced compared to applying the Sobel operator directly on the original image.
         
         - The combined gradient image, |g_x+g_y|, obtained from the Sobel operator shows the overall intensity changes in the image.
-        '''
+        """
     )
     mo.callout(text_input, kind="success")
-    return text_input,
+    return (text_input,)
 
 
 @app.cell
@@ -424,13 +439,14 @@ def __():
     import cv2
     from scipy.signal import convolve
     import marimo as mo
+
     return convolve, cv2, mo, np, pd, plt
 
 
 @app.cell
 def __(cv2):
     img = cv2.imread("../assets/house.tif", 0)
-    return img,
+    return (img,)
 
 
 @app.cell
@@ -468,9 +484,9 @@ def __(mo):
                         "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
                         "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
                         "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
-                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
-                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
-                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above": "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above": "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user": "Try it out!",
                     },
                     "#observations": "Observations",
                     "#references": "References",
@@ -526,9 +542,9 @@ def __(mo):
                         "#horizontal-edge-detection-using-list-slicing": "Horizontal Mask definition",
                         "#vertical-edge-detection-using-list-slicing": "Vertical Mask definition",
                         "#diagonal-edge-detection-using-list-slicing": "Diagonal Mask definition",
-                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above" : "Comparison of user defined masks",
-                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above" : "Comparison of built-in defined masks",
-                        "#for-different-sizes-of-masks-provided-from-user" : "Try it out!"
+                        "#showing-the-differences-of-edge-detection-using-various-masks-defined-above": "Comparison of user defined masks",
+                        "#showing-the-differences-of-edge-detection-using-in-built-masks-from-above": "Comparison of built-in defined masks",
+                        "#for-different-sizes-of-masks-provided-from-user": "Try it out!",
                     },
                     "#observations": "Observations",
                     "#references": "References",
