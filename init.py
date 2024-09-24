@@ -1,56 +1,23 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "marimo",
+# ]
+# ///
 """
 This is the starting point for your notebook.
 """
 
 import marimo
 
-__generated_with = "0.6.13"
-app = marimo.App()
+__generated_with = "0.8.19"
+app = marimo.App(width="medium")
 
 
 @app.cell(hide_code=True)
-def __(mo):
-    # Initial Notebook Options
-    init_form = (
-        mo.md(
-            r"""
-            **Define Your Initial Notebook Options Here:**
-        
-            {title}
-
-            {path}
-
-            {author_name}
-
-            {author_contact}
-        
-            """
-        )
-        .batch(
-            title=mo.ui.text(
-                placeholder="The Elements of Marimo",
-                label="The title of your notebook: ",
-                full_width=True,
-            ),
-            path=mo.ui.text(
-                placeholder="marimo-tutorials/Computer-Science/..",
-                label="The path of your notebook: ",
-                full_width=True,
-            ),
-            author_name=mo.ui.text(
-                placeholder="marimo-tutorials",
-                label="Your name: ",
-                full_width=True,
-            ),
-            author_contact=mo.ui.text(
-                placeholder="marimo-tutorials@example.com",
-                label="Your contact info: ",
-                full_width=True,
-            ),
-        )
-        .form(bordered=True, label="Custom Constants")
-    )
-    return (init_form,)
+def __(HEADER_BODY, HEADER_HTML, mo):
+    mo.Html(HEADER_HTML + HEADER_BODY)
+    return
 
 
 @app.cell(hide_code=True)
@@ -64,11 +31,9 @@ def __(init_form, mo):
                         """
                 ```tree
                 .
-                ├── TODOs
-                ├── Suggested Reading & Suggestions for other Tutorials
                 ├── Custom Input (optional but suggested)
                 ├── Notebook Title
-                ├── Abstract
+                ├── TLDR
                 ├── Introduction
                 ├── Main Body
                 ├── Summary
@@ -77,24 +42,16 @@ def __(init_form, mo):
                 ├── References (optional)
                 ├── Appendix (optional)
                 ├── Source Code
-                ├── Authors
                 └── Acknowledgments (optional)
                 ```
                 """
                     ),
-                    "Incide Notebook": mo.md(
+                    "Inside Notebook": mo.md(
                         """
                 - Remember to write Navigation
                 - Remember to add interactivity (`marimo.ui`) and visualizations as you can but avoid repetition
                 - You can quote from time to time
                 - You can write some short recaps from time to time
-                """
-                    ),
-                    "Best Practise": mo.md(
-                        """
-                > Check following notebooks on how to maximize `marimo`:
-
-                - []()
                 """
                     ),
                 },
@@ -109,70 +66,41 @@ def __(init_form, mo):
         """
             ),
             init_form,
-            mo.md(rf"> View your starting notebook below and make changes if needed:"),
+            mo.md(
+                rf"> View your starting notebook below and make changes if needed:"
+            ),
         ]
     )
     return
 
 
-@app.cell
-def __():
-    # mo.ui.fo
+@app.cell(hide_code=True)
+def __(mo):
+    mo.md(
+        r"""
+        **Some tips from our experience with marimo**
+
+        1. If a notebook contains any side effect, e.g., reading an external .csv file, you'd better use a `marimo.ui.form` for users to config the path of this .csv file.
+        2. You can create more ui components and appealing contents with pure html, [anywidget](https://github.com/manzt/anywidget) and more. But when you are doing this, remember to check its appearance under both light and dark themes, and different widths.
+        3. Albeit you can create local variables in a cell with a prefix "_", we recommend you do this as little as possible because the `Explore variables` panel will neglect  these variables, making debug these variables hard.
+        4. If you wan't your notebook to run properly in our cloud, please check whether the dependencies are supported by wasm. Some popular libraries like `polars` and `openai`, for example, are not supported.
+        5. Attach as few assets as possible, we want to keep our repo lightweight.
+        6. Functional thinking are preferred in marimo since instances are immutable.
+        """
+    ).callout(kind="info")
     return
 
 
 @app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="todos">TODOs</h1>
-
-        1. todo task 1
-        2. todo task 2
-        3. …
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        **Suggestions for other derived notebooks.**
-
-        1. suggestion 1
-        2. suggestion 2
-        3. …
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        **Suggestions for reading other notebooks.**
-
-        1. suggestion 1
-        2. suggestion 2
-        3. …
-        """
-    )
-    return
-
-
-@app.cell
 def __(mo):
     # Custom Constants
     custom_form = (
         mo.md(
             r"""
             **Customize your constants here:**
-        
+
             {image}
-        
+
             """
         )
         .batch(
@@ -188,16 +116,16 @@ def __(mo):
     return (custom_form,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(NOTEBOOK_TITLE, mo):
     mo.md(
         f"""
         <h1 id="home">{NOTEBOOK_TITLE}</h1>
         ---
 
-        **Abstract**
+        **TLDR**
 
-        > write abstract here
+        > write TLDR here
 
         > > use hyperlinks like [section x](#x) to help with quick navigation
 
@@ -221,7 +149,7 @@ def __(NOTEBOOK_TITLE, mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         rf"""
@@ -243,7 +171,7 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         rf"""
@@ -261,19 +189,7 @@ def __(mo):
     return
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="experiment">Experiment</h1>
-
-        > write experiment here
-        """
-    )
-    return
-
-
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         """
@@ -286,7 +202,7 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __():
     import marimo as mo
 
@@ -300,68 +216,180 @@ def __():
     return (mo,)
 
 
-@app.cell
+@app.cell(hide_code=True)
+def __():
+    HEADER_HTML = r"""
+    <head>
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .header-container {
+          width: 100%;
+          border: 1px solid #333;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .banner {
+          height: 200px;
+          background-image: url('https://i.ibb.co/SVcC6bb/final.png');
+          background-size: cover;
+          background-position: center;
+        }
+
+        .header-content {
+          padding: 20px;
+        }
+
+        .title-section {
+          margin-bottom: 16px;
+        }
+
+        .title-section h1 {
+          font-size: 24px;
+          margin-bottom: 8px;
+          letter-spacing: 1px;
+        }
+
+        .meta-info {
+          font-size: 14px;
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .meta-info span {
+          margin-right: 16px;
+          margin-bottom: 5px;
+        }
+
+        .tags, .contact {
+          margin-top: 12px;
+          font-size: 13px;
+        }
+      </style>
+    </head>
+    """
+    return (HEADER_HTML,)
+
+
+@app.cell(hide_code=True)
+def __(AUTHOR_CONTACT, AUTHOR_NAME, NOTEBOOK_TAGS, NOTEBOOK_TITLE):
+    HEADER_BODY = f"""<body>
+      <div class="header-container">
+        <div class="banner"></div>
+        <div class="header-content">     
+          <div class="title-section">
+            <h1>{NOTEBOOK_TITLE}</h1>
+          </div>
+          <div class="meta-info">
+            <span>Author: {AUTHOR_NAME}</span>
+          </div>
+          <div class="tags">
+            Tag: <span>{NOTEBOOK_TAGS}</span>
+          </div>
+          <div class="contact">
+            Contact: <span>{AUTHOR_CONTACT}</span>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>"""
+    return (HEADER_BODY,)
+
+
+@app.cell(hide_code=True)
 def __(mo):
-    mo.md(
-        rf"""
-        Implement your code in following order:
+    # Initial Notebook Options
+    init_form = (
+        mo.md(
+            r"""
+            **Define Your Initial Notebook Options Here:**
 
-        1. imports
-        2. define variables
-        3. implement what main() does
-        4. define functions
-        5. define classes
-        6. define marimo user interface
-        7. implement sidebar (important for the navigation)
-        8. define constants
-        """
+            {title}
+
+            {path}
+
+            {tags}
+
+            {author_name}
+
+            {author_contact}
+
+            """
+        )
+        .batch(
+            title=mo.ui.text(
+                placeholder="The Elements of Marimo",
+                label="The title of your notebook: ",
+                full_width=True,
+            ),
+            path=mo.ui.text(
+                placeholder="marimo-tutorials/Computer-Science/..",
+                label="The path of your notebook: ",
+                full_width=True,
+            ),
+            tags=mo.ui.text(
+                placeholder="#deep-learning #transformers",
+                label="Tags of your notebook: ",
+                full_width=True,
+            ),
+            author_name=mo.ui.text(
+                placeholder="marimo-tutorials",
+                label="Your name: ",
+                full_width=True,
+            ),
+            author_contact=mo.ui.text(
+                placeholder="marimo-tutorials@example.com",
+                label="Your contact info: ",
+                full_width=True,
+            ),
+        )
+        .form(bordered=True, label="Custom Constants")
     )
-    return
+    return (init_form,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(init_form):
-    NOTEBOOK_TITLE = init_form.value["title"] if init_form.value else "Notebook Title"
+    NOTEBOOK_TITLE = (
+        init_form.value["title"] if init_form.value else "Notebook Title"
+    )
     NOTEBOOK_PATH = init_form.value["path"] if init_form.value else ".."
+    NOTEBOOK_TAGS = (
+        init_form.value["tags"]
+        if init_form.value
+        else "#deep-learning #transformers"
+    )
     AUTHOR_NAME = (
-        init_form.value["author_name"] if init_form.value else "marimo-tutorials-team"
+        init_form.value["author_name"]
+        if init_form.value
+        else "marimo-tutorials-team"
     )
     AUTHOR_CONTACT = (
         init_form.value["author_contact"]
         if init_form.value
         else "marimtutorial@example.com"
     )
-    return AUTHOR_CONTACT, AUTHOR_NAME, NOTEBOOK_PATH, NOTEBOOK_TITLE
-
-
-@app.cell
-def __(NOTEBOOK_TITLE, mo):
-    # implement sidebar in source code
-    sidebar_content = {
-        "#home": f"{mo.icon('lucide:home')} Home",
-        "#intro": "Introduction",
-        "Section 1": {
-            "#x": "Overview",
-            "#x-x": "Subsection x",
-        },  ## more sections below
-        "#summary": "Summary",
-        "#experiment": "Experiment",
-        "#refs": "References",
-        "#src": "Source Code",
-        "Links": {
-            "https://github.com/Haleshot/marimo-tutorials": f"{mo.icon('lucide:github')} GitHub",
-        },
-    }
-    mo.sidebar(
-        [
-            mo.md(f"# {NOTEBOOK_TITLE}"),
-            mo.nav_menu(sidebar_content, orientation="vertical"),
-        ]
+    return (
+        AUTHOR_CONTACT,
+        AUTHOR_NAME,
+        NOTEBOOK_PATH,
+        NOTEBOOK_TAGS,
+        NOTEBOOK_TITLE,
     )
-    return (sidebar_content,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(AUTHOR_CONTACT, AUTHOR_NAME, mo):
     mo.md(
         f"""
