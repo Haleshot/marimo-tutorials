@@ -3,7 +3,7 @@ import marimo
 __generated_with = "0.8.19"
 app = marimo.App(
     app_title="Exploring Parkinson's Disease Diagnosis",
-    css_file="l",
+    css_file="",
 )
 
 
