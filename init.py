@@ -10,7 +10,7 @@ This is the starting point for your notebook.
 
 import marimo
 
-__generated_with = "0.8.18"
+__generated_with = "0.8.19"
 app = marimo.App(width="medium")
 
 
@@ -356,7 +356,7 @@ def __():
     return HeaderWidget, anywidget, traitlets
 
 
-@app.cell(hide_code=True)
+@app.cell
 def __(HeaderWidget):
     header_widget = HeaderWidget(
         result={
