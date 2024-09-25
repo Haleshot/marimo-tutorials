@@ -388,17 +388,5 @@ def __(init_form):
     )
 
 
-@app.cell(hide_code=True)
-def __(AUTHOR_CONTACT, AUTHOR_NAME, mo):
-    mo.md(
-        f"""
-        **Authors**
-
-        - [{AUTHOR_NAME}]({AUTHOR_CONTACT})
-        """
-    )
-    return
-
-
 if __name__ == "__main__":
     app.run()
