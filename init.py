@@ -1,135 +1,51 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "marimo",
+# ]
+# ///
 """
 This is the starting point for your notebook.
 """
 
 import marimo
 
-__generated_with = "0.6.13"
-app = marimo.App()
+__generated_with = "0.8.18"
+app = marimo.App(width="medium")
+
+
+@app.cell(hide_code=True)
+def __(header_widget):
+    header_widget
+    return
 
 
 @app.cell(hide_code=True)
 def __(mo):
-    # Initial Notebook Options
-    init_form = (
-        mo.md(
-            r"""
-            **Define Your Initial Notebook Options Here:**
-        
-            {title}
+    mo.md(
+        r"""
+        First of all, create a header for your notebook.
 
-            {path}
+        We've designed a `HeaderWidget` for you to display important information.
 
-            {author_name}
+        To use `HeaderWidget`, you need to create an instance of it. You can pass a dictionary containing key-value pairs that represent the information you want to display in the header. 
 
-            {author_contact}
-        
-            """
+        Here's the code for the above example:
+
+        ```python
+        HeaderWidget(
+            result={
+                "Title": "My Comprehensive Data Analysis Notebook",
+                "Author": "Jane Smith",
+                "Date": "2024-09-25",
+                "Version": "2.1",
+                "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
+                "Keywords": "data analysis, e-commerce, customer behavior, machine learning",
+                "Data Sources": "Customer transaction logs, website clickstream data, CRM records, social media interactions",
+                "Tools Used": "Python, Pandas, Scikit-learn, Matplotlib, Seaborn, TensorFlow",
+            }
         )
-        .batch(
-            title=mo.ui.text(
-                placeholder="The Elements of Marimo",
-                label="The title of your notebook: ",
-                full_width=True,
-            ),
-            path=mo.ui.text(
-                placeholder="marimo-tutorials/Computer-Science/..",
-                label="The path of your notebook: ",
-                full_width=True,
-            ),
-            author_name=mo.ui.text(
-                placeholder="marimo-tutorials",
-                label="Your name: ",
-                full_width=True,
-            ),
-            author_contact=mo.ui.text(
-                placeholder="marimo-tutorials@example.com",
-                label="Your contact info: ",
-                full_width=True,
-            ),
-        )
-        .form(bordered=True, label="Custom Constants")
-    )
-    return (init_form,)
-
-
-@app.cell(hide_code=True)
-def __(init_form, mo):
-    mo.vstack(
-        [
-            mo.accordion(
-                items={
-                    "Design Patterns of Marimo Tutorials": "Marimo + Interactivity + Visualization + Flexibility + Minimalism",
-                    "Notebook Structure": mo.md(
-                        """
-                ```tree
-                .
-                ├── TODOs
-                ├── Suggested Reading & Suggestions for other Tutorials
-                ├── Custom Input (optional but suggested)
-                ├── Notebook Title
-                ├── Abstract
-                ├── Introduction
-                ├── Main Body
-                ├── Summary
-                ├── Experiments (optional)
-                ├── Exercises (optional)
-                ├── References (optional)
-                ├── Appendix (optional)
-                ├── Source Code
-                ├── Authors
-                └── Acknowledgments (optional)
-                ```
-                """
-                    ),
-                    "Incide Notebook": mo.md(
-                        """
-                - Remember to write Navigation
-                - Remember to add interactivity (`marimo.ui`) and visualizations as you can but avoid repetition
-                - You can quote from time to time
-                - You can write some short recaps from time to time
-                """
-                    ),
-                    "Best Practise": mo.md(
-                        """
-                > Check following notebooks on how to maximize `marimo`:
-
-                - []()
-                """
-                    ),
-                },
-                lazy=True,
-                multiple=True,
-            ),
-            mo.md(
-                rf"""
-        <div id="create">
-            <b> Create your starting notebook: <b>
-        </div>
-        """
-            ),
-            init_form,
-            mo.md(rf"> View your starting notebook below and make changes if needed:"),
-        ]
-    )
-    return
-
-
-@app.cell
-def __():
-    # mo.ui.fo
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="todos">TODOs</h1>
-
-        1. todo task 1
-        2. todo task 2
-        3. …
+        ```
         """
     )
     return
@@ -138,47 +54,36 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
-        **Suggestions for other derived notebooks.**
+        r"""
+        **Some tips from our experience with marimo**
 
-        1. suggestion 1
-        2. suggestion 2
-        3. …
+        1. If a notebook contains any side effect, e.g., reading an external .csv file, you'd better use a `marimo.ui.form` for users to config the path of this .csv file.
+        2. You can create more ui components and appealing contents with pure html, [anywidget](https://github.com/manzt/anywidget) and more. But when you are doing this, remember to check its appearance under both light and dark themes, and different widths.
+        3. Albeit you can create local variables in a cell with a prefix "_", we recommend you do this as little as possible because the `Explore variables` panel will neglect  these variables, making debug these variables hard.
+        4. If you want your notebook to run properly in our cloud, please check whether the dependencies are supported by wasm. Some popular libraries like `polars` and `openai`, for example, are not supported.
+        5. Attach as few assets as possible, we want to keep our repo lightweight.
+        6. Functional thinking are preferred in marimo since instances are immutable.
         """
-    )
+    ).callout(kind="info")
     return
 
 
 @app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        **Suggestions for reading other notebooks.**
-
-        1. suggestion 1
-        2. suggestion 2
-        3. …
-        """
-    )
-    return
-
-
-@app.cell
 def __(mo):
     # Custom Constants
     custom_form = (
         mo.md(
             r"""
             **Customize your constants here:**
-        
+
             {image}
-        
+
             """
         )
         .batch(
             image=mo.ui.text(
                 value="../assets/<>/<>",
-                label="The path of your data: ",
+                label="Path of your data: ",
                 full_width=True,
             ),  ## add more rows below
         )
@@ -188,16 +93,32 @@ def __(mo):
     return (custom_form,)
 
 
-@app.cell
-def __(NOTEBOOK_TITLE, mo):
+@app.cell(hide_code=True)
+def __(mo):
+    mo.md(
+        r"""
+        You can access the value of the form above with:
+
+        ```python
+        custom_form.value['image']
+        ```
+
+        after the submission.
+        """
+    ).callout(kind="info")
+    return
+
+
+@app.cell(hide_code=True)
+def __(mo):
     mo.md(
         f"""
-        <h1 id="home">{NOTEBOOK_TITLE}</h1>
+        <h1 id="home">NOTEBOOK_TITLE</h1>
         ---
 
-        **Abstract**
+        **TLDR**
 
-        > write abstract here
+        > write TLDR here
 
         > > use hyperlinks like [section x](#x) to help with quick navigation
 
@@ -221,7 +142,7 @@ def __(NOTEBOOK_TITLE, mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         rf"""
@@ -232,18 +153,12 @@ def __(mo):
         <h2 id="x-x" align="center">Subsection X</h2>
 
         > main body
-
-        **Recaps**
-
-        - recap 1
-        - recap 2
-        - …
         """
     )
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         rf"""
@@ -261,23 +176,13 @@ def __(mo):
     return
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="experiment">Experiment</h1>
-
-        > write experiment here
-        """
-    )
-    return
-
-
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         """
         <h1 id="refs">References</h1>
+
+        > list your references
 
         1. [Reference 1](https://example.com)
         2. [Reference 2](https://example.com)
@@ -286,7 +191,7 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __():
     import marimo as mo
 
@@ -300,77 +205,172 @@ def __():
     return (mo,)
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        rf"""
-        Implement your code in following order:
+@app.cell(hide_code=True)
+def __():
+    import anywidget
+    import traitlets
 
-        1. imports
-        2. define variables
-        3. implement what main() does
-        4. define functions
-        5. define classes
-        6. define marimo user interface
-        7. implement sidebar (important for the navigation)
-        8. define constants
+
+    class HeaderWidget(anywidget.AnyWidget):
+        _esm = """
+        function render({ model, el }) {
+            const result = model.get("result");
+
+            const container = document.createElement("div");
+            container.className = "header-container";
+
+            const banner = document.createElement("img");
+            banner.className = "banner";
+            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.style.width = "100%";
+            banner.style.height = "200px";
+            banner.style.objectFit = "cover";
+            banner.style.borderRadius = "10px 10px 0 0";
+            banner.alt = "Marimo Banner";
+
+            const form = document.createElement("div");
+            form.className = "form-container";
+
+            for (const [key, value] of Object.entries(result)) {
+                const row = document.createElement("div");
+                row.className = "form-row";
+
+                const label = document.createElement("label");
+                label.textContent = key;
+
+                const valueContainer = document.createElement("div");
+                valueContainer.className = "value-container";
+
+                if (value.length > 100) {
+                    const preview = document.createElement("div");
+                    preview.className = "preview";
+                    preview.textContent = value.substring(0, 100) + "...";
+
+                    const fullText = document.createElement("div");
+                    fullText.className = "full-text";
+                    fullText.textContent = value;
+
+                    const toggleButton = document.createElement("button");
+                    toggleButton.className = "toggle-button";
+                    toggleButton.textContent = "Show More";
+                    toggleButton.onclick = () => {
+                        if (fullText.style.display === "none") {
+                            fullText.style.display = "block";
+                            preview.style.display = "none";
+                            toggleButton.textContent = "Show Less";
+                        } else {
+                            fullText.style.display = "none";
+                            preview.style.display = "block";
+                            toggleButton.textContent = "Show More";
+                        }
+                    };
+
+                    valueContainer.appendChild(preview);
+                    valueContainer.appendChild(fullText);
+                    valueContainer.appendChild(toggleButton);
+
+                    fullText.style.display = "none";
+                } else {
+                    valueContainer.textContent = value;
+                }
+
+                row.appendChild(label);
+                row.appendChild(valueContainer);
+                form.appendChild(row);
+            }
+
+            container.appendChild(banner);
+            container.appendChild(form);
+            el.appendChild(container);
+        }
+        export default { render };
         """
-    )
-    return
 
+        _css = """
+        .header-container {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
 
-@app.cell
-def __(init_form):
-    NOTEBOOK_TITLE = init_form.value["title"] if init_form.value else "Notebook Title"
-    NOTEBOOK_PATH = init_form.value["path"] if init_form.value else ".."
-    AUTHOR_NAME = (
-        init_form.value["author_name"] if init_form.value else "marimo-tutorials-team"
-    )
-    AUTHOR_CONTACT = (
-        init_form.value["author_contact"]
-        if init_form.value
-        else "marimtutorial@example.com"
-    )
-    return AUTHOR_CONTACT, AUTHOR_NAME, NOTEBOOK_PATH, NOTEBOOK_TITLE
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
+        .form-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            font-weight: 300;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
 
-@app.cell
-def __(NOTEBOOK_TITLE, mo):
-    # implement sidebar in source code
-    sidebar_content = {
-        "#home": f"{mo.icon('lucide:home')} Home",
-        "#intro": "Introduction",
-        "Section 1": {
-            "#x": "Overview",
-            "#x-x": "Subsection x",
-        },  ## more sections below
-        "#summary": "Summary",
-        "#experiment": "Experiment",
-        "#refs": "References",
-        "#src": "Source Code",
-        "Links": {
-            "https://github.com/Haleshot/marimo-tutorials": f"{mo.icon('lucide:github')} GitHub",
-        },
-    }
-    mo.sidebar(
-        [
-            mo.md(f"# {NOTEBOOK_TITLE}"),
-            mo.nav_menu(sidebar_content, orientation="vertical"),
-        ]
-    )
-    return (sidebar_content,)
+        .form-row {
+            display: flex;
+            flex-direction: column;
+        }
 
+        label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
 
-@app.cell
-def __(AUTHOR_CONTACT, AUTHOR_NAME, mo):
-    mo.md(
-        f"""
-        **Authors**
+        .value-container {
+            font-size: 1em;
+            line-height: 1.5;
+        }
 
-        - [{AUTHOR_NAME}]({AUTHOR_CONTACT})
+        .preview, .full-text {
+            margin-bottom: 10px;
+        }
+
+        .toggle-button {
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
         """
+
+        result = traitlets.Dict({}).tag(sync=True)
+    return HeaderWidget, anywidget, traitlets
+
+
+@app.cell(hide_code=True)
+def __(HeaderWidget):
+    header_widget = HeaderWidget(
+        result={
+            "Title": "My Comprehensive Data Analysis Notebook",
+            "Author": "Jane Smith",
+            "Date": "2024-09-25",
+            "Version": "2.1",
+            "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
+            "Keywords": "data analysis, e-commerce, customer behavior, machine learning",
+            "Data Sources": "Customer transaction logs, website clickstream data, CRM records, social media interactions",
+            "Tools Used": "Python, Pandas, Scikit-learn, Matplotlib, Seaborn, TensorFlow",
+        }
     )
-    return
+    return (header_widget,)
 
 
 if __name__ == "__main__":
