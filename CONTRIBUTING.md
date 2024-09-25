@@ -1,6 +1,4 @@
-# Contributing to the University Portal Mobile App
-
-Welcome to the University Portal Mobile App project! We appreciate your interest in contributing to this project. Your contributions can help make this app even better.
+# Contributing to the marimo tutorials repository
 
 Before you get started, please take a moment to read through this document to understand how you can contribute and the guidelines you should follow.
 
