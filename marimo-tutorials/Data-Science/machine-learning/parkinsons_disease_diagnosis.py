@@ -8,13 +8,15 @@ app = marimo.App(
 
 
 @app.cell(hide_code=True)
-def __(HEADER_BODY, HEADER_HTML, mo):
+def __(header_widget):
+    header_widget
+    return
+
+
+@app.cell(hide_code=True)
+def __(mo):
     mo.md(
         f"""
-        {mo.Html(HEADER_HTML + HEADER_BODY)}
-        <br>
-        [Kaggle Link of the Dataset](https://www.kaggle.com/datasets/vikasukani/parkinsons-disease-data-set)
-
         {mo.accordion({
             "Abstract": mo.md("""Parkinson's Disease (PD) is a neurodegenerative disorder impacting movement and speech. Early and accurate diagnosis is crucial for timely intervention. This study investigates the potential of machine learning to analyze voice recordings for PD detection. We simulate a dataset using a Variational Autoencoder (VAE) to address potential limitations of real-world datasets. Subsequently, we explore various regression models for the task and compare their performance using cross-validation techniques. This report outlines the methodology, analyzes the results, and provides insights into selecting the most suitable model for PD diagnosis based on voice data."""),
 
@@ -1052,12 +1054,6 @@ def __(mo):
 
 
 @app.cell(hide_code=True)
-def __(mo):
-    mo.md(r"""Coding Time""")
-    return
-
-
-@app.cell(hide_code=True)
 def __(train_test_split, transformed_synthetic_data):
     # generate train & test data
     train, test = train_test_split(
@@ -1272,6 +1268,16 @@ def __():
 
 
 @app.cell(hide_code=True)
+def __(mo):
+    import plotly.io as pio
+
+    pio.templates.default = (
+        "plotly_dark" if mo.app_meta().theme == "dark" else "simple_white"
+    )
+    return (pio,)
+
+
+@app.cell(hide_code=True)
 def __():
     from sklearn.linear_model import LogisticRegression
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -1300,8 +1306,176 @@ def __():
 
 
 @app.cell(hide_code=True)
-def __(mo):
-    mo.md(r"""#### Plotting Functions""")
+def __():
+    import anywidget
+    import traitlets
+
+
+    class HeaderWidget(anywidget.AnyWidget):
+        _esm = """
+        function render({ model, el }) {
+            const result = model.get("result");
+
+            const container = document.createElement("div");
+            container.className = "header-container";
+
+            const banner = document.createElement("img");
+            banner.className = "banner";
+            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.style.width = "100%";
+            banner.style.height = "200px";
+            banner.style.objectFit = "cover";
+            banner.style.borderRadius = "10px 10px 0 0";
+            banner.alt = "Marimo Banner";
+
+            const form = document.createElement("div");
+            form.className = "form-container";
+
+            for (const [key, value] of Object.entries(result)) {
+                const row = document.createElement("div");
+                row.className = "form-row";
+
+                const label = document.createElement("label");
+                label.textContent = key;
+
+                const valueContainer = document.createElement("div");
+                valueContainer.className = "value-container";
+
+                if (value.length > 100) {
+                    const preview = document.createElement("div");
+                    preview.className = "preview";
+                    preview.textContent = value.substring(0, 100) + "...";
+
+                    const fullText = document.createElement("div");
+                    fullText.className = "full-text";
+                    fullText.textContent = value;
+
+                    const toggleButton = document.createElement("button");
+                    toggleButton.className = "toggle-button";
+                    toggleButton.textContent = "Show More";
+                    toggleButton.onclick = () => {
+                        if (fullText.style.display === "none") {
+                            fullText.style.display = "block";
+                            preview.style.display = "none";
+                            toggleButton.textContent = "Show Less";
+                        } else {
+                            fullText.style.display = "none";
+                            preview.style.display = "block";
+                            toggleButton.textContent = "Show More";
+                        }
+                    };
+
+                    valueContainer.appendChild(preview);
+                    valueContainer.appendChild(fullText);
+                    valueContainer.appendChild(toggleButton);
+
+                    fullText.style.display = "none";
+                } else {
+                    valueContainer.textContent = value;
+                }
+
+                row.appendChild(label);
+                row.appendChild(valueContainer);
+                form.appendChild(row);
+            }
+
+            container.appendChild(banner);
+            container.appendChild(form);
+            el.appendChild(container);
+        }
+        export default { render };
+        """
+
+        _css = """
+        .header-container {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .form-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            font-weight: 300;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .value-container {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .preview, .full-text {
+            margin-bottom: 10px;
+        }
+
+        .toggle-button {
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        """
+
+        result = traitlets.Dict({}).tag(sync=True)
+    return HeaderWidget, anywidget, traitlets
+
+
+@app.cell(hide_code=True)
+def __(HeaderWidget):
+    header_widget = HeaderWidget(
+        result={
+            "Title": "Exploring Parkinson's Disease Diagnosis",
+            "Author": "H. Eugene",
+            "Contact": "eugeneheiner14@gmail.com",
+            "Date": "2024-09-25",
+            "Keywords": "Synthetic Data Generation, Variational AutoEncoder, Dimensionality Reduction, Machine Learningg",
+            "Data Sources": "https://www.kaggle.com/datasets/vikasukani/parkinsons-disease-data-set",
+            "Tools Used": "Polars, PyTorch, Plotly",
+            "Version": "0.1",
+        }
+    )
+    return (header_widget,)
+
+
+@app.cell(hide_code=True)
+def __():
+    # plotting Functions
     return
 
 
@@ -1553,113 +1727,8 @@ def __(pl, px):
 
 @app.cell(hide_code=True)
 def __():
-    NOTEBOOK_TITLE = "Exploring Parkinson's Disease Diagnosis"
     DATA_PATH = "assets/parkinsons.csv"
-    AUTHOR_NAME = "Eugene"
-    AUTHOR_CONTACT = "eugeneheiner14@gmail.com"
-    return AUTHOR_CONTACT, AUTHOR_NAME, DATA_PATH, NOTEBOOK_TITLE
-
-
-@app.cell(hide_code=True)
-def __():
-    NOTEBOOK_TAGS = "#synthetic-data-generation #variational-autoencoder #dimensionality-reduction #machine-learning"
-    return (NOTEBOOK_TAGS,)
-
-
-@app.cell(hide_code=True)
-def __():
-    HEADER_HTML = r"""
-    <head>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-        }
-
-        body {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .header-container {
-          width: 100%;
-          border: 1px;
-          border-radius: 12px;
-          overflow: hidden;
-        }
-
-        .banner {
-          height: 200px;
-          background-image: url('https://i.ibb.co/SVcC6bb/final.png');
-          background-size: cover;
-          background-position: center;
-        }
-
-        .header-content {
-          padding: 20px;
-        }
-
-        .title-section {
-          margin-bottom: 16px;
-        }
-
-        .title-section h1 {
-          font-size: 24px;
-          margin-bottom: 8px;
-          letter-spacing: 1px;
-        }
-
-        .meta-info {
-          font-size: 14px;
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .meta-info span {
-          margin-right: 16px;
-          margin-bottom: 5px;
-        }
-
-        .tags, .contact {
-          margin-top: 12px;
-          font-size: 13px;
-        }
-      </style>
-    </head>
-    """
-    return (HEADER_HTML,)
-
-
-@app.cell(hide_code=True)
-def __(AUTHOR_CONTACT, AUTHOR_NAME, NOTEBOOK_TAGS, NOTEBOOK_TITLE):
-    HEADER_BODY = f"""<body>
-      <div class="header-container">
-        <div class="banner"></div>
-        <div class="header-content">     
-          <div class="title-section">
-            <h1>{NOTEBOOK_TITLE}</h1>
-          </div>
-          <div class="meta-info">
-            <span>Author: {AUTHOR_NAME}</span>
-          </div>
-          <div class="tags">
-            Tag: <span>{NOTEBOOK_TAGS}</span>
-          </div>
-          <div class="contact">
-            Contact: <span>{AUTHOR_CONTACT}</span>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>"""
-    return (HEADER_BODY,)
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md("# NEXT STEP ->").right()
-    return
+    return (DATA_PATH,)
 
 
 if __name__ == "__main__":
