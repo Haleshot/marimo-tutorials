@@ -2,6 +2,8 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
+#     "anywidget",
+#     "traitlets",
 # ]
 # ///
 """
@@ -210,7 +212,6 @@ def __():
     import anywidget
     import traitlets
 
-
     class HeaderWidget(anywidget.AnyWidget):
         _esm = """
         function render({ model, el }) {
@@ -353,6 +354,7 @@ def __():
         """
 
         result = traitlets.Dict({}).tag(sync=True)
+
     return HeaderWidget, anywidget, traitlets
 
 
