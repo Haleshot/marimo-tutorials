@@ -1,33 +1,180 @@
 import marimo
 
-__generated_with = "0.6.13"
+__generated_with = "0.8.21"
 app = marimo.App(width="medium", app_title="Non-Adaptive Image Scaling")
 
 
 @app.cell
-def __(mo):
-    mo.md(
-        r"""
-        # TODOs
-
-        1. Add Fourier Spectrum Analysis.
-        """
-    )
+def __(header_widget):
+    header_widget
     return
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        rf"""
-        **Suggestions for other derived notebooks.**
-
-        1. Image-Processing on RGB (and other forms of) images.
-        2. Cubic Interpolation and Splines.
-        3. Fourier Transform.
-        """
+@app.cell(hide_code=True)
+def __(HeaderWidget):
+    header_widget = HeaderWidget(
+        result={
+            "Title": "Non-Adaptive Image Scaling Algorithms",
+            "Author": "Eugene",
+            "Contact": "eugeneheiner14@gmail.com",
+            "Date": "2024-06-14",
+            "Version": "0.2",
+            "Keywords": "Image Scaling, Interpolation, Convolution, Lanczos resampling",
+            "Tools Used": "Plotly, Numpy, Pillow",
+        }
     )
-    return
+    return (header_widget,)
+
+
+@app.cell(hide_code=True)
+def __():
+    import anywidget
+    import traitlets
+
+
+    class HeaderWidget(anywidget.AnyWidget):
+        _esm = """
+        function render({ model, el }) {
+            const result = model.get("result");
+
+            const container = document.createElement("div");
+            container.className = "header-container";
+
+            const banner = document.createElement("img");
+            banner.className = "banner";
+            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.style.width = "100%";
+            banner.style.height = "200px";
+            banner.style.objectFit = "cover";
+            banner.style.borderRadius = "10px 10px 0 0";
+            banner.alt = "Marimo Banner";
+
+            const form = document.createElement("div");
+            form.className = "form-container";
+
+            for (const [key, value] of Object.entries(result)) {
+                const row = document.createElement("div");
+                row.className = "form-row";
+
+                const label = document.createElement("label");
+                label.textContent = key;
+
+                const valueContainer = document.createElement("div");
+                valueContainer.className = "value-container";
+
+                if (value.length > 100) {
+                    const preview = document.createElement("div");
+                    preview.className = "preview";
+                    preview.textContent = value.substring(0, 100) + "...";
+
+                    const fullText = document.createElement("div");
+                    fullText.className = "full-text";
+                    fullText.textContent = value;
+
+                    const toggleButton = document.createElement("button");
+                    toggleButton.className = "toggle-button";
+                    toggleButton.textContent = "Show More";
+                    toggleButton.onclick = () => {
+                        if (fullText.style.display === "none") {
+                            fullText.style.display = "block";
+                            preview.style.display = "none";
+                            toggleButton.textContent = "Show Less";
+                        } else {
+                            fullText.style.display = "none";
+                            preview.style.display = "block";
+                            toggleButton.textContent = "Show More";
+                        }
+                    };
+
+                    valueContainer.appendChild(preview);
+                    valueContainer.appendChild(fullText);
+                    valueContainer.appendChild(toggleButton);
+
+                    fullText.style.display = "none";
+                } else {
+                    valueContainer.textContent = value;
+                }
+
+                row.appendChild(label);
+                row.appendChild(valueContainer);
+                form.appendChild(row);
+            }
+
+            container.appendChild(banner);
+            container.appendChild(form);
+            el.appendChild(container);
+        }
+        export default { render };
+        """
+
+        _css = """
+        .header-container {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .form-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            font-weight: 300;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .value-container {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .preview, .full-text {
+            margin-bottom: 10px;
+        }
+
+        .toggle-button {
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        """
+
+        result = traitlets.Dict({}).tag(sync=True)
+    return HeaderWidget, anywidget, traitlets
 
 
 @app.cell(hide_code=True)
@@ -405,6 +552,7 @@ def __(np):
 
         return _func
 
+
     custom_func = kernel_func(1)
     return custom_func, kernel_func
 
@@ -452,11 +600,11 @@ def __(
 def __(mo):
     mo.md(
         rf"""
-        <h2 id="problems" align="center">The Problem With Sinc</h2>
+        <h2 id="problems" align="center">The Problem With Sinc</h2>
 
-        The first problem is evident: to convolve with sinc, we need to consider all the samples we have every time. This is clearly impractical: we’d need to look at every pixel in the input image to generate each pixel in the output.
+        The first problem is evident: to convolve with sinc, we need to consider all the samples we have every time. This is clearly impractical: we’d need to look at every pixel in the input image to generate each pixel in the output.
 
-        The second problem is what happens when fourier spectrum is not of limited width. Let’s consider a simple stepping function, and corresponding interpolation results:
+        The second problem is what happens when fourier spectrum is not of limited width. Let’s consider a simple stepping function, and corresponding interpolation results:
         """
     )
     return
@@ -497,7 +645,7 @@ def __(
 def __(mo):
     mo.md(
         rf"""
-        The reconstructed signal repeatedly overshoots and undershoot our original function. These undesirable oscillations, known as Gibbs phenomenon, show up all the time in Fourier analysis when dealing with jump discontinuities and finite approximations. They are intimately related to sinc in a sense the Gibbs oscillations are all ghosts of sinc in one form or another.
+        The reconstructed signal repeatedly overshoots and undershoot our original function. These undesirable oscillations, known as Gibbs phenomenon, show up all the time in Fourier analysis when dealing with jump discontinuities and finite approximations. They are intimately related to sinc in a sense the Gibbs oscillations are all ghosts of sinc in one form or another.
 
         Lánczos interpolation will address both problems presented in this section.
         """
@@ -513,7 +661,7 @@ def __(mo):
 
         > Sinc, Chopped and Screwed
 
-        Let’s first consider the problem of sinc extending into infinity, and therefore requiring to examine all samples. Our first attempt to solve this issue might be just to just set sinc to zero outside a certain window
+        Let’s first consider the problem of sinc extending into infinity, and therefore requiring to examine all samples. Our first attempt to solve this issue might be just to just set sinc to zero outside a certain window
 
         We can define a function that sets another function to zero outside a specific interval. Let's denote this function as $\langle f(t) \rangle_a$. Here's the mathematical definition:
 
@@ -532,7 +680,9 @@ def __(mo):
 def __(mo, plot_interpolations, sample_freq, sgn, sinc_a, sinc_a_slider):
     mo.vstack(
         [
-            mo.hstack([sample_freq, sinc_a_slider], align="center", justify="center"),
+            mo.hstack(
+                [sample_freq, sinc_a_slider], align="center", justify="center"
+            ),
             plot_interpolations(
                 sgn,
                 [-2, 2],
@@ -786,7 +936,6 @@ def __(NDArray, np):
                 lambda x: 0,
             ],
         )  # Add default case for x outside range
-
     return (triangle,)
 
 
@@ -827,7 +976,6 @@ def __(NDArray, np):
             )
 
         return _cubic
-
     return (cubic,)
 
 
@@ -853,7 +1001,6 @@ def __(NDArray, np):
                 lambda x: 1,
             ],
         )
-
     return (sinc,)
 
 
@@ -890,7 +1037,6 @@ def __(NDArray, np):
             )
 
         return _sinc
-
     return (sinc_a,)
 
 
@@ -930,7 +1076,6 @@ def __(NDArray, np):
             )
 
         return _sinc
-
     return (lanczos,)
 
 
@@ -954,13 +1099,14 @@ def __(NDArray, np):
         x = np.linspace(*x_range, int(frequency * (x_range[1] - x_range[0])) + 1)
         y = f(x)
         return np.stack([x, y], axis=1)
-
     return (generate_samples,)
 
 
 @app.cell
 def __(NDArray, np):
-    def interpolate_with_convolution(data: NDArray, g: callable, xi: int, ts: NDArray):
+    def interpolate_with_convolution(
+        data: NDArray, g: callable, xi: int, ts: NDArray
+    ):
         """
         Performs interpolation of a discrete signal using convolution with an interpolation function.
 
@@ -986,7 +1132,6 @@ def __(NDArray, np):
 
         # Extract interpolated values for the desired time points
         return [np.sum(g_callable(xi * (-k + t)) * f_k) for t in ts]
-
     return (interpolate_with_convolution,)
 
 
@@ -1038,8 +1183,9 @@ def __(
             for i, func in enumerate(interpolation_funcs)
         ]
         # Create the visualization using the provided function
-        return visualize_function_with_samples(f, samples, interpolated_values, names)
-
+        return visualize_function_with_samples(
+            f, samples, interpolated_values, names
+        )
     return (plot_interpolations,)
 
 
@@ -1069,7 +1215,6 @@ def __(Figure, generate_linspace_with_swing, go):
             )  # Ensure name conversion
 
         return fig
-
     return (visualize_kernels,)
 
 
@@ -1098,7 +1243,6 @@ def __(NDArray, np):
         num_elements = int((adjusted_high - adjusted_low) * 100)
 
         return np.linspace(adjusted_low, adjusted_high, num_elements)
-
     return (generate_linspace_with_swing,)
 
 
@@ -1158,11 +1302,12 @@ def __(Figure, NDArray, generate_linspace_with_swing, go, np):
         if additional_traces and names:
             for trace, name in zip(additional_traces, names):
                 fig.add_trace(
-                    go.Scatter(x=trace[:, 0], y=trace[:, 1], mode="lines", name=name)
+                    go.Scatter(
+                        x=trace[:, 0], y=trace[:, 1], mode="lines", name=name
+                    )
                 )
 
         return fig
-
     return (visualize_function_with_samples,)
 
 
@@ -1208,7 +1353,6 @@ def __(Image, np):
 
         # Convert the output back to a PIL Image for consistency
         return Image.fromarray(output_image.astype(np.uint8))
-
     return (nearest_neighbor_interpolation,)
 
 
@@ -1259,7 +1403,6 @@ def __(Image, np):
 
         # Convert the output back to a PIL Image for consistency
         return Image.fromarray(output_image.astype(np.uint8))
-
     return (bilinear_interpolation,)
 
 
@@ -1282,7 +1425,6 @@ def __(Image, mo, plt):
                 for image, title in zip(images, titles)
             ]
         )
-
     return (show_images,)
 
 
@@ -1298,11 +1440,12 @@ def __(Image, mo, np, show_images):
         """
         return mo.vstack(
             [
-                show_images(images[2 * i : 2 * (i + 1)], titles[2 * i : 2 * (i + 1)])
+                show_images(
+                    images[2 * i : 2 * (i + 1)], titles[2 * i : 2 * (i + 1)]
+                )
                 for i in range(int(np.ceil(len(images) // 2)))
             ]
         )
-
     return (show_rows_of_images,)
 
 
@@ -1350,18 +1493,6 @@ def __(Image, lena_downscaled, resizing_dim, show_rows_of_images):
         ],
     )
     return (exp_result,)
-
-
-@app.cell
-def __(resizing_dim):
-    resizing_dim
-    return
-
-
-@app.cell
-def __(downscaled_dim):
-    downscaled_dim
-    return
 
 
 @app.cell
@@ -1450,50 +1581,22 @@ def __(mo):
 @app.cell
 def __():
     import marimo as mo
-
-    from PIL import Image
     import matplotlib.pyplot as plt
     import numpy as np
-    from numpy.typing import NDArray
     import plotly.graph_objects as go
-
+    from numpy.typing import NDArray
+    from PIL import Image
     return Image, NDArray, go, mo, np, plt
 
 
 @app.cell
 def __(mo):
-    mo.sidebar(
-        [
-            mo.md("# Non-Adaptive Image Scaling"),
-            mo.nav_menu(
-                {
-                    "#home": f"{mo.icon('lucide:home')} Home",
-                    "#intro": "Introduction",
-                    "Fundamentals": {
-                        "#fundamentals": "Overview",
-                        "#nn": "NN Interpolation",
-                        "#bilinear": "Bilinear Interpolation",
-                        "#bicubic": "Bicubic Interpolation",
-                    },
-                    "Convolutions": {
-                        "#convolutions": "Overview",
-                        "#interpolation": "Into Convolution",
-                        "#problems": "Problems",
-                    },
-                    "Lánczos": {"#lanczos": "From Sinc"},
-                    "#summary": "Summary",
-                    "#exp": "Experiment",
-                    "#refs": "References",
-                    "#code": "Source Code",
-                    "Links": {
-                        "https://github.com/Haleshot/marimo-tutorials": f"{mo.icon('lucide:github')} GitHub",
-                    },
-                },
-                orientation="vertical",
-            ),
-        ]
+    import plotly.io as pio
+
+    pio.templates.default = (
+        "simple_white" if mo.app_meta().theme == "light" else "plotly_darf"
     )
-    return
+    return (pio,)
 
 
 @app.cell
@@ -1502,12 +1605,6 @@ def __():
     BILINEAR_SRC = "../assets/image-processing/bilinear.png"
     BICUBIC_SRC = "../assets/image-processing/bicubic.png"
     return BICUBIC_SRC, BILINEAR_SRC, NN_SRC
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(rf"Authors: [eugene](https://github.com/metaboulie)")
-    return
 
 
 if __name__ == "__main__":
