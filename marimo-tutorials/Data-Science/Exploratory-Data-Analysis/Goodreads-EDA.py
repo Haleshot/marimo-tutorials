@@ -12,7 +12,7 @@
 
 import marimo
 
-__generated_with = "0.8.14"
+__generated_with = "0.8.19"
 app = marimo.App(width="medium")
 
 
@@ -22,9 +22,9 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
-    mo.image(src="marimo-tutorials\community-tutorials-banner.png", alt="Community Tutorials Banner", width=800, rounded=True).center()
+    mo.image(src="https://i.ibb.co/SVcC6bb/final.png", alt="Community Tutorials Banner", width=800, rounded=True).center()
     return
 
 
@@ -59,7 +59,7 @@ def __(mo):
         label="Download the Dataset"
     ).center()
     download_txt
-    return download_txt,
+    return (download_txt,)
 
 
 @app.cell(hide_code=True)
@@ -181,7 +181,7 @@ def __(df1, df2, mo):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def __():
     # # df1.describe()
     # mo.ui.table(df1.describe())
@@ -298,19 +298,19 @@ def __(mo):
         options=["neutral", "danger", "warn", "success", "info"],
         value="neutral",
     )
-    return callout_kind,
+    return (callout_kind,)
 
 
 @app.cell(hide_code=True)
 def __(mo):
     init_eda = mo.md("## Initial EDA impressions \n ### 1.	For user ratings, how many total ratings are there - 5976479 \n ### 2.	How many total users are there - 53424 \n ### 3. How many total books are there  - 10000 \n ### 4. What is the maximum and minimum rating given by the user  - Max - 5, Min - 1 \n ### 5.  How many total columns are there in dataset books_enriched.csv - 30 \n ### 6. Anything noticeable in books dataset? If Yes,what? What steps will you suggest to handle that \n ### 7.	Print the statistical summary of books dataset and write the inference from the statistics observed for numeric as well as categorical columns. - From the above, while using the info() and describe() commands, I noticed the following: \n - There are two columns for authors (authors and authors_2). \n - There exist certain values in the publication year (-1750)  \n - No pa ges available for the book to actually exist (and yet it shows as published).  \n - Certain columns and attributes are not relevant and can be dropped during the PCA, EDA and feature engineering process to utilize data for various use case scenarios. \n - For ratings_count value, we notice that the maximum value is 4780653 ratings while the minimum value is 2716 ratings.")
-    return init_eda,
+    return (init_eda,)
 
 
 @app.cell(hide_code=True)
 def __(init_eda, mo):
     callout = mo.callout(init_eda, kind="info")
-    return callout,
+    return (callout,)
 
 
 @app.cell(hide_code=True)
@@ -414,7 +414,7 @@ def __(df2, mo):
 @app.cell(hide_code=True)
 def __(mo):
     numerical_infereces = mo.md(" ## Inferences  \n\n ## Numeric Columns Summary:   \n ### 1. average_rating: Mean rating is around 4.0 indicating a generally positive user rating for books. \n ### 2. books_count: This varies widely, with some books having multiple editions (max is 4917).  \n ### 3. original_publication_year: The mean year is around 1982, indicating the dataset has a mix of both old and recent books. \n ### 4. pages: Mean pages per book is around 336, but this varies greatly with some very short and very long books. \n ## Categorical Columns Summary:  \n ### 1. authors: Multiple authors are common; the dataset has unique author names for many books. \n ### 2. genres: Books are classified into multiple genres, indicating diverse book content. \n ### 3. language_code: 'eng' is the most common language code, suggesting the majority of books are in English. \n ### 4. title: Each book has a unique title, though some titles may be shared by different works. ")
-    return numerical_infereces,
+    return (numerical_infereces,)
 
 
 @app.cell(hide_code=True)
@@ -617,7 +617,7 @@ def __(df1, mo):
         print("\nNumber of Ratings per User:")
         user_ratings_count = df1["user_id"].value_counts()
         print(user_ratings_count)
-    return user_ratings_count,
+    return (user_ratings_count,)
 
 
 @app.cell(hide_code=True)
@@ -666,7 +666,7 @@ def __(df2, mo):
         print("\nPublication Year Distribution:")
         pub_year_counts = df2["original_publication_year"].value_counts().sort_index()
         print(pub_year_counts)
-    return pub_year_counts,
+    return (pub_year_counts,)
 
 
 @app.cell(hide_code=True)
@@ -712,7 +712,7 @@ def __(df1, mo):
         # plt.ylabel("Number of Ratings")
         # plt.title("Distribution of Ratings in Goodreads Dataset")
         # plt.gca()
-    return rating_counts,
+    return (rating_counts,)
 
 
 @app.cell(hide_code=True)
@@ -809,7 +809,7 @@ def __(df1, df2, plt, sns):
     plt.ylabel("Rating")
     plt.title("Rating vs. Publication Year in Goodreads Dataset")
     plt.gca()
-    return merged_data,
+    return (merged_data,)
 
 
 @app.cell(hide_code=True)
@@ -849,7 +849,7 @@ def __(df1, df2, plt, sns):
     plt.ylabel("Individual User Rating")
     plt.title("Rating vs. Average Rating per Book in Goodreads Dataset")
     plt.gca()
-    return average_ratings,
+    return (average_ratings,)
 
 
 @app.cell(hide_code=True)
@@ -934,7 +934,7 @@ def __(df1, plt, sns):
     plt.xlabel("Average Rating")
     plt.ylabel("Count")
     plt.gca()
-    return user_avg_ratings,
+    return (user_avg_ratings,)
 
 
 @app.cell(hide_code=True)
@@ -974,7 +974,7 @@ def __(df1, plt, sns):
     plt.ylabel("Count")
     plt.xscale("log")
     plt.gca()
-    return book_rating_counts,
+    return (book_rating_counts,)
 
 
 @app.cell(hide_code=True)
@@ -1014,7 +1014,7 @@ def __(df1, plt, sns):
     plt.ylabel("Count")
     plt.xscale("log")
     plt.gca()
-    return user_rating_counts,
+    return (user_rating_counts,)
 
 
 @app.cell(hide_code=True)
@@ -1163,7 +1163,7 @@ def __(cleaning_df):
     print(
         f"Author with most books: {author_book_counts.index[0]} ({author_book_counts.iloc[0]} books)"
     )
-    return author_book_counts,
+    return (author_book_counts,)
 
 
 @app.cell(hide_code=True)
@@ -1206,7 +1206,7 @@ def __(cleaning_df, mo):
         print(
             f"Most popular author: {author_popularity.index[0]} ({author_popularity.iloc[0]} total ratings)"
     )
-    return author_popularity,
+    return (author_popularity,)
 
 
 @app.cell(hide_code=True)
@@ -1241,7 +1241,7 @@ def __(cleaning_df, mo):
         print(
             f"Author with highest average rating: {author_avg_ratings.index[0]} (Average rating: {author_avg_ratings.iloc[0]:.2f})"
         )
-    return author_avg_ratings,
+    return (author_avg_ratings,)
 
 
 @app.cell(hide_code=True)
@@ -1385,7 +1385,7 @@ def __(mo):
     )
     _callout = mo.callout(summary, kind="success")
     _callout
-    return summary,
+    return (summary,)
 
 
 @app.cell(hide_code=True)
