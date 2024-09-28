@@ -10,7 +10,7 @@
   <a href="https://github.com/Haleshot/marimo-tutorials/blob/main/CONTRIBUTING.md"><img alt="Contributing" src="https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg"></a>
   <a href="https://github.com/Haleshot/marimo-tutorials/blob/main/CODE_OF_CONDUCT.md"><img alt="Code of Conduct" src="https://img.shields.io/badge/Code%20of%20Conduct-v1.0-ff69b4.svg"></a>
   <a href="https://github.com/Haleshot/marimo-tutorials"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Haleshot/marimo-tutorials?style=social"></a>
-  <a href="https://discord.gg/JE7nhX6mD8"><img alt="Discord" src="https://img.shields.io/discord/1234567890?color=7389D8&label=Discord&logo=discord&logoColor=ffffff"></a>
+  <a href="https://discord.gg/rAhpfKwuaN"><img alt="Discord" src="https://img.shields.io/discord/1234567890?color=7389D8&label=Discord&logo=discord&logoColor=ffffff"></a>
 </p>
 
 # marimo-tutorials
