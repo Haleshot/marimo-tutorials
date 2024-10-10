@@ -15,7 +15,7 @@
 
 # marimo-tutorials
 
-Welcome to `marimo-tutorials`, a comprehensive collection of interactive notebooks and tutorials showcasing the power and versatility of [marimo](https://marimo.io), an innovative Python notebook framework. This repository serves as a hub for learning, exploration, and community engagement across various domains of computer science, data science, and more.
+Welcome to `marimo-tutorials`, a comprehensive collection of interactive notebooks and tutorials showcasing the power and versatility of [marimo](https://marimo.io), an innovative Python notebook framework. This repository serves as a hub for learning, exploration, and community engagement across various domains of computer science, data science, AI, and more.
 
 ## Table of Contents
 
