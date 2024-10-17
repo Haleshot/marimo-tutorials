@@ -67,7 +67,7 @@ We welcome feature requests. If you have an idea for a new feature or improvemen
 
 Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive community.
 
-Thank you for contributing to the University Portal Mobile App project!
+Thank you for contributing to the marimo-tutorials repository!
 
 Happy coding!
 
