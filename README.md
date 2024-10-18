@@ -209,7 +209,8 @@ Here are some featured notebooks from our collection:
 
 While this repository hosts a variety of tutorials and notebooks, the official community spotlights are featured in a separate repository: [marimo-team/spotlights](https://github.com/marimo-team/spotlights). 
 
-The spotlights repository features a project or marimo notebook from the community every Thursday. If you've created a notebook in this repository that you believe would be a good fit for the community spotlight, feel free to open an [issue](https://github.com/marimo-team/spotlights/issues) in the spotlights repository.
+> [!NOTE]
+> The spotlights repository features a project or marimo notebook from the community every Thursday. If you've created a notebook in this repository that you believe would be a good fit for the community spotlight, feel free to open an [issue](https://github.com/marimo-team/spotlights/issues) in the spotlights repository.
 
 ## Notebook Structure
 
