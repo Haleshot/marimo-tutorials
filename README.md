@@ -117,7 +117,7 @@ Here are some featured notebooks from our collection:
       </a>
     </td>
     <td>
-      <a target="_blank" href="marimo-tutorials/artificial-intelligence/machine-learning/machine-learning/">
+      <a target="_blank" href="https://github.com/Haleshot/marimo-tutorials/tree/main/marimo-tutorials/artificial-intelligence/machine-learning">
         <img src="assets/machine-learning.png" style="max-height: 150px; width: auto; display: block" />
       </a>
     </td>
@@ -127,7 +127,7 @@ Here are some featured notebooks from our collection:
       <a href="marimo-tutorials/artificial-intelligence/recommendation-systems/collaborative-filtering/">Collaborative Filtering</a>
     </td>
     <td>
-      <a href="marimo-tutorials/artificial-intelligence/machine-learning/machine-learning/">Machine Learning</a>
+      <a href="https://github.com/Haleshot/marimo-tutorials/tree/main/marimo-tutorials/artificial-intelligence/machine-learning">Machine Learning</a>
     </td>
   </tr>
   <tr>
