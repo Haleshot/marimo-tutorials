@@ -72,7 +72,7 @@ Each subdirectory within `marimo-tutorials/` contains domain-specific notebooks,
 
 To get started with the notebooks in this repository, you'll need to have marimo installed. We recommend using [`uv`](https://github.com/astral-sh/uv) for managing dependencies and running notebooks in isolated environments.
 
-1. Install `uv` if you haven't already:
+1. Install [`uv`](https://github.com/astral-sh/uv) if you haven't already:
    ```shell
    pip install uv
    ```
