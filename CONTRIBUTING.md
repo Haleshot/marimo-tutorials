@@ -67,8 +67,6 @@ We welcome feature requests. If you have an idea for a new feature or improvemen
 
 Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive community.
 
-Thank you for contributing to the University Portal Mobile App project!
+Thank you for contributing to the marimo-tutorials repository!
 
 Happy coding!
-
-You can place this content in a `CONTRIBUTING.md` file in your project's repository. Be sure to replace `[your_fork_url]` with the URL of your forked repository and customize any other details as needed for your project's specific contribution process.

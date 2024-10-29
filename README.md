@@ -72,7 +72,7 @@ Each subdirectory within `marimo-tutorials/` contains domain-specific notebooks,
 
 To get started with the notebooks in this repository, you'll need to have marimo installed. We recommend using [`uv`](https://github.com/astral-sh/uv) for managing dependencies and running notebooks in isolated environments.
 
-1. Install `uv` if you haven't already:
+1. Install [`uv`](https://github.com/astral-sh/uv) if you haven't already:
    ```shell
    pip install uv
    ```
@@ -117,7 +117,7 @@ Here are some featured notebooks from our collection:
       </a>
     </td>
     <td>
-      <a target="_blank" href="marimo-tutorials/artificial-intelligence/machine-learning/machine-learning/">
+      <a target="_blank" href="https://github.com/Haleshot/marimo-tutorials/tree/main/marimo-tutorials/artificial-intelligence/machine-learning">
         <img src="assets/machine-learning.png" style="max-height: 150px; width: auto; display: block" />
       </a>
     </td>
@@ -127,7 +127,7 @@ Here are some featured notebooks from our collection:
       <a href="marimo-tutorials/artificial-intelligence/recommendation-systems/collaborative-filtering/">Collaborative Filtering</a>
     </td>
     <td>
-      <a href="marimo-tutorials/artificial-intelligence/machine-learning/machine-learning/">Machine Learning</a>
+      <a href="https://github.com/Haleshot/marimo-tutorials/tree/main/marimo-tutorials/artificial-intelligence/machine-learning">Machine Learning</a>
     </td>
   </tr>
   <tr>
@@ -209,7 +209,8 @@ Here are some featured notebooks from our collection:
 
 While this repository hosts a variety of tutorials and notebooks, the official community spotlights are featured in a separate repository: [marimo-team/spotlights](https://github.com/marimo-team/spotlights). 
 
-The spotlights repository features a project or marimo notebook from the community every Thursday. If you've created a notebook in this repository that you believe would be a good fit for the community spotlight, feel free to open an [issue](https://github.com/marimo-team/spotlights/issues) in the spotlights repository.
+> [!NOTE]
+> The spotlights repository features a project or marimo notebook from the community every Thursday. If you've created a notebook in this repository that you believe would be a good fit for the community spotlight, feel free to open an [issue](https://github.com/marimo-team/spotlights/issues) in the spotlights repository.
 
 ## Notebook Structure
 
