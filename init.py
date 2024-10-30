@@ -12,8 +12,8 @@ This is the starting point for your notebook.
 
 import marimo
 
-__generated_with = "0.8.19"
-app = marimo.App(width="medium")
+__generated_with = "0.9.10"
+app = marimo.App()
 
 
 @app.cell(hide_code=True)
@@ -59,7 +59,7 @@ def __(mo):
         r"""
         **Some tips from our experience with marimo**
 
-        1. If a notebook contains any side effect, e.g., reading an external .csv file, you'd better use a `marimo.ui.form` for users to config the path of this .csv file.
+        1. If a notebook contains any io operation, e.g., reading an external .csv file, you'd better use a `marimo.ui.form` for users to config the path of this .csv file.
         2. You can create more ui components and appealing contents with pure html, [anywidget](https://github.com/manzt/anywidget) and more. But when you are doing this, remember to check its appearance under both light and dark themes, and different widths.
         3. Albeit you can create local variables in a cell with a prefix "_", we recommend you do this as little as possible because the `Explore variables` panel will neglect  these variables, making debug these variables hard.
         4. If you want your notebook to run properly in our cloud, please check whether the dependencies are supported by wasm. Some popular libraries like `polars` and `openai`, for example, are not supported.
@@ -114,103 +114,21 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        f"""
-        <h1 id="home">NOTEBOOK_TITLE</h1>
-        ---
-
-        **TLDR**
-
-        > write TLDR here
-
-        > > use hyperlinks like [section x](#x) to help with quick navigation
-
-        <h1 id="intro">Introduction</h1>
-
-        > a concise intro with an outline of the theoretical part of the notebook
-        > > optional tips for using the notebook
-
-        The notebook is organized as follows:
-
-        1. **Section 1:**
-
-            - concise descriptions
-
-        2. **Section 2:**
-
-        >
-        > > In the `Experiment` section, you can freely explore these theories.
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="x"> Section x </h1>
-
-        > a concise section overview
-
-        <h2 id="x-x" align="center">Subsection X</h2>
-
-        > main body
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
-        rf"""
-        <h1 id="summary">Summary</h1>
-
-        A summary of the notebook
-
-        **Recaps**
-
-        - recap 1
-        - recap 2
-        - …
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def __(mo):
-    mo.md(
         """
         <h1 id="refs">References</h1>
 
-        > list your references
-
-        1. [Reference 1](https://example.com)
-        2. [Reference 2](https://example.com)
+        - [Reference 1](https://example.com)
+        - [Reference 2](https://example.com)
         """
     )
     return
-
-
-@app.cell(hide_code=True)
-def __():
-    import marimo as mo
-
-    mo.md(
-        rf"""
-        <h1 id="src">Source Code</h1>
-
-        > write source code below
-        """
-    )
-    return (mo,)
 
 
 @app.cell(hide_code=True)
 def __():
     import anywidget
     import traitlets
+
 
     class HeaderWidget(anywidget.AnyWidget):
         _esm = """
@@ -354,25 +272,41 @@ def __():
         """
 
         result = traitlets.Dict({}).tag(sync=True)
-
     return HeaderWidget, anywidget, traitlets
 
 
-@app.cell
-def __(HeaderWidget):
+@app.cell(hide_code=True)
+def __():
+    from datetime import datetime
+
+
+    def get_current_date() -> str:
+        """Returns the current date in 'YYYY-MM-DD' format."""
+        return datetime.now().strftime("%Y-%m-%d")
+    return datetime, get_current_date
+
+
+@app.cell(hide_code=True)
+def __(HeaderWidget, get_current_date):
     header_widget = HeaderWidget(
         result={
             "Title": "My Comprehensive Data Analysis Notebook",
             "Author": "Jane Smith",
-            "Date": "2024-09-25",
-            "Version": "2.1",
+            "Date": get_current_date(),
+            "Version": "0.1",
             "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
-            "Keywords": "data analysis, e-commerce, customer behavior, machine learning",
+            "Keywords": "Data Analysis. E-Commerce. Customer Behavior. Machine learning",
             "Data Sources": "Customer transaction logs, website clickstream data, CRM records, social media interactions",
             "Tools Used": "Python, Pandas, Scikit-learn, Matplotlib, Seaborn, TensorFlow",
         }
     )
     return (header_widget,)
+
+
+@app.cell(hide_code=True)
+def __():
+    import marimo as mo
+    return (mo,)
 
 
 if __name__ == "__main__":
