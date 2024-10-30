@@ -2,8 +2,8 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
-#     "anywidget",
-#     "traitlets",
+#     "anywidget==0.9.13",
+#     "traitlets==5.14.3",
 # ]
 # ///
 """
@@ -13,7 +13,7 @@ This is the starting point for your notebook.
 import marimo
 
 __generated_with = "0.8.19"
-app = marimo.App(width="medium")
+app = marimo.App()
 
 
 @app.cell(hide_code=True)
@@ -114,7 +114,7 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        f"""
+        """
         <h1 id="home">NOTEBOOK_TITLE</h1>
         ---
 
@@ -147,7 +147,7 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h1 id="x"> Section x </h1>
 
         > a concise section overview
@@ -163,7 +163,7 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h1 id="summary">Summary</h1>
 
         A summary of the notebook
@@ -198,7 +198,7 @@ def __():
     import marimo as mo
 
     mo.md(
-        rf"""
+        r"""
         <h1 id="src">Source Code</h1>
 
         > write source code below
