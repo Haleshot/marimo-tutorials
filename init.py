@@ -2,8 +2,8 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
-#     "anywidget==0.9.13",
-#     "traitlets==5.14.3",
+#     "anywidget",
+#     "traitlets",
 # ]
 # ///
 """
