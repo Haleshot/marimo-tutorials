@@ -1,12 +1,14 @@
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
+#     "anywidget==0.9.13",
 #     "jax==0.4.35",
 #     "marimo",
 #     "matplotlib==3.9.2",
 #     "numpy==2.1.2",
 #     "torch==2.5.0",
 #     "torchvision==0.20.0",
+#     "traitlets==5.14.3",
 # ]
 # ///
 
@@ -23,12 +25,18 @@ def __(mo):
 
 
 @app.cell(hide_code=True)
+def __(header_widget):
+    header_widget
+    return
+
+
+@app.cell(hide_code=True)
 def __(mo):
     mo.md(
         r"""
         ## What is Jax?
 
-        JAX is a high-performance numerical computing library that combines the ease of use of NumPy with the power of automatic differentiation and GPU/TPU acceleration. It is designed for high-performance machine learning research and provides capabilities for automatic differentiation, vectorization, and just-in-time compilation, making it suitable for deep learning and other scientific computing tasks.
+        [JAX](https://jax.readthedocs.io/en/latest/quickstart.html) is a high-performance numerical computing library that combines the ease of use of NumPy with the power of automatic differentiation and GPU/TPU acceleration. It is designed for high-performance machine learning research and provides capabilities for automatic differentiation, vectorization, and just-in-time compilation, making it suitable for deep learning and other scientific computing tasks.
 
         ## Why should we use Jax?
 
@@ -54,7 +62,7 @@ def __(mo):
         r"""
         ## How is JAX different from TensorFlow and PyTorch
 
-        JAX differs from TensorFlow and PyTorch primarily in its approach to programming. JAX promotes a functional programming style, whereas TensorFlow and PyTorch are more object-oriented. This functional approach in JAX encourages writing clean and composable code, and it provides powerful function transformations. If you prefer functional programming or need automatic function transformations, JAX might be more suitable for you. Additionally, high-level neural network libraries like Flax, built on top of JAX, offer functionally pure classes that are familiar to users of Keras or PyTorch.
+        JAX differs from [TensorFlow](https://www.tensorflow.org/learn) and [PyTorch](https://pytorch.org/get-started/locally/) primarily in its approach to programming. JAX promotes a functional programming style, whereas TensorFlow and PyTorch are more object-oriented. This functional approach in JAX encourages writing clean and composable code, and it provides powerful function transformations. If you prefer functional programming or need automatic function transformations, JAX might be more suitable for you. Additionally, high-level neural network libraries like [Flax](https://flax.readthedocs.io/en/latest/index.html), built on top of JAX, offer functionally pure classes that are familiar to users of Keras or PyTorch.
 
         ## What are the limitations of Jax compared to PyTorch and TensorFlow?
 
@@ -78,7 +86,7 @@ def __(mo):
         r"""
         # The First Jax Program
 
-        In this notebook, we’ll do a deep learning “hello world” exercise. We will build a simple neural network application demonstrating the JAX approach to building a deep learning model. It’s an image classification model that works on the [MNIST handwritten digit dataset](https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html). This project will introduce you to three of the main JAX transformations: `grad()` for taking gradients, `jit()` for compilation, and `vmap()` for auto-vectorization.
+        In this notebook, we’ll do a deep learning “hello world” exercise. We will build a simple neural network application demonstrating the JAX approach to building a deep learning model. It’s an image classification model that works on the [MNIST handwritten digit dataset](https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html). This project will introduce you to three of the main JAX transformations: [`grad()`](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) for taking gradients, [`jit()`](https://jax.readthedocs.io/en/latest/_autosummary/jax.jit.html) for compilation, and [`vmap()`](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) for auto-vectorization.
         """
     )
     return
@@ -90,7 +98,7 @@ def __(mo):
         r"""
         ## Typical architecture of a Jax deep learning project
 
-        1. Choose a dataset for your particular task. In our example, we use the [MNIST dataset]((https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html)).
+        1. Choose a dataset for your particular task. In our example, we use the [MNIST dataset](https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html).
         2. Create a data loader to read your dataset and transform it into a sequence of batches. 
         3. Define a model that works with a single data point. JAX needs pure functions without state and side effects, so you separate model parameters from the function that applies the neural network to data. A neural network model is defined as
             + a set of model parameters 
@@ -101,12 +109,12 @@ def __(mo):
         6. Obtain gradients of the loss function with respect to the model parameters. The gradient function is evaluated on the model parameters and the input data and produces gradients for each model parameter. 
         7. Implement a gradient update step. The gradients are used to update the model parameters with some gradient descent procedure. You can update model parameters directly  or use a special optimizer from a separate library.
         8. Implement the complete training loop.
-        9. The model is compiled to the target hardware platform using JIT compilation. __This step may significantly speed up your computations__.
+        9. The model is compiled to the target hardware platform using [JIT compilation](https://jax.readthedocs.io/en/latest/jit-compilation.html). __This step may significantly speed up your computations__.
         10. You may also distribute model training across a cluster of computers.
         11. After running the training loop for several epochs, you get a trained model (__an updated set of the parameters__) that can be used for predictions or any other task you designed the model for.
         12. Save your trained model.
         13. Use the model. Depending on your case, you can deploy the model using some production infrastructure or just load it and perform calculations without specialized infrastructure.
-            - For saving and restoring model weights, you may use standard Python tools like `pickle`, or safer solutions like `safetensors`. Higher-level libraries on top of JAX may also provide their own means for loading/saving models.
+            - For saving and restoring model weights, you may use standard Python tools like [`pickle`](https://docs.python.org/3/library/pickle.html), or safer solutions like [`safetensors`](https://huggingface.co/docs/safetensors/index). Higher-level libraries on top of JAX may also provide their own means for loading/saving models.
             - For deployment, there are several options available. For example, you can convert your model to `TensorFlow` or `TFLite`, and use their well-developed ecosystem for model deployment.
         """
     )
@@ -126,7 +134,7 @@ def __(mo):
         1. `FlattenAndCast`: Flattens the image to a 1D array and casts it to float32. This is necessary for models that expect flattened input vectors (like basic neural networks).
         2. `Normalize`: Normalizes the pixel values by dividing by 255.0 to get values in the range [0, 1]. This helps models train more efficiently by scaling the input features.
 
-        We use `transforms.Compose` from `torchvision` to chain both transformation steps, so the dataset automatically applies them whenever an image is loaded.
+        We use [`transforms.Compose`](https://pytorch.org/vision/stable/generated/torchvision.transforms.Compose.html#compose) from [`torchvision`](https://pytorch.org/vision/stable/index.html#torchvision) to chain both transformation steps, so the dataset automatically applies them whenever an image is loaded.
         """
     )
     return
@@ -364,7 +372,7 @@ def __(jnp):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        r"""In JAX, you typically have two functions for your neural networks: one for initializing parameters and another one for applying your neural network to some input data. The first function returns parameters as some data structure (here, a list of arrays; later, it will be a special data structure called `PyTree`). The second one takes in parameters and the data and returns the result of applying the neural network to the data."""
+        r"""In JAX, you typically have two functions for your neural networks: one for initializing parameters and another one for applying your neural network to some input data. The first function returns parameters as some data structure (here, a list of arrays; later, it will be a special data structure called [`PyTree`](https://jax.readthedocs.io/en/latest/pytrees.html)). The second one takes in parameters and the data and returns the result of applying the neural network to the data."""
     ).callout(kind="info")
     return
 
@@ -762,6 +770,174 @@ def __(mo):
         """
     )
     return
+
+
+@app.cell(hide_code=True)
+def __():
+    import anywidget
+    import traitlets
+
+
+    class HeaderWidget(anywidget.AnyWidget):
+        _esm = """
+        function render({ model, el }) {
+            const result = model.get("result");
+
+            const container = document.createElement("div");
+            container.className = "header-container";
+
+            const banner = document.createElement("img");
+            banner.className = "banner";
+            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.style.width = "100%";
+            banner.style.height = "200px";
+            banner.style.objectFit = "cover";
+            banner.style.borderRadius = "10px 10px 0 0";
+            banner.alt = "Marimo Banner";
+
+            const form = document.createElement("div");
+            form.className = "form-container";
+
+            for (const [key, value] of Object.entries(result)) {
+                const row = document.createElement("div");
+                row.className = "form-row";
+
+                const label = document.createElement("label");
+                label.textContent = key;
+
+                const valueContainer = document.createElement("div");
+                valueContainer.className = "value-container";
+
+                if (value.length > 100) {
+                    const preview = document.createElement("div");
+                    preview.className = "preview";
+                    preview.textContent = value.substring(0, 100) + "...";
+
+                    const fullText = document.createElement("div");
+                    fullText.className = "full-text";
+                    fullText.textContent = value;
+
+                    const toggleButton = document.createElement("button");
+                    toggleButton.className = "toggle-button";
+                    toggleButton.textContent = "Show More";
+                    toggleButton.onclick = () => {
+                        if (fullText.style.display === "none") {
+                            fullText.style.display = "block";
+                            preview.style.display = "none";
+                            toggleButton.textContent = "Show Less";
+                        } else {
+                            fullText.style.display = "none";
+                            preview.style.display = "block";
+                            toggleButton.textContent = "Show More";
+                        }
+                    };
+
+                    valueContainer.appendChild(preview);
+                    valueContainer.appendChild(fullText);
+                    valueContainer.appendChild(toggleButton);
+
+                    fullText.style.display = "none";
+                } else {
+                    valueContainer.textContent = value;
+                }
+
+                row.appendChild(label);
+                row.appendChild(valueContainer);
+                form.appendChild(row);
+            }
+
+            container.appendChild(banner);
+            container.appendChild(form);
+            el.appendChild(container);
+        }
+        export default { render };
+        """
+
+        _css = """
+        .header-container {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .form-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            font-weight: 300;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .value-container {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .preview, .full-text {
+            margin-bottom: 10px;
+        }
+
+        .toggle-button {
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-button:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        """
+
+        result = traitlets.Dict({}).tag(sync=True)
+    return HeaderWidget, anywidget, traitlets
+
+
+@app.cell(hide_code=True)
+def __(HeaderWidget):
+    header_widget = HeaderWidget(
+        result={
+            "Title": "An Introduction to Jax",
+            "Author": "Eugene",
+            "Date": "2024-10-30",
+            "Version": "0.1",
+            "Description": "This notebook contains an introduction to Jax, a high-performance numerical computing library, with a starter deep-learning project",
+            "Keywords": "deep learning, numerical computing",
+            "Data Sources": "MNIST",
+            "Tools Used": "Python, Jax",
+        }
+    )
+    return (header_widget,)
 
 
 @app.cell(hide_code=True)
