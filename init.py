@@ -1,5 +1,4 @@
 # /// script
-# requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
 #     "anywidget==0.9.13",
@@ -12,7 +11,7 @@ This is the starting point for your notebook.
 
 import marimo
 
-__generated_with = "0.9.14"
+__generated_with = "0.9.10"
 app = marimo.App()
 
 
@@ -30,21 +29,20 @@ def __(mo):
 
         We've designed a `HeaderWidget` for you to display important information.
 
-        To use `HeaderWidget`, you need to create an instance of it. You can pass a dictionary containing key-value pairs that represent the information you want to display in the header. 
+        To use `HeaderWidget`, you need to create an instance of it. You can pass a dictionary containing key-value pairs that represent the information you want to display in the header.  
 
-        Here's the code for the above example:
+        For example:
 
         ```python
-        HeaderWidget(
+        header_widget = HeaderWidget(
             result={
-                "Title": "My Comprehensive Data Analysis Notebook",
-                "Author": "Jane Smith",
-                "Date": "2024-09-25",
-                "Version": "2.1",
-                "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
-                "Keywords": "data analysis, e-commerce, customer behavior, machine learning",
-                "Data Sources": "Customer transaction logs, website clickstream data, CRM records, social media interactions",
-                "Tools Used": "Python, Pandas, Scikit-learn, Matplotlib, Seaborn, TensorFlow",
+                "Title": "Comprehensive E-Commerce Customer Behavior Analysis",
+                "Author": '<a href="https://github.com/Haleshot/marimo-tutorials">Dr. Jane Smith, PhD</a>',
+                "Version": "1.2.3",
+                "Description": "This advanced notebook presents a multi-faceted analysis of <b>customer behavior patterns</b> across various e-commerce platforms. The primary goal is to derive actionable insights that can significantly enhance customer engagement, optimize conversion rates, and ultimately drive business growth in the competitive e-commerce landscape.",
+                "Keywords": "E-Commerce Analytics, Customer Behavior Modeling, Predictive Analytics, Machine Learning, Natural Language Processing, Data Visualization, Time Series Analysis",
+                "Data Sources": "1. Customer transaction logs (5 years, 10M+ records)<br>2. Website clickstream data (real-time, 1B+ events)<br>3. CRM records (customer demographics, purchase history)<br>4. Social media interactions (Twitter, Facebook, Instagram)<br>5. Customer support tickets and chat logs<br>6. Product catalog and inventory data",
+                "Last Updated": "November 3, 2024",
             }
         )
         ```
@@ -129,87 +127,94 @@ def __():
     import anywidget
     import traitlets
 
+
     class HeaderWidget(anywidget.AnyWidget):
         _esm = """
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        function stripHTML(html) {
+            const tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+        }
+
+        function renderValue(value) {
+            if (typeof value !== 'string') {
+                return escapeHTML(String(value));
+            }
+
+            const isHTML = /<[a-z][\s\S]*>/i.test(value);
+            const strippedValue = isHTML ? stripHTML(value) : value;
+
+            if (strippedValue.length > 100) {
+                if (isHTML) {
+                    return `
+                        <div class="preview">${value.substring(0, 100)}...</div>
+                        <div class="full-text" style="display: none;">${value}</div>
+                        <button class="toggle-button">Show More</button>
+                    `;
+                } else {
+                    return `
+                        <div class="preview">${escapeHTML(value.substring(0, 100))}...</div>
+                        <div class="full-text" style="display: none;">${escapeHTML(value)}</div>
+                        <button class="toggle-button">Show More</button>
+                    `;
+                }
+            }
+
+            return isHTML ? value : escapeHTML(value);
+        }
+
         function render({ model, el }) {
             const result = model.get("result");
-
             const container = document.createElement("div");
             container.className = "header-container";
 
-            const banner = document.createElement("img");
-            banner.className = "banner";
-            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
-            banner.style.width = "100%";
-            banner.style.height = "200px";
-            banner.style.objectFit = "cover";
-            banner.style.borderRadius = "10px 10px 0 0";
-            banner.alt = "Marimo Banner";
+            container.innerHTML = `
+                <img class="banner" src="https://i.ibb.co/SVcC6bb/final.png" alt="Marimo Banner">
+                <div class="form-container">
+                    ${Object.entries(result).map(([key, value]) => `
+                        <div class="form-row">
+                            <label>${escapeHTML(key)}</label>
+                            <div class="value-container">
+                                ${renderValue(value)}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
 
-            const form = document.createElement("div");
-            form.className = "form-container";
-
-            for (const [key, value] of Object.entries(result)) {
-                const row = document.createElement("div");
-                row.className = "form-row";
-
-                const label = document.createElement("label");
-                label.textContent = key;
-
-                const valueContainer = document.createElement("div");
-                valueContainer.className = "value-container";
-
-                // Handle objects with text and links
-                if (typeof value === 'object' && value.text) {
-                    const textElement = document.createElement("div");
-                    textElement.innerHTML = value.text;  // Use innerHTML to render HTML links
-
-                    valueContainer.appendChild(textElement);
-                } else {
-                    // Handle regular text with show more/less for long content
-                    if (typeof value === 'string' && value.length > 100) {
-                        const preview = document.createElement("div");
-                        preview.className = "preview";
-                        preview.innerHTML = value.substring(0, 100) + "...";
-
-                        const fullText = document.createElement("div");
-                        fullText.className = "full-text";
-                        fullText.innerHTML = value;
-
-                        const toggleButton = document.createElement("button");
-                        toggleButton.className = "toggle-button";
-                        toggleButton.textContent = "Show More";
-                        toggleButton.onclick = () => {
-                            if (fullText.style.display === "none") {
-                                fullText.style.display = "block";
-                                preview.style.display = "none";
-                                toggleButton.textContent = "Show Less";
-                            } else {
-                                fullText.style.display = "none";
-                                preview.style.display = "block";
-                                toggleButton.textContent = "Show More";
-                            }
-                        };
-
-                        valueContainer.appendChild(preview);
-                        valueContainer.appendChild(fullText);
-                        valueContainer.appendChild(toggleButton);
-
-                        fullText.style.display = "none";
-                    } else {
-                        valueContainer.innerHTML = value;
-                    }
-                }
-
-                row.appendChild(label);
-                row.appendChild(valueContainer);
-                form.appendChild(row);
-            }
-
-            container.appendChild(banner);
-            container.appendChild(form);
             el.appendChild(container);
+
+            container.querySelectorAll('.toggle-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const row = button.closest('.form-row');
+                    const preview = row.querySelector('.preview');
+                    const fullText = row.querySelector('.full-text');
+
+                    if (fullText.style.display === "none") {
+                        fullText.style.display = "block";
+                        preview.style.display = "none";
+                        button.textContent = "Show Less";
+                    } else {
+                        fullText.style.display = "none";
+                        preview.style.display = "block";
+                        button.textContent = "Show More";
+                    }
+                });
+            });
         }
+
         export default { render };
         """
 
@@ -220,13 +225,13 @@ def __():
             margin: 0 auto;
             overflow: hidden;
         }
-
         .banner {
             width: 100%;
-            height: auto;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
             display: block;
         }
-
         .form-container {
             padding: 30px;
             display: grid;
@@ -235,12 +240,10 @@ def __():
             font-weight: 300;
             box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
         }
-
         .form-row {
             display: flex;
             flex-direction: column;
         }
-
         label {
             font-size: 0.8em;
             text-transform: uppercase;
@@ -248,27 +251,21 @@ def __():
             margin-bottom: 5px;
             font-weight: 500;
         }
-
         .value-container {
             font-size: 1em;
             line-height: 1.5;
         }
-
         .value-container a {
-            color: #0066cc;
-            text-decoration: none;
-            transition: color 0.2s ease;
+                color: #0066cc;
+                text-decoration: none;
+                transition: color 0.2s ease;
         }
-
         .value-container a:hover {
             color: #003366;
-            text-decoration: underline;
         }
-
         .preview, .full-text {
             margin-bottom: 10px;
         }
-
         .toggle-button {
             border: none;
             border-radius: 20px;
@@ -278,11 +275,9 @@ def __():
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         .toggle-button:hover {
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-
         @media (max-width: 600px) {
             .form-container {
                 grid-template-columns: 1fr;
@@ -295,28 +290,20 @@ def __():
 
 
 @app.cell(hide_code=True)
-def __():
-    from datetime import datetime
-
-
-    def get_current_date() -> str:
-        """Returns the current date in 'YYYY-MM-DD' format."""
-        return datetime.now().strftime("%Y-%m-%d")
-    return datetime, get_current_date
-
-
-@app.cell(hide_code=True)
-def __(HeaderWidget, get_current_date):
+def __(HeaderWidget):
     header_widget = HeaderWidget(
         result={
-            "Title": "My Comprehensive Data Analysis Notebook",
-            "Author": {"text": '<a href="https://github.com/your-username">Jane Smith</a>'},
-            "Date": get_current_date(),
-            "Version": "0.1",
-            "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
-            "Keywords": "Data Analysis. E-Commerce. Customer Behavior. Machine learning",
-            "Data Sources": "Customer transaction logs, website clickstream data, CRM records, social media interactions",
-            "Tools Used": "Python, Pandas, Scikit-learn, Matplotlib, Seaborn, TensorFlow",
+            "Title": "Comprehensive E-Commerce Customer Behavior Analysis",
+            "Author": '<a href="https://github.com/Haleshot/marimo-tutorials">Dr. Jane Smith, PhD</a>',
+            "Affiliation": '<a href="https://www.datascience.university.edu">University of Data Science</a>',
+            "Version": "1.2.3",
+            "Description": "This advanced notebook presents a multi-faceted analysis of <b>customer behavior patterns</b> across various e-commerce platforms. The primary goal is to derive actionable insights that can significantly enhance customer engagement, optimize conversion rates, and ultimately drive business growth in the competitive e-commerce landscape.",
+            "Keywords": "E-Commerce Analytics, Customer Behavior Modeling, Predictive Analytics, Machine Learning, Natural Language Processing, Data Visualization, Time Series Analysis",
+            "Data Sources": "1. Customer transaction logs (5 years, 10M+ records)<br>2. Website clickstream data (real-time, 1B+ events)<br>3. CRM records (customer demographics, purchase history)<br>4. Social media interactions (Twitter, Facebook, Instagram)<br>5. Customer support tickets and chat logs<br>6. Product catalog and inventory data",
+            "Prerequisites": "Intermediate to advanced knowledge in statistics, machine learning, and Python programming. Familiarity with e-commerce concepts and business metrics is beneficial.",
+            "Acknowledgements": "This work was supported by a grant from the National Science Foundation (NSF-1234567). Special thanks to the E-Commerce Research Consortium for providing anonymized datasets.",
+            "License": '<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>',
+            "Last Updated": "November 3, 2024",
         }
     )
     return (header_widget,)
