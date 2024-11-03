@@ -25,7 +25,7 @@ def __(header_widget):
 
 
 @app.cell(hide_code=True)
-def __(activation_functions, mo):
+def __(mo):
     mo.md(
         f"""
         ## Activation Functions
@@ -33,21 +33,26 @@ def __(activation_functions, mo):
             non-linearity into the network's learning process. They determine whether a 
             neuron should be fired/activated or not by calculating the weighted sum and adding bias.
             Each function has its unique properties and use cases in different scenarios.
-            Select an activation function: {activation_functions}
+            Select an activation function from the dropdown below to visualize its behavior.
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def __(activation_functions, mo):
+def __(activation_functions, alpha_slider, mo, x_range):
     import numpy as np
     import matplotlib.pyplot as plt
 
     @mo.cache(pin_modules=True)  # if module versions change later on
-    def plot_activation(func_name):
-        x = np.linspace(-10, 10, 1000)
-        y = np.zeros_like(x)  # Initialize y array
+    def plot_activation():
+        # Get current values directly from UI elements (instead of hardocoding)
+        func_name = activation_functions.value
+        x_range_val = x_range.value
+        alpha_val = alpha_slider.value
+        
+        x = np.linspace(x_range_val[0], x_range_val[1], 1000)
+        y = np.zeros_like(x)
         formula = ""
         
         if func_name == "sigmoid":
@@ -60,22 +65,17 @@ def __(activation_functions, mo):
             y = np.maximum(0, x)
             formula = r"$$ReLU(x) = max(0, x)$$"
         elif func_name == "elu":
-            alpha = 1.0  # Default alpha value for ELU
-            y = np.where(x > 0, x, alpha * (np.exp(x) - 1))
-            formula = r"$$ELU(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha(e^x - 1) & \text{otherwise} \end{cases}$$"
+            y = np.where(x > 0, x, alpha_val * (np.exp(x) - 1))
+            formula = f"$$ELU(x) = \\begin{{cases}} x & \\text{{if }} x > 0 \\\\ {alpha_val:.2f}(e^x - 1) & \\text{{otherwise}} \\end{{cases}}$$"
         elif func_name == "prelu":
-            alpha = 0.01
-            y = np.where(x > 0, x, alpha * x)
-            formula = r"$$PReLU(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{otherwise} \end{cases}$$"
+            y = np.where(x > 0, x, alpha_val * x)
+            formula = f"$$PReLU(x) = \\begin{{cases}} x & \\text{{if }} x > 0 \\\\ {alpha_val:.2f}x & \\text{{otherwise}} \\end{{cases}}$$"
         elif func_name == "leaky_relu":
-            alpha = 0.01
-            y = np.where(x > 0, x, alpha * x)
-            formula = r"$$LeakyReLU(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{otherwise} \end{cases}$$"
+            y = np.where(x > 0, x, alpha_val * x)
+            formula = f"$$LeakyReLU(x) = \\begin{{cases}} x & \\text{{if }} x > 0 \\\\ {alpha_val:.2f}x & \\text{{otherwise}} \\end{{cases}}$$"
         elif func_name == "selu":
-            # SELU parameters
-            alpha = 1.6732632423543772
             scale = 1.0507009873554804
-            y = scale * np.where(x > 0, x, alpha * (np.exp(x) - 1))
+            y = scale * np.where(x > 0, x, alpha_val * (np.exp(x) - 1))
             formula = r"$$SELU(x) = \lambda \times ELU(x)$$"
         elif func_name == "softplus":
             y = np.log1p(np.exp(x))
@@ -93,24 +93,66 @@ def __(activation_functions, mo):
         elif func_name == "mish":
             y = x * np.tanh(np.log1p(np.exp(x)))
             formula = r"$$Mish(x) = x \times tanh(ln(1 + e^x))$$"
-        
-        plt.figure(figsize=(10, 6))
-        plt.plot(x, y)
-        plt.grid(True)
+
+        # Clear the previous plot
+        plt.clf()
+        plt.figure(figsize=(12, 7))
+        plt.plot(x, y, linewidth=2, label=func_name)
+        plt.grid(True, alpha=0.3)
         plt.axhline(y=0, color='k', linestyle='-', alpha=0.3)
         plt.axvline(x=0, color='k', linestyle='-', alpha=0.3)
-        plt.title(f'{func_name} Activation Function')
-        plt.xlabel('x')
-        plt.ylabel('y')
-        return plt.gca(), formula
-
-    mo.md(
-        f"""
-        {plot_activation(activation_functions.value)[1]}
-        {mo.as_html(plot_activation(activation_functions.value)[0])}
-        """
-    )
+        plt.title(f'{func_name.upper()} Activation Function', fontsize=14)
+        plt.xlabel('x', fontsize=12)
+        plt.ylabel('y', fontsize=12)
+        plt.legend(fontsize=10)
+        
+        # Set x-axis limits based on range slider value
+        plt.xlim(x_range_val)
+        
+        # Automatically adjust y-axis limits with some padding (QoL/visual improvement)
+        y_min, y_max = np.min(y), np.max(y)
+        padding = (y_max - y_min) * 0.1
+        plt.ylim(y_min - padding, y_max + padding)
+        
+        # Show alpha slider only for functions that use it
+        alpha_functions = ["elu", "prelu", "leaky_relu", "selu"]
+        show_alpha = func_name in alpha_functions
+        
+        controls = mo.hstack([
+            mo.vstack([
+                mo.md("### Select Activation Function"),
+                activation_functions
+            ]),
+            mo.vstack([
+                mo.md("### X-axis Range"),
+                x_range
+            ])
+        ])
+        
+        if show_alpha:
+            controls = mo.hstack([
+                controls,
+                mo.vstack([
+                    mo.md("### Alpha Parameter"),
+                    alpha_slider,
+                    mo.md(f"Current α: {alpha_slider.value:.2f}")
+                ])
+            ])
+        
+        return mo.vstack([
+            controls,
+            mo.md(formula),
+            mo.as_html(plt.gca())
+        ])
     return np, plot_activation, plt
+
+
+@app.cell(hide_code=True)
+def __(plot_activation):
+
+    # Display the plot
+    plot_activation()
+    return
 
 
 @app.cell(hide_code=True)
@@ -141,6 +183,30 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
+    # Range slider https://docs.marimo.io/api/inputs/range_slider.html#range-slider 
+    # for x-axis control
+    x_range = mo.ui.range_slider(
+        start=-10,
+        stop=10,
+        step=0.5,
+        value=[-10, 10],
+        label="X-axis Range",
+        full_width=True
+    )
+
+    # Slider https://docs.marimo.io/api/inputs/slider.html#slider for alpha parameter
+    alpha_slider = mo.ui.slider(
+        start=0.01,
+        stop=2.0,
+        step=0.01,
+        value=0.01,
+        label="Alpha Parameter"
+    )
+    return alpha_slider, x_range
+
+
+@app.cell(hide_code=True)
+def __(mo):
     mo.md(
         """
         <h2 id="refs">References</h2>
@@ -157,7 +223,7 @@ def __(mo):
     mo.md(
         r"""
         ## Appendix
-        The cells below consist of assisting variables/functions responsible for implementing the above cells.
+        The cells below consist of assisting variables/functions responsible for implementing the above cells (click on show code).
         """
     )
     return
@@ -198,46 +264,41 @@ def __():
                 const valueContainer = document.createElement("div");
                 valueContainer.className = "value-container";
 
-                // Handle objects with text and links
-                if (typeof value === 'object' && value.text) {
-                    const textElement = document.createElement("div");
-                    textElement.innerHTML = value.text;  // Use innerHTML to render HTML links
+                // Get the actual text content, whether it's a direct string or in an object
+                let textContent = typeof value === 'object' ? value.text : value;
 
-                    valueContainer.appendChild(textElement);
+                // Check if content is long enough to warrant a show more button
+                if (textContent && textContent.length > 100) {
+                    const preview = document.createElement("div");
+                    preview.className = "preview";
+                    preview.innerHTML = textContent.substring(0, 100) + "...";
+
+                    const fullText = document.createElement("div");
+                    fullText.className = "full-text";
+                    fullText.innerHTML = textContent;
+
+                    const toggleButton = document.createElement("button");
+                    toggleButton.className = "toggle-button";
+                    toggleButton.textContent = "Show More";
+                    toggleButton.onclick = () => {
+                        if (fullText.style.display === "none") {
+                            fullText.style.display = "block";
+                            preview.style.display = "none";
+                            toggleButton.textContent = "Show Less";
+                        } else {
+                            fullText.style.display = "none";
+                            preview.style.display = "block";
+                            toggleButton.textContent = "Show More";
+                        }
+                    };
+
+                    valueContainer.appendChild(preview);
+                    valueContainer.appendChild(fullText);
+                    valueContainer.appendChild(toggleButton);
+
+                    fullText.style.display = "none";
                 } else {
-                    // Handle regular text with show more/less for long content
-                    if (typeof value === 'string' && value.length > 100) {
-                        const preview = document.createElement("div");
-                        preview.className = "preview";
-                        preview.innerHTML = value.substring(0, 100) + "...";
-
-                        const fullText = document.createElement("div");
-                        fullText.className = "full-text";
-                        fullText.innerHTML = value;
-
-                        const toggleButton = document.createElement("button");
-                        toggleButton.className = "toggle-button";
-                        toggleButton.textContent = "Show More";
-                        toggleButton.onclick = () => {
-                            if (fullText.style.display === "none") {
-                                fullText.style.display = "block";
-                                preview.style.display = "none";
-                                toggleButton.textContent = "Show Less";
-                            } else {
-                                fullText.style.display = "none";
-                                preview.style.display = "block";
-                                toggleButton.textContent = "Show More";
-                            }
-                        };
-
-                        valueContainer.appendChild(preview);
-                        valueContainer.appendChild(fullText);
-                        valueContainer.appendChild(toggleButton);
-
-                        fullText.style.display = "none";
-                    } else {
-                        valueContainer.innerHTML = value;
-                    }
+                    valueContainer.innerHTML = textContent;
                 }
 
                 row.appendChild(label);
@@ -363,7 +424,7 @@ def __(HeaderWidget, get_current_date):
             "Keywords": "Neural Networks, Activation Functions, Deep Learning, Interactive Visualization, Mathematical Functions",
             "Domain": "Deep Learning, Machine Learning, Neural Network Architecture",
             "Tools Used": {
-                "text": """<a href="https://docs.python.org/3/">Python</a>, <a href="https://matplotlib.org/stable/index.html"> Matplotlib</a>, <a href="https://numpy.org/doc/"> NumPy </a>, <a href="https://docs.marimo.io">Marimo</a> 
+                "text": """<a href="https://docs.python.org/3/">Python</a>, <a href="https://matplotlib.org/stable/index.html"> Matplotlib</a>, <a href="https://numpy.org/doc/"> NumPy</a>, <a href="https://docs.marimo.io">Marimo</a> 
                 (caching, UI components)"""
             },
             "Functions Covered": "Sigmoid, Tanh, ReLU, ELU, PReLU, Leaky ReLU, SELU, Softplus, Softsign, Hard Sigmoid, Swish, Mish"
