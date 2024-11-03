@@ -2,8 +2,8 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
-#     "anywidget",
-#     "traitlets",
+#     "anywidget==0.9.13",
+#     "traitlets==5.14.3",
 # ]
 # ///
 """
@@ -12,7 +12,7 @@ This is the starting point for your notebook.
 
 import marimo
 
-__generated_with = "0.9.10"
+__generated_with = "0.9.14"
 app = marimo.App()
 
 
@@ -129,7 +129,6 @@ def __():
     import anywidget
     import traitlets
 
-
     class HeaderWidget(anywidget.AnyWidget):
         _esm = """
         function render({ model, el }) {
@@ -160,37 +159,46 @@ def __():
                 const valueContainer = document.createElement("div");
                 valueContainer.className = "value-container";
 
-                if (value.length > 100) {
-                    const preview = document.createElement("div");
-                    preview.className = "preview";
-                    preview.textContent = value.substring(0, 100) + "...";
+                // Handle objects with text and links
+                if (typeof value === 'object' && value.text) {
+                    const textElement = document.createElement("div");
+                    textElement.innerHTML = value.text;  // Use innerHTML to render HTML links
 
-                    const fullText = document.createElement("div");
-                    fullText.className = "full-text";
-                    fullText.textContent = value;
-
-                    const toggleButton = document.createElement("button");
-                    toggleButton.className = "toggle-button";
-                    toggleButton.textContent = "Show More";
-                    toggleButton.onclick = () => {
-                        if (fullText.style.display === "none") {
-                            fullText.style.display = "block";
-                            preview.style.display = "none";
-                            toggleButton.textContent = "Show Less";
-                        } else {
-                            fullText.style.display = "none";
-                            preview.style.display = "block";
-                            toggleButton.textContent = "Show More";
-                        }
-                    };
-
-                    valueContainer.appendChild(preview);
-                    valueContainer.appendChild(fullText);
-                    valueContainer.appendChild(toggleButton);
-
-                    fullText.style.display = "none";
+                    valueContainer.appendChild(textElement);
                 } else {
-                    valueContainer.textContent = value;
+                    // Handle regular text with show more/less for long content
+                    if (typeof value === 'string' && value.length > 100) {
+                        const preview = document.createElement("div");
+                        preview.className = "preview";
+                        preview.innerHTML = value.substring(0, 100) + "...";
+
+                        const fullText = document.createElement("div");
+                        fullText.className = "full-text";
+                        fullText.innerHTML = value;
+
+                        const toggleButton = document.createElement("button");
+                        toggleButton.className = "toggle-button";
+                        toggleButton.textContent = "Show More";
+                        toggleButton.onclick = () => {
+                            if (fullText.style.display === "none") {
+                                fullText.style.display = "block";
+                                preview.style.display = "none";
+                                toggleButton.textContent = "Show Less";
+                            } else {
+                                fullText.style.display = "none";
+                                preview.style.display = "block";
+                                toggleButton.textContent = "Show More";
+                            }
+                        };
+
+                        valueContainer.appendChild(preview);
+                        valueContainer.appendChild(fullText);
+                        valueContainer.appendChild(toggleButton);
+
+                        fullText.style.display = "none";
+                    } else {
+                        valueContainer.innerHTML = value;
+                    }
                 }
 
                 row.appendChild(label);
@@ -246,6 +254,17 @@ def __():
             line-height: 1.5;
         }
 
+        .value-container a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .value-container a:hover {
+            color: #003366;
+            text-decoration: underline;
+        }
+
         .preview, .full-text {
             margin-bottom: 10px;
         }
@@ -291,7 +310,7 @@ def __(HeaderWidget, get_current_date):
     header_widget = HeaderWidget(
         result={
             "Title": "My Comprehensive Data Analysis Notebook",
-            "Author": "Jane Smith",
+            "Author": {"text": '<a href="https://github.com/your-username">Jane Smith</a>'},
             "Date": get_current_date(),
             "Version": "0.1",
             "Description": "This notebook contains an in-depth analysis of customer behavior patterns across multiple e-commerce platforms. It includes data preprocessing, exploratory data analysis, statistical modeling, and machine learning techniques to derive actionable insights for improving customer engagement and conversion rates.",
