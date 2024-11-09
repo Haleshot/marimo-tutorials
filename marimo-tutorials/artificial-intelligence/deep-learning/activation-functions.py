@@ -27,7 +27,7 @@ def __(header_widget):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        f"""
+        """
         ## Activation Functions
             [Activation functions](https://en.wikipedia.org/wiki/Activation_function) are crucial components in neural networks that introduce 
             non-linearity into the network's learning process. They determine whether a 
@@ -244,7 +244,7 @@ def __():
 
             const banner = document.createElement("img");
             banner.className = "banner";
-            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.src = "https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png";
             banner.style.width = "100%";
             banner.style.height = "200px";
             banner.style.objectFit = "cover";
