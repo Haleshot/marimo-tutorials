@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.ibb.co/SVcC6bb/final.png" alt="marimo-tutorials Community Banner">
+  <img src="https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png" alt="marimo-tutorials Community Banner">
 </p>
 
 <h2 align="center">Interactive Tutorials and Notebooks for marimo</h2>
@@ -16,22 +16,29 @@
 
 # marimo-tutorials
 
-Welcome to `marimo-tutorials`, a comprehensive collection of interactive notebooks and tutorials showcasing the power and versatility of [marimo](https://marimo.io), an innovative Python notebook framework. This repository serves as a hub for learning, exploration, and community engagement across various domains of computer science, data science, AI, and more.
+Welcome to `marimo-tutorials`, a comprehensive collection of interactive
+notebooks and tutorials showcasing the power and versatility of
+[marimo](https://marimo.io), an innovative Python notebook framework. This
+repository serves as a hub for learning, exploration and community engagement
+across various domains of computer science, data science, AI, and more.
 
 ## Table of Contents
 
-- [About](#about)
-- [Repository Structure](#repository-structure)
-- [Getting Started](#getting-started)
-- [Featured Notebooks](#featured-notebooks)
-- [Community Spotlights](#community-spotlights)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+-   [About](#about)
+-   [Repository Structure](#repository-structure)
+-   [Getting Started](#getting-started)
+-   [Featured Notebooks](#featured-notebooks)
+-   [Community Spotlights](#community-spotlights)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Contact](#contact)
 
 ## About
 
-`marimo-tutorials` is designed to provide a rich learning experience for both beginners and advanced users of marimo. Our collection spans multiple disciplines, offering hands-on examples, in-depth tutorials, and real-world applications of marimo's capabilities.
+`marimo-tutorials` is designed to provide a rich learning experience for both
+beginners and advanced users of marimo. Our collection spans multiple
+disciplines, offering hands-on examples, in-depth tutorials, and real-world
+applications of marimo's capabilities.
 
 ## Repository Structure
 
@@ -66,42 +73,56 @@ marimo-tutorials/
 └── requirements.txt
 ```
 
-Each subdirectory within `marimo-tutorials/` contains domain-specific notebooks, along with their respective README files and assets.
+Each subdirectory within `marimo-tutorials/` contains domain-specific
+notebooks, along with their respective README files and assets.
 
 ## Getting Started
 
-To get started with the notebooks in this repository, you'll need to have marimo installed. We recommend using [`uv`](https://github.com/astral-sh/uv) for managing dependencies and running notebooks in isolated environments.
+To get started with the notebooks in this repository, you'll need to have
+marimo installed. We recommend using [`uv`](https://github.com/astral-sh/uv)
+for managing dependencies and running notebooks in isolated environments.
 
 1. Install [`uv`](https://github.com/astral-sh/uv) if you haven't already:
-   ```shell
-   pip install uv
-   ```
+
+    ```shell
+    pip install uv
+    ```
 
 2. Clone this repository:
-   ```shell
-   git clone https://github.com/Haleshot/marimo-tutorials.git
-   cd marimo-tutorials
-   ```
+
+    ```shell
+    git clone https://github.com/Haleshot/marimo-tutorials.git
+    cd marimo-tutorials
+    ```
 
 3. To run a notebook with its dependencies in an isolated environment:
-   ```shell
-   uvx marimo run --sandbox path/to/notebook.py
-   ```
+
+    ```shell
+    uvx marimo run --sandbox path/to/notebook.py
+    ```
 
 4. To edit a notebook:
-   ```shell
-   uvx marimo edit --sandbox path/to/notebook.py
-   ```
+    ```shell
+    uvx marimo edit --sandbox path/to/notebook.py
+    ```
 
 ### Isolated Environments with marimo
 
-As highlighted in the [marimo blog](https://marimo.io/blog/sandboxed-notebooks), it's now possible to create marimo notebooks that have their package requirements serialized into them as a top-level comment. Given a notebook with inlined requirements, marimo can run it in an isolated virtual environment with a single command:
+As highlighted in the
+[marimo blog](https://marimo.io/blog/sandboxed-notebooks), it's now possible to
+create marimo notebooks that have their package requirements serialized into
+them as a top-level comment. Given a notebook with inlined requirements, marimo
+can run it in an isolated virtual environment with a single command:
 
 ```shell
 marimo edit --sandbox notebook.py
 ```
 
-This creates a fresh virtual environment, or sandbox, and installs the dependencies before opening the notebook. marimo's opt-in package management features can even track imports and automatically add them to your notebook's inlined requirements. This means you can create and share standalone notebooks without shipping `requirements.txt` files alongside them.
+This creates a fresh virtual environment, or sandbox, and installs the
+dependencies before opening the notebook. marimo's opt-in package management
+features can even track imports and automatically add them to your notebook's
+inlined requirements. This means you can create and share standalone notebooks
+without shipping `requirements.txt` files alongside them.
 
 ## Featured Notebooks
 
@@ -207,26 +228,38 @@ Here are some featured notebooks from our collection:
 
 ## Community Spotlights
 
-While this repository hosts a variety of tutorials and notebooks, the official community spotlights are featured in a separate repository: [marimo-team/spotlights](https://github.com/marimo-team/spotlights). 
+While this repository hosts a variety of tutorials and notebooks, the official
+community spotlights are featured in a separate repository:
+[marimo-team/spotlights](https://github.com/marimo-team/spotlights).
 
-> [!NOTE]
-> The spotlights repository features a project or marimo notebook from the community every Thursday. If you've created a notebook in this repository that you believe would be a good fit for the community spotlight, feel free to open an [issue](https://github.com/marimo-team/spotlights/issues) in the spotlights repository.
+> [!NOTE] The spotlights repository features a project or marimo notebook from
+> the community every Thursday. If you've created a notebook in this repository
+> that you believe would be a good fit for the community spotlight, feel free
+> to open an [issue](https://github.com/marimo-team/spotlights/issues) in the
+> spotlights repository.
 
 ## Notebook Structure
 
-All notebooks in this repository follow a uniform structure defined in the `init.py` file. This structure ensures consistency across tutorials and makes it easier for users to navigate and understand the content. Key elements of this structure include:
+All notebooks in this repository follow a uniform structure defined in the
+`init.py` file. This structure ensures consistency across tutorials and makes
+it easier for users to navigate and understand the content. Key elements of
+this structure include:
 
-- Standard import statements
-- Configuration settings
-- Helper functions
-- Main content sections
-- Interactive elements
+-   Standard import statements
+-   Configuration settings
+-   Helper functions
+-   Main content sections
+-   Interactive elements
 
-By adhering to this template, contributors can focus on creating high-quality content while maintaining a consistent user experience across all tutorials.
+By adhering to this template, contributors can focus on creating high-quality
+content while maintaining a consistent user experience across all tutorials.
 
 ## Contributing
 
-We welcome contributions from the community! Whether it's adding new tutorials, improving existing ones, or suggesting new features, your input is valuable. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+We welcome contributions from the community! Whether it's adding new tutorials,
+improving existing ones, or suggesting new features, your input is valuable.
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to
+contribute.
 
 ## License
 
@@ -234,10 +267,12 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For questions, suggestions, or support, please open an issue in this repository or reach out to us (maintainers) through our community channels:
+For questions, suggestions or support, please open an issue in this repository
+or reach out to us (maintainers) through our community channels:
 
 marimo socials:
 
-- LinkedIn: [marimo LinkedIn](https://www.linkedin.com/company/marimo-io/)
-- Twitter: [@marimo_io](https://twitter.com/marimo_io)
-- Discord (proj-marimo-tutorials-channel): [marimo community](https://discord.gg/JE7nhX6mD8)
+-   LinkedIn: [marimo LinkedIn](https://www.linkedin.com/company/marimo-io/)
+-   Twitter: [@marimo_io](https://twitter.com/marimo_io)
+-   Discord (proj-marimo-tutorials-channel):
+    [marimo community](https://discord.gg/JE7nhX6mD8)

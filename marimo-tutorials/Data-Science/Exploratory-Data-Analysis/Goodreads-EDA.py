@@ -24,7 +24,7 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.image(src="https://i.ibb.co/SVcC6bb/final.png", alt="Community Tutorials Banner", width=800, rounded=True).center()
+    mo.image(src="https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png", alt="Community Tutorials Banner", width=800, rounded=True).center()
     return
 
 

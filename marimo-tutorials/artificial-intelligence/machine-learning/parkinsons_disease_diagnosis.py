@@ -1212,7 +1212,7 @@ def __():
     import marimo as mo
 
     mo.md(
-        rf"""
+        r"""
         <h1 id="src">Source Code</h1>
         """
     )
@@ -1321,7 +1321,7 @@ def __():
 
             const banner = document.createElement("img");
             banner.className = "banner";
-            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.src = "https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png";
             banner.style.width = "100%";
             banner.style.height = "200px";
             banner.style.objectFit = "cover";

@@ -127,7 +127,6 @@ def __():
     import anywidget
     import traitlets
 
-
     class HeaderWidget(anywidget.AnyWidget):
         _esm = """
         function escapeHTML(str) {
@@ -181,7 +180,7 @@ def __():
             container.className = "header-container";
 
             container.innerHTML = `
-                <img class="banner" src="https://i.ibb.co/SVcC6bb/final.png" alt="Marimo Banner">
+                <img class="banner" src="https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png" alt="Marimo Banner">
                 <div class="form-container">
                     ${Object.entries(result).map(([key, value]) => `
                         <div class="form-row">
@@ -286,6 +285,7 @@ def __():
         """
 
         result = traitlets.Dict({}).tag(sync=True)
+
     return HeaderWidget, anywidget, traitlets
 
 
@@ -312,6 +312,7 @@ def __(HeaderWidget):
 @app.cell(hide_code=True)
 def __():
     import marimo as mo
+
     return (mo,)
 
 
