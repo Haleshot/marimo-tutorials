@@ -42,7 +42,7 @@ def __():
 
             const banner = document.createElement("img");
             banner.className = "banner";
-            banner.src = "https://i.ibb.co/SVcC6bb/final.png";
+            banner.src = "https://raw.githubusercontent.com/Haleshot/marimo-tutorials/main/community-tutorials-banner.png";
             banner.style.width = "100%";
             banner.style.height = "200px";
             banner.style.objectFit = "cover";
@@ -409,7 +409,7 @@ def __(mo):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(rf"> **You can define a custom signal function here.**")
+    mo.md(r"> **You can define a custom signal function here.**")
     return
 
 
@@ -492,7 +492,7 @@ def __(mo):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         > **Again, you can add your custom kernel function here (name your function is recommended).**
 
         > A sample custom kernel function is given below, this is actually osculatory rational interpolation, and we add a `condition_threshold` to show how you can make this custom kernel function dynamic (e.g., you can use a slider ui to control its value).
@@ -567,7 +567,7 @@ def __(cubic, custom_func, sinc, triangle, visualize_kernels):
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(rf"Let's check their interpolation effects for our signal function `f`:")
+    mo.md(r"Let's check their interpolation effects for our signal function `f`:")
     return
 
 
@@ -599,7 +599,7 @@ def __(
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h2 id="problems" align="center">The Problem With Sinc</h2>
 
         The first problem is evident: to convolve with sinc, we need to consider all the samples we have every time. This is clearly impractical: we’d need to look at every pixel in the input image to generate each pixel in the output.
@@ -644,7 +644,7 @@ def __(
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         The reconstructed signal repeatedly overshoots and undershoot our original function. These undesirable oscillations, known as Gibbs phenomenon, show up all the time in Fourier analysis when dealing with jump discontinuities and finite approximations. They are intimately related to sinc in a sense the Gibbs oscillations are all ghosts of sinc in one form or another.
 
         Lánczos interpolation will address both problems presented in this section.
@@ -756,7 +756,7 @@ def __(
 
 @app.cell(hide_code=True)
 def __(mo):
-    mo.md(rf"And let's go back to 2-d")
+    mo.md(r"And let's go back to 2-d")
     return
 
 
@@ -769,7 +769,7 @@ def __(lanczos_result):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h1 id="summary">Summary</h1>
 
         This notebook explored four different algorithms for image scaling: Nearest Neighbor (NN) Interpolation, Bilinear Interpolation, Bicubic Interpolation, and Lanczos Resampling. Each algorithm offers a unique approach to resizing images, each with its own advantages and disadvantages.
@@ -861,7 +861,7 @@ def __(downscaled_dim, exp_result, lena, mo, resizing_dim, show_images):
 @app.cell(hide_code=True)
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h1 id="refs">References</h1>
 
         1. [Lánczos interpolation explained](https://mazzo.li/posts/lanczos.html)
@@ -887,7 +887,7 @@ def __(mo):
 @app.cell
 def __(mo):
     mo.md(
-        rf"""
+        r"""
         <h1 id="code">Source Code</h1>
 
         > check source code below
