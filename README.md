@@ -128,6 +128,9 @@ without shipping `requirements.txt` files alongside them.
 
 Here are some featured notebooks from our collection:
 
+> [!NOTE]
+> The links given below will be updated soon, they are intended as placeholders to showcase the structure of our README file.
+
 ### Artificial Intelligence
 
 <table border="0">
