@@ -7,7 +7,7 @@
 
 import marimo
 
-__generated_with = "0.9.32"
+__generated_with = "0.10.17"
 app = marimo.App()
 
 
@@ -17,7 +17,7 @@ def _(mo):
         r"""
         # An Interactive Primer of New Tricks used by DeepSeek's v3-based-R1
 
-        Welcome to this exploration/write-up of DeepSeek-v3-based- DeepSeek-R1's architectural innovations! This notebook breaks down the key technical breakthroughs that have enabled DeepSeek to achieve performance on par with leading closed-source models.
+        Welcome to this exploration/write-up of [DeepSeek-v3-based- DeepSeek-R1's](https://arxiv.org/abs/2501.12948) architectural innovations! This notebook breaks down the key technical breakthroughs that have enabled DeepSeek to achieve performance on par with leading closed-source models.
 
         **Key Highlights:**
 
@@ -29,20 +29,19 @@ def _(mo):
 
         - Advanced training techniques including Multi-Token Prediction
 
-        Let's dive into these innovations through interactive visualizations and examples!
         """
     ).center()
     return
 
 
 @app.cell
-def __(overview):
+def _(overview):
     overview
     return
 
 
 @app.cell
-def __(key_features):
+def _(key_features):
     key_features
     return
 
@@ -81,13 +80,13 @@ def _(mo):
 
 
 @app.cell
-def __(mla_intro):
+def _(mla_intro):
     mla_intro
     return
 
 
 @app.cell
-def __(mha_basics):
+def _(mha_basics):
     mha_basics
     return
 
@@ -98,7 +97,7 @@ def _(mo):
         r"""
         ## 1. Multi-Head Latent Attention (MLA)
 
-        Let's first understand the evolution of attention mechanisms and how MLA improves upon them.
+        Let's first understand the evolution of attention mechanisms and how [MLA](https://arxiv.org/abs/2405.04434) improves upon them.
         """
     )
 
@@ -161,13 +160,13 @@ def _(mo):
 
 
 @app.cell
-def __(comparison):
+def _(comparison):
     comparison
     return
 
 
 @app.cell
-def __(insights):
+def _(insights):
     insights
     return
 
@@ -190,7 +189,7 @@ def _(dim_per_head, mo, n_heads, seq_length):
     memories = calculate_memory()
     comparison = mo.md(
         f"""
-        ### Memory Comparison (elements)
+        ### Memory Comparison (per token in bytes)
 
         - MHA: {memories['MHA']:,}
         - GQA: {memories['GQA']:,}
@@ -215,13 +214,13 @@ def _(dim_per_head, mo, n_heads, seq_length):
 
 
 @app.cell
-def __(moe_intro):
+def _(moe_intro):
     moe_intro
     return
 
 
 @app.cell
-def __(expert_types):
+def _(expert_types):
     expert_types
     return
 
@@ -232,7 +231,7 @@ def _(mo):
         r"""
         ## 2. DeepSeekMoE Architecture
 
-        DeepSeekMoE introduces a novel approach to Mixture of Experts with:
+        [DeepSeekMoE](https://arxiv.org/abs/2401.06066) introduces a novel approach to Mixture of Experts with:
 
         - Finer-grained experts
 
@@ -261,7 +260,7 @@ def _(mo):
 
 
 @app.cell
-def __(math_details):
+def _(math_details):
     math_details
     return
 
@@ -326,35 +325,35 @@ def _(mo):
 
 
 @app.cell
-def __(results_display):
+def _(results_display):
     results_display
     return
 
 
 @app.cell
-def __(moe_insights):
+def _(moe_insights):
     moe_insights
     return
 
 
 @app.cell
-def __(k_active, mo, n_routed, n_shared):
+def _(k_active, mo, n_routed, n_shared):
     def calculate_moe():
         # simplified approx. of total parms
         base_expert_size = 1024 * 4096  # for one expert (feed-forward layer)
-        
+
         # Total parameters
         total_params = (n_shared.value + n_routed.value) * base_expert_size
-        
+
         # Active parameters per forward pass
         active_params = (n_shared.value + k_active.value) * base_expert_size
-        
+
         # Calculating efficiency metrics
         parameter_efficiency = (active_params / total_params) * 100
-        
+
         # Calculate theoretical compute savings
         compute_savings = (1 - (active_params / total_params)) * 100
-        
+
         # Calculate load balance score (simplified) but
         # assuming perfect distribution across routed experts
         theoretical_load = k_active.value / n_routed.value
@@ -373,7 +372,7 @@ def __(k_active, mo, n_routed, n_shared):
     results_display = mo.md(
         f"""
         ### MoE Architecture Statistics
-        
+
         - Total Parameters: {stats['total_parameters']:,}
         - Active Parameters per Forward Pass: {stats['active_parameters']:,}
         - Parameter Efficiency: {stats['parameter_efficiency']:.2f}%
@@ -385,11 +384,11 @@ def __(k_active, mo, n_routed, n_shared):
     moe_insights = mo.callout(
         mo.md(f"""
             **Key Insights:**
-            
+
             - {k_active.value} active experts out of {n_routed.value} routed experts
-            
+
             - {n_shared.value} shared experts always active
-            
+
             - Achieving {stats['compute_savings']:.1f}% compute savings
         """),
         kind="success"
@@ -398,13 +397,13 @@ def __(k_active, mo, n_routed, n_shared):
 
 
 @app.cell
-def __(balancing_intro):
+def _(balancing_intro):
     balancing_intro
     return
 
 
 @app.cell
-def __(algorithm):
+def _(algorithm):
     algorithm
     return
 
@@ -413,7 +412,7 @@ def __(algorithm):
 def _(mo):
     balancing_intro = mo.md(
         r"""
-        ## 3. Auxiliary-Loss-Free Load Balancing
+        ## 3. [Auxiliary-Loss-Free Load Balancing](https://arxiv.org/abs/2408.15664)
 
         DeepSeek introduces a novel approach to load balancing that doesn't require auxiliary loss terms:
 
@@ -440,13 +439,13 @@ def _(mo):
 
 
 @app.cell
-def __(grpo_intro):
+def _(grpo_intro):
     grpo_intro
     return
 
 
 @app.cell
-def __(components):
+def _(components):
     components
     return
 
@@ -457,13 +456,15 @@ def _(mo):
         r"""
         ## 4. Group Relative Policy Optimization (GRPO)
 
-        GRPO is a key innovation in DeepSeek-R1 that optimizes policy without ground truth:
+        [GRPO](https://arxiv.org/abs/2402.03300) is a key innovation in DeepSeek-R1 that optimizes policy without ground truth:
 
         $$
         J_{GRPO}(\theta) = \mathbb{E}_{q \sim P(Q),\{o_i\}_{i=1}^G \sim \pi_{\theta_{old}}(O|q)} 
         \left[\frac{1}{G}\sum_{i=1}^G \min\left(\frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)}A_i, 
         \text{clip}\left(\frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)}, 1-\epsilon, 1+\epsilon\right)A_i\right)\right]
         $$
+
+        The key intuition is that it allows the model to improve its policy without having access to ground truth by comparing outputs within groups and using their relative performance. Unlike traditional objective functions that need explicit correct answers, GRPO leverages internal comparisons within groups of model outputs to guide learning, making it particularly effective for self-improvement in language models.
         """
     )
 
@@ -478,7 +479,7 @@ def _(mo):
 
 
 @app.cell
-def __(conclusion):
+def _(conclusion):
     conclusion
     return
 
@@ -502,8 +503,26 @@ def _(mo):
     return (conclusion,)
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        ### References
+        - [deepseek-v3 paper](https://arxiv.org/abs/2412.19437)
+        - [deepseek-v2 paper](https://arxiv.org/abs/2405.04434)
+        - [deepseek r1 paper](https://arxiv.org/abs/2501.12948)
+        - [Multi-Token Prediction paper](https://arxiv.org/abs/2404.19737)
+        - [GRPO paper](https://arxiv.org/abs/2402.03300)
+        - [DeepSeekV3 101 blog](https://lunar-joke-35b.notion.site/Deepseek-v3-101-169ba4b6a3fa8090a7aacaee1a1cefaa#169ba4b6a3fa809b9295d7498a8c3cf3)
+        - [Deepseek r1 for everyone blog](https://trite-song-d6a.notion.site/Deepseek-R1-for-Everyone-1860af77bef3806c9db5e5c2a256577d)
+        - [deepseek-r1 repo](https://github.com/deepseek-ai/DeepSeek-R1)
+        """
+    )
+    return
+
+
 @app.cell
-def __():
+def _():
     import marimo as mo
     return (mo,)
 
