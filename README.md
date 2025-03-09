@@ -25,7 +25,6 @@ across various domains of computer science, data science, AI, and more.
 ## Table of Contents
 
 -   [About](#about)
--   [Repository Structure](#repository-structure)
 -   [Getting Started](#getting-started)
 -   [Featured Notebooks](#featured-notebooks)
 -   [Community Spotlights](#community-spotlights)
@@ -40,6 +39,7 @@ beginners and advanced users of marimo. Our collection spans multiple
 disciplines, offering hands-on examples, in-depth tutorials, and real-world
 applications of marimo's capabilities.
 
+<!---
 ## Repository Structure
 
 ```
@@ -72,6 +72,7 @@ marimo-tutorials/
 ├── README.md
 └── requirements.txt
 ```
+-->
 
 Each subdirectory within `marimo-tutorials/` contains domain-specific
 notebooks, along with their respective README files and assets.
